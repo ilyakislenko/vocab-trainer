@@ -1,0 +1,39 @@
+[importlinter]
+root_package = vocab_api
+include_external_packages = True
+
+[importlinter:contract:layers]
+name = Hexagonal layers
+type = layers
+layers =
+    interfaces
+    infrastructure
+    application
+    domain
+containers =
+    vocab_api
+
+[importlinter:contract:domain-is-pure]
+name = Domain imports no frameworks
+type = forbidden
+source_modules =
+    vocab_api.domain
+forbidden_modules =
+    fastapi
+    sqlmodel
+    sqlalchemy
+    fsrs
+    httpx
+    pydantic_settings
+
+[importlinter:contract:application-uses-ports]
+name = Application imports no adapters
+type = forbidden
+source_modules =
+    vocab_api.application
+forbidden_modules =
+    vocab_api.infrastructure
+    vocab_api.interfaces
+    fastapi
+    sqlmodel
+    fsrs
