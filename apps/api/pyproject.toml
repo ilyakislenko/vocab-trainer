@@ -1,11 +1,9 @@
 [project]
 name = "vocab-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "Hexagonal + DDD FastAPI backend for a spaced-repetition vocabulary trainer"
 readme = "README.md"
-authors = [
-    { name = "Кисленко Илья", email = "kislenko@sputnikfund.ru" }
-]
+authors = [{ name = "vocab-trainer" }]
 requires-python = ">=3.12"
 dependencies = [
     "aiosqlite>=0.22.1",

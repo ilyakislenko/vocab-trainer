@@ -5,6 +5,13 @@ from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.shared.errors import EmptyTranslation, EmptyWord
 
 
+def _clean_optional(value: str | None) -> str | None:
+    if value is None:
+        return None
+    stripped = value.strip()
+    return stripped or None
+
+
 @dataclass(frozen=True, slots=True)
 class Card:
     deck_id: int
@@ -35,8 +42,8 @@ class Card:
             deck_id=deck_id,
             word=clean_word,
             translation=clean_translation,
-            transcription=((transcription or None) and transcription.strip()) or None,
-            notes=((notes or None) and notes.strip()) or None,
+            transcription=_clean_optional(transcription),
+            notes=_clean_optional(notes),
             fsrs=FsrsState.new(now),
             created_at=now,
         )

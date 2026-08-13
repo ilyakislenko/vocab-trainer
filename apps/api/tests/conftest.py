@@ -78,11 +78,19 @@ class FakeCardRepository:
 
 
 class FakeReviewLogRepository:
-    def __init__(self) -> None:
+    def __init__(self, cards: FakeCardRepository) -> None:
+        # Mirrors the real repo's join against cards: card->deck is looked up live
+        # off the shared card repository rather than snapshotted at add() time.
         self.entries: list[ReviewLogEntry] = []
+        self._cards = cards
 
     async def add(self, entry: ReviewLogEntry) -> None:
         self.entries.append(entry)
 
     async def count_reviews(self, deck_id: int) -> int:
-        return len(self.entries)
+        count = 0
+        for entry in self.entries:
+            card = await self._cards.get(entry.card_id)
+            if card.deck_id == deck_id:
+                count += 1
+        return count

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy import func
 from sqlmodel import select
 
 from vocab_api.application.ports.repositories import CardRepository
@@ -52,7 +53,11 @@ class SqlCardRepository(CardRepository):
         return [card_from_row(row) for row in rows]
 
     async def count_due(self, deck_id: int, now: datetime) -> int:
-        statement = select(CardRow).where(CardRow.deck_id == deck_id, CardRow.fsrs_due <= now)
+        statement = (
+            select(func.count())
+            .select_from(CardRow)
+            .where(CardRow.deck_id == deck_id, CardRow.fsrs_due <= now)
+        )
         async with self._db.session() as session:
             result = await session.execute(statement)
-            return len(result.scalars().all())
+            return result.scalar_one()

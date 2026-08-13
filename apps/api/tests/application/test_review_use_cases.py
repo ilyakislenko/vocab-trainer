@@ -28,7 +28,8 @@ async def test_queue_returns_due_cards_only():
 
 
 async def test_record_review_updates_card_and_logs():
-    cards, logs = FakeCardRepository(), FakeReviewLogRepository()
+    cards = FakeCardRepository()
+    logs = FakeReviewLogRepository(cards)
     (card,) = await cards.add_many([Card.create(1, "run", "бежать", FIXED_NOW)])
     assert card.id is not None
     updated = await RecordReview(cards, logs, StubScheduler(), FixedClock()).execute(
@@ -40,7 +41,8 @@ async def test_record_review_updates_card_and_logs():
 
 
 async def test_record_review_missing_card_raises():
+    cards = FakeCardRepository()
     with pytest.raises(CardNotFound):
         await RecordReview(
-            FakeCardRepository(), FakeReviewLogRepository(), StubScheduler(), FixedClock()
+            cards, FakeReviewLogRepository(cards), StubScheduler(), FixedClock()
         ).execute(999, Rating.GOOD)

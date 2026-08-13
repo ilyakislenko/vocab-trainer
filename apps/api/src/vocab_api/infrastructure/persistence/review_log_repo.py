@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlmodel import select
 
 from vocab_api.application.ports.repositories import ReviewLogRepository
@@ -25,10 +26,11 @@ class SqlReviewLogRepository(ReviewLogRepository):
         # plugin, so mypy sees that class attribute as a plain value instead of the
         # runtime InstrumentedAttribute that join() actually expects.
         statement = (
-            select(ReviewLogRow)
+            select(func.count())
+            .select_from(ReviewLogRow)
             .join(CardRow, CardRow.id == ReviewLogRow.card_id)  # type: ignore[arg-type]
             .where(CardRow.deck_id == deck_id)
         )
         async with self._db.session() as session:
             result = await session.execute(statement)
-            return len(result.scalars().all())
+            return result.scalar_one()
