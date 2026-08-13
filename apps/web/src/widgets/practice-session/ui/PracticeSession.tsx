@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useReviewQueue } from "@/entities/card";
 import { SentencePractice } from "@/features/check-sentence";
 import { PronounceControls } from "@/features/pronounce";
@@ -28,8 +28,15 @@ export function PracticeSession({ deckId }: { deckId: number }) {
       <p className="text-sm text-muted-foreground">
         {index + 1} / {cards.length}
       </p>
-      {card.id !== null && <SentencePractice cardId={card.id} word={card.word} />}
-      <PronounceControls word={card.word} />
+      {/*
+        Keyed on the card identity so both children remount when the queue
+        advances — without this, the textarea, LLM feedback, and pronounce
+        result from the previous word linger under the new one.
+      */}
+      <Fragment key={card.id ?? card.word}>
+        {card.id !== null && <SentencePractice cardId={card.id} word={card.word} />}
+        <PronounceControls word={card.word} />
+      </Fragment>
       <Button variant="ghost" onClick={() => setIndex((i) => i + 1)}>
         Next word →
       </Button>

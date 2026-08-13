@@ -32,4 +32,23 @@ describe("PracticeSession", () => {
     renderWithProviders(<PracticeSession deckId={1} />);
     await waitFor(() => expect(screen.getByText(/nothing to practise/i)).toBeInTheDocument());
   });
+
+  it("clears the sentence input for the next word instead of keeping stale state", async () => {
+    server.use(
+      http.get("/api/review/queue", () =>
+        HttpResponse.json([
+          { id: 1, word: "run", translation: "бежать", transcription: null },
+          { id: 2, word: "jump", translation: "прыгать", transcription: null },
+        ]),
+      ),
+    );
+    renderWithProviders(<PracticeSession deckId={1} />);
+    await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
+    await userEvent.type(screen.getByRole("textbox"), "I run every day.");
+    expect(screen.getByRole("textbox")).toHaveValue("I run every day.");
+
+    await userEvent.click(screen.getByRole("button", { name: /next word/i }));
+    await waitFor(() => expect(screen.getByText("jump")).toBeInTheDocument());
+    expect(screen.getByRole("textbox")).toHaveValue("");
+  });
 });

@@ -14,7 +14,12 @@ export function SentencePractice({ cardId, word }: { cardId: number; word: strin
       <p>
         Write a sentence using <span className="font-semibold">{word}</span>:
       </p>
-      <Textarea value={sentence} onChange={(e) => setSentence(e.target.value)} rows={3} />
+      <Textarea
+        aria-label="Your sentence"
+        value={sentence}
+        onChange={(e) => setSentence(e.target.value)}
+        rows={3}
+      />
       <div className="flex gap-2">
         <Button
           onClick={() => check.mutate(sentence)}
@@ -29,6 +34,11 @@ export function SentencePractice({ cardId, word }: { cardId: number; word: strin
       {check.isError && (
         <p role="alert" className="text-destructive">
           The language model is unavailable.
+        </p>
+      )}
+      {example.isError && (
+        <p role="alert" className="text-destructive">
+          Couldn't fetch an example.
         </p>
       )}
       {feedback && (

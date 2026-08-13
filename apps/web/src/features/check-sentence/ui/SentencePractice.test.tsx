@@ -35,4 +35,16 @@ describe("SentencePractice", () => {
     await userEvent.click(screen.getByRole("button", { name: /check/i }));
     await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
   });
+
+  it("shows an alert when fetching an example fails", async () => {
+    server.use(
+      http.get("/api/practice/example", () =>
+        HttpResponse.json({ detail: "unavailable" }, { status: 502 }),
+      ),
+    );
+    renderWithProviders(<SentencePractice cardId={1} word="run" />);
+    await userEvent.click(screen.getByRole("button", { name: /get an example/i }));
+    await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
+    expect(screen.getByText(/couldn't fetch an example/i)).toBeInTheDocument();
+  });
 });
