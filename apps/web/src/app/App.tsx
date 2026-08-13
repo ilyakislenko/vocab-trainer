@@ -3,6 +3,7 @@ import { Link, MemoryRouter, Route, Routes } from "react-router-dom";
 import { useDecks } from "@/entities/deck";
 import { DeckPicker } from "@/features/select-deck";
 import { ImportPage } from "@/pages/import";
+import { PracticePage } from "@/pages/practice";
 import { ReviewPage } from "@/pages/review";
 import { StatsPage } from "@/pages/stats";
 import { Providers } from "./providers";
@@ -26,6 +27,7 @@ function AppShell() {
         <h1 className="text-xl font-bold">Vocab Trainer</h1>
         <nav className="flex gap-4">
           <Link to="/">Review</Link>
+          <Link to="/practice">Practice</Link>
           <Link to="/import">Import</Link>
           <Link to="/stats">Stats</Link>
         </nav>
@@ -34,6 +36,7 @@ function AppShell() {
       <main className="p-6">
         <Routes>
           <Route path="/" element={<ReviewPage deckId={deckId} />} />
+          <Route path="/practice" element={<PracticePage deckId={deckId} />} />
           <Route path="/import" element={<ImportPage deckId={deckId} />} />
           <Route path="/stats" element={<StatsPage deckId={deckId} />} />
         </Routes>
