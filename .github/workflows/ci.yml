@@ -29,4 +29,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm fsd
       - run: pnpm build
+      - run: pnpm dlx playwright install --with-deps chromium
+      - run: pnpm exec playwright test

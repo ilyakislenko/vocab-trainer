@@ -10,6 +10,7 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "lint": "biome check .",
+    "fsd": "steiger ./src",
     "preview": "vite preview",
     "gen:api": "openapi-typescript ./openapi.json -o ./src/shared/api/schema.d.ts"
   },
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.8",
     "@feature-sliced/steiger-plugin": "^0.7.0",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
@@ -48,5 +50,10 @@
     "typescript": "~6.0.2",
     "vite": "^8.2.0",
     "vitest": "^4.1.10"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
