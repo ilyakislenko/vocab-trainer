@@ -39,6 +39,12 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "ASYNC", "RUF"]
 
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's DI pattern requires `Depends(...)` as an argument default; each call
+# returns a fresh, side-effect-free dependency marker, so B008's mutable-default
+# concern doesn't apply. This is ruff's documented opt-out for that exact case.
+extend-immutable-calls = ["fastapi.Depends"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true
