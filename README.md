@@ -34,8 +34,9 @@ flowchart TB
 - **Backend — Hexagonal + DDD.** The `domain` layer is framework-free; `application` depends
   only on ports (interfaces); adapters (SQLModel repositories, the py-fsrs scheduler, the
   LLM provider) are wired only in the composition root. FSRS scheduling lives behind a
-  `Scheduler` port; the LLM behind an `LlmProvider` port switchable between Claude API, a
-  local Ollama model, or none.
+  `Scheduler` port; the LLM behind an `LlmProvider` port that speaks the OpenAI-compatible
+  chat protocol — point it at a hosted endpoint or a local Ollama, or run the offline
+  no-op — selected by env, with no vendor SDK.
 - **Frontend — Feature-Sliced Design.** Imports flow strictly downward
   `app → pages → widgets → features → entities → shared`, every slice exposed through a
   public `index.ts`. Data access is TanStack Query over a **typed `openapi-fetch` client
@@ -91,11 +92,11 @@ cd apps/web && pnpm lint && pnpm typecheck && pnpm test && pnpm fsd && pnpm buil
 
 ## Roadmap
 
-- [x] Backend — decks, import (dry-run + commit), FSRS review queue, record review, stats
-- [x] Frontend — deck picker, import, review session, stats
-- [ ] LLM sentence practice — construct a sentence with a word, get grammar/naturalness feedback
-- [ ] Pronunciation — reference TTS + speech-to-text self-check
-- [ ] Pluggable LLM provider — Claude API / local Ollama / none
+- [x] Backend core — decks, import (dry-run + commit), FSRS review queue, record review, stats
+- [x] Frontend — deck picker, import, review session, stats (Feature-Sliced Design)
+- [x] LLM layer (backend) — sentence-feedback + example endpoints; pluggable, vendor-neutral
+  provider (any OpenAI-compatible endpoint / local Ollama / offline)
+- [ ] Practice & pronunciation UI — frontend for sentence practice + Web Speech pronunciation
 
 ## Design docs
 
