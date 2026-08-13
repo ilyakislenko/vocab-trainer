@@ -9,7 +9,9 @@ export const handlers = [
   http.post("/api/decks/:id/import", () =>
     HttpResponse.json({ committed: false, imported: [], errors: [] }),
   ),
-  http.get("/api/review/queue", () => HttpResponse.json([])),
+  http.get("/api/review/queue", () =>
+    HttpResponse.json([{ id: 1, word: "run", translation: "бежать", transcription: "rʌn" }]),
+  ),
   http.post("/api/review", async ({ request }) => {
     const body = (await request.json()) as { card_id: number };
     return HttpResponse.json({

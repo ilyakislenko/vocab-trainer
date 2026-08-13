@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, MemoryRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { useDecks } from "@/entities/deck";
 import { DeckPicker } from "@/features/select-deck";
 import { ImportPage } from "@/pages/import";
@@ -22,7 +22,7 @@ function AppShell() {
   }, [deckId, firstDeckId]);
 
   return (
-    <MemoryRouter>
+    <BrowserRouter>
       <header className="flex flex-wrap items-center justify-between gap-4 border-b p-4">
         <h1 className="text-xl font-bold">Vocab Trainer</h1>
         <nav className="flex gap-4">
@@ -41,7 +41,7 @@ function AppShell() {
           <Route path="/stats" element={<StatsPage deckId={deckId} />} />
         </Routes>
       </main>
-    </MemoryRouter>
+    </BrowserRouter>
   );
 }
 
