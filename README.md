@@ -8,8 +8,8 @@ The point of this repo is the **engineering**, not the feature count: a strictly
 **Hexagonal + DDD** backend and a **Feature-Sliced Design** frontend, both with enforced
 architectural boundaries, strict typing, and tests.
 
-> **Status:** backend and frontend are built, tested, and merged. LLM sentence-practice +
-> pronunciation are the next milestone (see [Roadmap](#roadmap)).
+> **Status:** all milestones are built, tested, and merged — the full learning loop
+> (import → review → practise → pronounce) works end to end (see [Roadmap](#roadmap)).
 
 ## The learning loop
 
@@ -96,7 +96,7 @@ cd apps/web && pnpm lint && pnpm typecheck && pnpm test && pnpm fsd && pnpm buil
 - [x] Frontend — deck picker, import, review session, stats (Feature-Sliced Design)
 - [x] LLM layer (backend) — sentence-feedback + example endpoints; pluggable, vendor-neutral
   provider (any OpenAI-compatible endpoint / local Ollama / offline)
-- [ ] Practice & pronunciation UI — frontend for sentence practice + Web Speech pronunciation
+- [x] Practice & pronunciation UI — sentence practice with LLM feedback + Web Speech pronunciation
 
 ## Design docs
 
