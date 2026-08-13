@@ -42,8 +42,8 @@ Monorepo:
 
 ```
 vocab-trainer/
-  apps/api    FastAPI (Python 3.12) · SQLModel + SQLite · py-fsrs · LlmProvider
-  apps/web    Vite + React 19 (TS) · Tailwind + shadcn/ui · TanStack Query
+  apps/api    FastAPI · Hexagonal (Ports & Adapters) + DDD · Python 3.12
+  apps/web    Vite + React 19 · Feature-Sliced Design (FSD) · TypeScript
   packages/   generated TS client from the API's OpenAPI schema
 ```
 
@@ -54,7 +54,66 @@ vocab-trainer/
   codegen a typed TS client (`openapi-typescript` / orval). End-to-end typing without
   a shared runtime.
 
+### 4.1 Backend — Hexagonal (Ports & Adapters) + DDD
+
+Dependencies point inward. The **domain** layer has zero framework/IO imports
+(no FastAPI, SQLModel, anthropic, or py-fsrs).
+
+```
+apps/api/src/
+  domain/                pure business model — framework-free
+    deck/                  Deck aggregate root
+    card/                  Card aggregate root; FsrsState & Rating value objects
+    practice/              SentenceAttempt entity; Feedback value object
+    shared/                base types, domain errors
+  application/           use cases + ports (interfaces)
+    ports/                 DeckRepository, CardRepository, ReviewLogRepository,
+                           SentenceAttemptRepository, LlmProvider, Scheduler, Clock
+    use_cases/             import_words, get_review_queue, record_review,
+                           check_sentence, suggest_example, get_stats
+  infrastructure/        driven adapters (implement ports)
+    persistence/           SQLModel tables + repositories + domain<->row mappers
+    llm/                   Claude / Local / Null providers
+    scheduling/            py-fsrs adapter behind the Scheduler port
+  interfaces/            driving adapters
+    http/                  FastAPI routers, request/response DTOs
+  config/                settings + dependency wiring (composition root)
+  main.py
+```
+
+- **Domain (DDD tactical):** `Card` is an aggregate root owning its FSRS state and
+  review invariants; `Deck` is an aggregate root. Value objects: `Rating`
+  (again/hard/good/easy), `FsrsState` (immutable), `Feedback`. Pure Python,
+  unit-testable without IO.
+- **Ports:** repository interfaces (one per aggregate) plus `LlmProvider`, `Scheduler`
+  (FSRS), and `Clock`. Declared in `application/ports`; use cases depend only on these.
+- **Adapters:** SQLModel repositories map aggregates to/from rows (the table shapes in
+  §5 are the persistence adapter, kept separate from domain entities). LLM providers
+  and the py-fsrs scheduler are driven adapters; FastAPI routers are driving adapters
+  that invoke use cases.
+- **Composition root:** `config` wires concrete adapters into use cases (via FastAPI
+  `Depends` / a small container). Provider selection (§7) happens here.
+
+### 4.2 Frontend — Feature-Sliced Design (FSD)
+
+Layers import strictly downward (`app → pages → widgets → features → entities →
+shared`). Each slice exposes a public API via `index.ts`; segments are
+`ui / model / api / lib`.
+
+```
+apps/web/src/
+  app/        providers (QueryClient, theme, router), global styles
+  pages/      review, import, practice
+  widgets/    ReviewSession, ImportPanel, PracticePanel, PronunciationBar
+  features/   rate-card, import-words, check-sentence, play-tts, record-speech
+  entities/   card, deck, sentence-attempt  (model + ui: CardFront / CardBack)
+  shared/     ui (shadcn), api (generated client), lib, config
+```
+
 ## 5. Data Model (SQLite via SQLModel)
+
+These tables are the **persistence adapter** (infrastructure §4.1). Domain aggregates
+are separate pure objects; repositories map between the two. Row shapes:
 
 - `decks`: id, name, created_at.
 - `cards`: id, deck_id (fk), word, transcription (nullable), translation, notes
@@ -83,13 +142,16 @@ All request/response bodies are Pydantic v2 models; validation happens at the bo
 
 ## 7. LLM Provider Abstraction
 
+`LlmProvider` is an application **port** (§4.1); the three implementations are driven
+**adapters**, chosen in the composition root via `LLM_PROVIDER`.
+
 ```python
 class LlmProvider(Protocol):
     async def check_sentence(self, word: str, sentence: str) -> Feedback: ...
     async def suggest_example(self, word: str) -> str: ...
 ```
 
-Implementations:
+Implementations (adapters):
 - `ClaudeProvider` — `anthropic` SDK; API key from env, server-side only.
 - `LocalProvider` — `httpx` to an OpenAI-compatible endpoint (Ollama on the RTX box
   `192.168.1.84`).
@@ -126,8 +188,10 @@ feature-detected with a graceful fallback where unsupported.
 
 ## 10. Testing & Tooling
 
-- **Backend:** pytest + httpx `AsyncClient`; unit tests for the parser, the FSRS wrapper,
-  and each provider (`NullProvider` fully; Claude/Local via mocked transport).
+- **Backend:** pytest + httpx `AsyncClient`. The pure domain and use cases are unit-tested
+  with in-memory fake adapters (no IO) — a direct payoff of the hexagonal boundaries;
+  plus tests for the parser, the FSRS scheduler adapter, and each provider
+  (`NullProvider` fully; Claude/Local via mocked transport).
 - **Frontend:** Vitest + Testing Library (review flow, import preview) with a mocked client.
 - **E2E:** Playwright — one happy path (import → review → practice with `NullProvider`).
 - **Lint/format/types:** Ruff + mypy (strict) on Python; Biome + `tsc` on the web.
