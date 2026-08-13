@@ -68,8 +68,9 @@ vocab-trainer/
 ## 6. Backend API (FastAPI)
 
 - `POST /decks`, `GET /decks`
-- `POST /decks/{id}/import` — raw text + format hint; parses CSV / markdown table;
-  returns a preview, then commits on confirm.
+- `POST /decks/{id}/import` — raw text + format hint + `dry_run` flag. With
+  `dry_run=true` (default) it parses and returns a preview (rows + per-row errors)
+  without writing; with `dry_run=false` it commits the parsed cards.
 - `GET /review/queue?deck_id=&limit=` — due cards from py-fsrs.
 - `POST /review` — `{card_id, rating}` → updates FSRS state, writes a `review_log`.
 - `POST /practice/check` — `{card_id, sentence}` → `LlmProvider.check_sentence` →
