@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from vocab_api.domain.practice.feedback import Verdict
+
 
 class CreateDeckIn(BaseModel):
     name: str
@@ -44,3 +46,19 @@ class ReviewIn(BaseModel):
 class StatsOut(BaseModel):
     due_today: int
     total_reviews: int
+
+
+class CheckSentenceIn(BaseModel):
+    card_id: int
+    sentence: str
+
+
+class FeedbackOut(BaseModel):
+    verdict: Verdict  # Pydantic serializes the StrEnum to "ok"/"needs_work"
+    feedback: str
+    corrected: str | None
+    example: str | None
+
+
+class ExampleOut(BaseModel):
+    example: str
