@@ -87,7 +87,7 @@ Run from repo root:
 ```bash
 cd apps/api
 uv init --package --name vocab-api --python 3.12 .
-uv add fastapi "uvicorn[standard]" sqlmodel aiosqlite "pydantic-settings" "py-fsrs>=5,<6"
+uv add fastapi "uvicorn[standard]" sqlmodel aiosqlite "pydantic-settings" "fsrs>=5,<6"
 uv add --dev pytest pytest-asyncio httpx ruff mypy import-linter
 ```
 
