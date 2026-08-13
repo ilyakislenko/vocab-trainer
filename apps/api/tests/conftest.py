@@ -2,6 +2,8 @@ from datetime import UTC, datetime
 
 from vocab_api.domain.card.card import Card
 from vocab_api.domain.deck.deck import Deck
+from vocab_api.domain.practice.feedback import Feedback, Verdict
+from vocab_api.domain.practice.sentence_attempt import SentenceAttempt
 from vocab_api.domain.review.review_log import ReviewLogEntry
 from vocab_api.domain.shared.errors import CardNotFound, DeckNotFound
 
@@ -94,3 +96,33 @@ class FakeReviewLogRepository:
             if card.deck_id == deck_id:
                 count += 1
         return count
+
+
+class FakeSentenceAttemptRepository:
+    def __init__(self) -> None:
+        self._items: list[SentenceAttempt] = []
+
+    async def add(self, attempt: SentenceAttempt) -> SentenceAttempt:
+        stored = SentenceAttempt(
+            id=len(self._items) + 1, card_id=attempt.card_id, sentence=attempt.sentence,
+            feedback=attempt.feedback, created_at=attempt.created_at,
+        )
+        self._items.append(stored)
+        return stored
+
+    async def list_for_card(self, card_id: int) -> list[SentenceAttempt]:
+        return [a for a in self._items if a.card_id == card_id]
+
+
+class StubLlmProvider:
+    def __init__(self, feedback: Feedback | None = None, example: str = "An example.") -> None:
+        self._feedback = feedback or Feedback(verdict=Verdict.OK, feedback="Good.")
+        self._example = example
+        self.checked: list[tuple[str, str]] = []
+
+    async def check_sentence(self, word: str, sentence: str) -> Feedback:
+        self.checked.append((word, sentence))
+        return self._feedback
+
+    async def suggest_example(self, word: str) -> str:
+        return self._example
