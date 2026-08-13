@@ -1,0 +1,9 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
+  "files": {
+    "includes": ["**", "!**/src/shared/api/schema.d.ts", "!**/dist", "!**/coverage", "!**/public"]
+  },
+  "linter": { "enabled": true, "rules": { "preset": "recommended" } },
+  "formatter": { "enabled": true, "indentStyle": "space", "lineWidth": 100 },
+  "css": { "parser": { "tailwindDirectives": true } }
+}
