@@ -36,6 +36,7 @@ export function ImportForm({ deckId }: { deckId: number }) {
           Import
         </Button>
       </div>
+      {importWords.isError && <p role="alert">Import failed. Please try again.</p>}
       {result && (
         <div className="text-sm">
           <p>

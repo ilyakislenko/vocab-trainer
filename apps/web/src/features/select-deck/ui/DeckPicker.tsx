@@ -16,9 +16,13 @@ export function DeckPicker({
 
   const handleCreate = async () => {
     if (!name.trim()) return;
-    const deck = await createDeck.mutateAsync(name.trim());
-    setName("");
-    if (deck.id !== null) onChange(deck.id);
+    try {
+      const deck = await createDeck.mutateAsync(name.trim());
+      setName("");
+      onChange(deck.id);
+    } catch {
+      // Surfaced to the user via createDeck.isError below; nothing further to do here.
+    }
   };
 
   return (
@@ -33,6 +37,7 @@ export function DeckPicker({
       <Button onClick={handleCreate} disabled={createDeck.isPending}>
         Create
       </Button>
+      {createDeck.isError && <p role="alert">Failed to create deck. Please try again.</p>}
     </div>
   );
 }

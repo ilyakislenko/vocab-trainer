@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { reviewKeys } from "@/entities/card";
+import { statsKeys } from "@/entities/stats";
 import { apiClient, type Card, type Rating } from "@/shared/api";
 
 export function useRecordReview(deckId: number) {
@@ -12,8 +14,8 @@ export function useRecordReview(deckId: number) {
       return data;
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["review", "queue", deckId] });
-      qc.invalidateQueries({ queryKey: ["stats", deckId] });
+      qc.invalidateQueries({ queryKey: reviewKeys.queue(deckId) });
+      qc.invalidateQueries({ queryKey: statsKeys.byDeck(deckId) });
     },
   });
 }

@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { reviewKeys } from "@/entities/card";
+import { statsKeys } from "@/entities/stats";
 import { apiClient, type ImportFormat, type ImportResult } from "@/shared/api";
 
 export function useImportWords(deckId: number) {
@@ -18,8 +20,8 @@ export function useImportWords(deckId: number) {
     },
     onSuccess: (result) => {
       if (result.committed) {
-        qc.invalidateQueries({ queryKey: ["review", "queue", deckId] });
-        qc.invalidateQueries({ queryKey: ["stats", deckId] });
+        qc.invalidateQueries({ queryKey: reviewKeys.queue(deckId) });
+        qc.invalidateQueries({ queryKey: statsKeys.byDeck(deckId) });
       }
     },
   });

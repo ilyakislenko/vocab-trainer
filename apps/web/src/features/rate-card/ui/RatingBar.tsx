@@ -19,6 +19,11 @@ export function RatingBar({
   useEffect(() => {
     if (disabled) return;
     const handler = (e: KeyboardEvent) => {
+      const target = e.target;
+      if (target instanceof HTMLElement) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable) return;
+      }
       const rating = Number(e.key);
       if (rating >= 1 && rating <= 4) onRate(rating as Rating);
     };

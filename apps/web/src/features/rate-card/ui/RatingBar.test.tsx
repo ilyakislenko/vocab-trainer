@@ -24,4 +24,16 @@ describe("RatingBar", () => {
     await userEvent.keyboard("1");
     expect(onRate).not.toHaveBeenCalled();
   });
+
+  it("does not rate when a number is typed into a focused text input", async () => {
+    const onRate = vi.fn();
+    render(
+      <>
+        <input aria-label="deck name" />
+        <RatingBar onRate={onRate} disabled={false} />
+      </>,
+    );
+    await userEvent.type(screen.getByRole("textbox", { name: /deck name/i }), "1");
+    expect(onRate).not.toHaveBeenCalled();
+  });
 });

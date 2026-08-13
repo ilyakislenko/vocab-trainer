@@ -32,4 +32,16 @@ describe("ImportForm", () => {
     await userEvent.click(screen.getByRole("button", { name: /^import$/i }));
     await waitFor(() => expect(screen.getByText(/imported 1/i)).toBeInTheDocument());
   });
+
+  it("shows an inline error when the import request fails", async () => {
+    server.use(
+      http.post("/api/decks/:id/import", () =>
+        HttpResponse.json({ detail: "boom" }, { status: 500 }),
+      ),
+    );
+    renderWithProviders(<ImportForm deckId={1} />);
+    await userEvent.type(screen.getByRole("textbox"), "run,бежать");
+    await userEvent.click(screen.getByRole("button", { name: /^import$/i }));
+    await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
+  });
 });

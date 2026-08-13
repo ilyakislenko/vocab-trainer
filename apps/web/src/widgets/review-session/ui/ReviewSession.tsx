@@ -31,9 +31,13 @@ export function ReviewSession({ deckId }: { deckId: number }) {
 
   const rate = async (rating: Rating) => {
     if (card.id === null) return;
-    await record.mutateAsync({ cardId: card.id, rating });
-    setRevealed(false);
-    setIndex((i) => i + 1);
+    try {
+      await record.mutateAsync({ cardId: card.id, rating });
+      setRevealed(false);
+      setIndex((i) => i + 1);
+    } catch {
+      // Surfaced to the user via record.isError below; do not advance the card.
+    }
   };
 
   return (
@@ -47,6 +51,7 @@ export function ReviewSession({ deckId }: { deckId: number }) {
       ) : (
         <Button onClick={() => setRevealed(true)}>Show answer</Button>
       )}
+      {record.isError && <p role="alert">Failed to record review. Please try again.</p>}
     </div>
   );
 }
