@@ -3,6 +3,7 @@ from typing import Protocol
 
 from vocab_api.domain.card.card import Card
 from vocab_api.domain.deck.deck import Deck
+from vocab_api.domain.practice.sentence_attempt import SentenceAttempt
 from vocab_api.domain.review.review_log import ReviewLogEntry
 
 
@@ -23,3 +24,8 @@ class CardRepository(Protocol):
 class ReviewLogRepository(Protocol):
     async def add(self, entry: ReviewLogEntry) -> None: ...
     async def count_reviews(self, deck_id: int) -> int: ...
+
+
+class SentenceAttemptRepository(Protocol):
+    async def add(self, attempt: SentenceAttempt) -> SentenceAttempt: ...
+    async def list_for_card(self, card_id: int) -> list[SentenceAttempt]: ...
