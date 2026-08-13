@@ -4,7 +4,9 @@ from typing import overload
 from vocab_api.domain.card.card import Card
 from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.deck.deck import Deck
-from vocab_api.infrastructure.persistence.tables import CardRow, DeckRow
+from vocab_api.domain.practice.feedback import Feedback, Verdict
+from vocab_api.domain.practice.sentence_attempt import SentenceAttempt
+from vocab_api.infrastructure.persistence.tables import CardRow, DeckRow, SentenceAttemptRow
 
 
 @overload
@@ -61,4 +63,32 @@ def card_from_row(row: CardRow) -> Card:
             difficulty=row.fsrs_difficulty,
             last_review=_as_utc(row.fsrs_last_review),
         ),
+    )
+
+
+def sentence_attempt_to_row(attempt: SentenceAttempt) -> SentenceAttemptRow:
+    return SentenceAttemptRow(
+        id=attempt.id,
+        card_id=attempt.card_id,
+        sentence=attempt.sentence,
+        verdict=attempt.feedback.verdict.value,
+        feedback=attempt.feedback.feedback,
+        corrected=attempt.feedback.corrected,
+        example=attempt.feedback.example,
+        created_at=attempt.created_at,
+    )
+
+
+def sentence_attempt_from_row(row: SentenceAttemptRow) -> SentenceAttempt:
+    return SentenceAttempt(
+        id=row.id,
+        card_id=row.card_id,
+        sentence=row.sentence,
+        feedback=Feedback(
+            verdict=Verdict(row.verdict),
+            feedback=row.feedback,
+            corrected=row.corrected,
+            example=row.example,
+        ),
+        created_at=_as_utc(row.created_at),
     )

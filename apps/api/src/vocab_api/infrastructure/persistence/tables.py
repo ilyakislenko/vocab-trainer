@@ -33,3 +33,15 @@ class ReviewLogRow(SQLModel, table=True):
     card_id: int = Field(index=True, foreign_key="cards.id")
     rating: int
     reviewed_at: datetime
+
+
+class SentenceAttemptRow(SQLModel, table=True):
+    __tablename__ = "sentence_attempts"
+    id: int | None = Field(default=None, primary_key=True)
+    card_id: int = Field(index=True, foreign_key="cards.id")
+    sentence: str
+    verdict: str
+    feedback: str
+    corrected: str | None = None
+    example: str | None = None
+    created_at: datetime | None = None
