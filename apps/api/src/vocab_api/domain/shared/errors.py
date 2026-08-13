@@ -14,6 +14,10 @@ class EmptyTranslation(DomainError):
     pass
 
 
+class EmptySentence(DomainError):
+    pass
+
+
 class DeckNotFound(DomainError):
     def __init__(self, deck_id: int) -> None:
         super().__init__(f"deck {deck_id} not found")
