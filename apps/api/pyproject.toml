@@ -44,6 +44,11 @@ strict = true
 mypy_path = "src"
 packages = ["vocab_api"]
 
+[[tool.mypy.overrides]]
+# fsrs ships no py.typed marker / stubs; treat it as untyped at the boundary.
+module = "fsrs"
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 pythonpath = ["src"]
