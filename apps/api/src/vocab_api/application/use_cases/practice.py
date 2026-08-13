@@ -5,6 +5,7 @@ from vocab_api.application.ports.repositories import (
     SentenceAttemptRepository,
 )
 from vocab_api.domain.practice.sentence_attempt import SentenceAttempt
+from vocab_api.domain.shared.errors import EmptySentence
 
 
 class CheckSentence:
@@ -22,6 +23,8 @@ class CheckSentence:
 
     async def execute(self, card_id: int, sentence: str) -> SentenceAttempt:
         card = await self._cards.get(card_id)  # raises CardNotFound
+        if not sentence.strip():
+            raise EmptySentence()
         feedback = await self._llm.check_sentence(card.word, sentence)
         attempt = SentenceAttempt.create(card_id, sentence, feedback, self._clock.now())
         return await self._attempts.add(attempt)

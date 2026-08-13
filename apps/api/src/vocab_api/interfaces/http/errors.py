@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
+from vocab_api.application.errors import LlmUnavailable
 from vocab_api.domain.shared.errors import (
     CardNotFound,
     DeckNotFound,
@@ -16,6 +17,10 @@ def install_error_handlers(app: FastAPI) -> None:
     @app.exception_handler(CardNotFound)
     async def _card_not_found(_: Request, exc: CardNotFound) -> JSONResponse:
         return JSONResponse(status_code=404, content={"detail": str(exc)})
+
+    @app.exception_handler(LlmUnavailable)
+    async def _llm_unavailable(_: Request, exc: LlmUnavailable) -> JSONResponse:
+        return JSONResponse(status_code=502, content={"detail": str(exc)})
 
     @app.exception_handler(DomainError)
     async def _domain_error(_: Request, exc: DomainError) -> JSONResponse:

@@ -1,5 +1,7 @@
 import httpx
+import pytest
 
+from vocab_api.application.errors import LlmUnavailable
 from vocab_api.domain.practice.feedback import Verdict
 from vocab_api.infrastructure.llm.openai_compatible_provider import OpenAiCompatibleProvider
 
@@ -8,6 +10,20 @@ def _client(content: str) -> httpx.AsyncClient:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.path.endswith("/chat/completions")
         return httpx.Response(200, json={"choices": [{"message": {"content": content}}]})
+
+    return httpx.AsyncClient(transport=httpx.MockTransport(handler))
+
+
+def _failing_client(status_code: int) -> httpx.AsyncClient:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(status_code, json={"error": "boom"})
+
+    return httpx.AsyncClient(transport=httpx.MockTransport(handler))
+
+
+def _unreachable_client() -> httpx.AsyncClient:
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("connection refused", request=request)
 
     return httpx.AsyncClient(transport=httpx.MockTransport(handler))
 
@@ -42,3 +58,15 @@ async def test_check_sentence_falls_back_on_garbage():
 async def test_suggest_example_returns_text():
     provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_client("  She runs fast.  "))
     assert await provider.suggest_example("run") == "She runs fast."
+
+
+async def test_check_sentence_raises_llm_unavailable_on_http_error_status():
+    provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_failing_client(500))
+    with pytest.raises(LlmUnavailable):
+        await provider.check_sentence("run", "I run.")
+
+
+async def test_check_sentence_raises_llm_unavailable_on_connect_error():
+    provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_unreachable_client())
+    with pytest.raises(LlmUnavailable):
+        await provider.check_sentence("run", "I run.")

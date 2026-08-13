@@ -3,6 +3,7 @@ import re
 
 import httpx
 
+from vocab_api.application.errors import LlmUnavailable
 from vocab_api.application.ports.llm import LlmProvider
 from vocab_api.domain.practice.feedback import Feedback, Verdict
 
@@ -45,12 +46,15 @@ class OpenAiCompatibleProvider(LlmProvider):
         }
         client = self._client or httpx.AsyncClient(timeout=30.0)
         try:
-            response = await client.post(
-                f"{self._base_url}/chat/completions", json=payload, headers=headers
-            )
-            response.raise_for_status()
-            data = response.json()
-            return str(data["choices"][0]["message"]["content"])
+            try:
+                response = await client.post(
+                    f"{self._base_url}/chat/completions", json=payload, headers=headers
+                )
+                response.raise_for_status()
+                data = response.json()
+                return str(data["choices"][0]["message"]["content"])
+            except httpx.HTTPError as exc:
+                raise LlmUnavailable("The language model is unavailable.") from exc
         finally:
             if self._client is None:
                 await client.aclose()

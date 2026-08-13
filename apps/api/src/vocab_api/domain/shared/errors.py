@@ -3,19 +3,23 @@ class DomainError(Exception):
 
 
 class EmptyDeckName(DomainError):
-    pass
+    def __init__(self) -> None:
+        super().__init__("Deck name must not be empty.")
 
 
 class EmptyWord(DomainError):
-    pass
+    def __init__(self) -> None:
+        super().__init__("Word must not be empty.")
 
 
 class EmptyTranslation(DomainError):
-    pass
+    def __init__(self) -> None:
+        super().__init__("Translation must not be empty.")
 
 
 class EmptySentence(DomainError):
-    pass
+    def __init__(self) -> None:
+        super().__init__("Sentence must not be empty.")
 
 
 class DeckNotFound(DomainError):
