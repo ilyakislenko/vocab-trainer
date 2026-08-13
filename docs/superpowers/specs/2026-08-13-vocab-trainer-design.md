@@ -195,6 +195,8 @@ feature-detected with a graceful fallback where unsupported.
 - **Frontend:** Vitest + Testing Library (review flow, import preview) with a mocked client.
 - **E2E:** Playwright — one happy path (import → review → practice with `NullProvider`).
 - **Lint/format/types:** Ruff + mypy (strict) on Python; Biome + `tsc` on the web.
+- **Architecture boundaries (enforced):** import-linter layer contracts (Python) and
+  Steiger / FSD boundary lint (web) — see `CONTRIBUTING.md`.
 - **CI:** GitHub Actions — lint, typecheck, test, build on push/PR.
 - **Docs:** README (English) with setup, screenshots/GIF, `.env.example`, an architecture note.
 - **Package managers:** uv (Python), pnpm (web).
