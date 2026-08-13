@@ -107,6 +107,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/practice/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check Sentence */
+        post: operations["check_sentence_practice_check_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/practice/example": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Practice Example */
+        get: operations["practice_example_practice_example_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -122,6 +156,13 @@ export interface components {
             /** Transcription */
             transcription: string | null;
         };
+        /** CheckSentenceIn */
+        CheckSentenceIn: {
+            /** Card Id */
+            card_id: number;
+            /** Sentence */
+            sentence: string;
+        };
         /** CreateDeckIn */
         CreateDeckIn: {
             /** Name */
@@ -133,6 +174,21 @@ export interface components {
             id: number;
             /** Name */
             name: string;
+        };
+        /** ExampleOut */
+        ExampleOut: {
+            /** Example */
+            example: string;
+        };
+        /** FeedbackOut */
+        FeedbackOut: {
+            verdict: components["schemas"]["Verdict"];
+            /** Feedback */
+            feedback: string;
+            /** Corrected */
+            corrected: string | null;
+            /** Example */
+            example: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -200,6 +256,11 @@ export interface components {
             /** Context */
             ctx?: Record<string, never>;
         };
+        /**
+         * Verdict
+         * @enum {string}
+         */
+        Verdict: "ok" | "needs_work";
     };
     responses: never;
     parameters: never;
@@ -402,6 +463,70 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StatsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    check_sentence_practice_check_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CheckSentenceIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    practice_example_practice_example_get: {
+        parameters: {
+            query: {
+                card_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExampleOut"];
                 };
             };
             /** @description Validation Error */

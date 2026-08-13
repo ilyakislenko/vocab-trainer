@@ -269,6 +269,85 @@
           }
         }
       }
+    },
+    "/practice/check": {
+      "post": {
+        "tags": ["practice"],
+        "summary": "Check Sentence",
+        "operationId": "check_sentence_practice_check_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckSentenceIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/example": {
+      "get": {
+        "tags": ["practice"],
+        "summary": "Practice Example",
+        "operationId": "practice_example_practice_example_get",
+        "parameters": [
+          {
+            "name": "card_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Card Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExampleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -310,6 +389,21 @@
         "required": ["id", "word", "translation", "transcription"],
         "title": "CardOut"
       },
+      "CheckSentenceIn": {
+        "properties": {
+          "card_id": {
+            "type": "integer",
+            "title": "Card Id"
+          },
+          "sentence": {
+            "type": "string",
+            "title": "Sentence"
+          }
+        },
+        "type": "object",
+        "required": ["card_id", "sentence"],
+        "title": "CheckSentenceIn"
+      },
       "CreateDeckIn": {
         "properties": {
           "name": {
@@ -335,6 +429,53 @@
         "type": "object",
         "required": ["id", "name"],
         "title": "DeckOut"
+      },
+      "ExampleOut": {
+        "properties": {
+          "example": {
+            "type": "string",
+            "title": "Example"
+          }
+        },
+        "type": "object",
+        "required": ["example"],
+        "title": "ExampleOut"
+      },
+      "FeedbackOut": {
+        "properties": {
+          "verdict": {
+            "$ref": "#/components/schemas/Verdict"
+          },
+          "feedback": {
+            "type": "string",
+            "title": "Feedback"
+          },
+          "corrected": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrected"
+          },
+          "example": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Example"
+          }
+        },
+        "type": "object",
+        "required": ["verdict", "feedback", "corrected", "example"],
+        "title": "FeedbackOut"
       },
       "HTTPValidationError": {
         "properties": {
@@ -476,6 +617,11 @@
         "type": "object",
         "required": ["loc", "msg", "type"],
         "title": "ValidationError"
+      },
+      "Verdict": {
+        "type": "string",
+        "enum": ["ok", "needs_work"],
+        "title": "Verdict"
       }
     }
   }

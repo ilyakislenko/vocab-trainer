@@ -7,3 +7,4 @@ export type ImportResult = components["schemas"]["ImportOut"];
 export type RowError = components["schemas"]["RowErrorOut"];
 export type ImportFormat = "csv" | "markdown";
 export type Rating = 1 | 2 | 3 | 4;
+export type Feedback = components["schemas"]["FeedbackOut"];

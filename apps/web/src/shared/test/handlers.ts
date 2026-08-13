@@ -20,4 +20,15 @@ export const handlers = [
     });
   }),
   http.get("/api/stats", () => HttpResponse.json({ due_today: 0, total_reviews: 0 })),
+  http.post("/api/practice/check", () =>
+    HttpResponse.json({
+      verdict: "ok",
+      feedback: "Looks good.",
+      corrected: null,
+      example: "I run daily.",
+    }),
+  ),
+  http.get("/api/practice/example", () =>
+    HttpResponse.json({ example: "She runs every morning." }),
+  ),
 ];
