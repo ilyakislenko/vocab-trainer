@@ -38,8 +38,8 @@ class PyFsrsScheduler(Scheduler):
         return FsrsState(
             due=datetime.fromisoformat(str(data["due"])),
             state=int(data["state"]),  # type: ignore[call-overload]  # CardDict.state is int
-            step=data["step"],  # type: ignore[arg-type]
-            stability=data["stability"],  # type: ignore[arg-type]
-            difficulty=data["difficulty"],  # type: ignore[arg-type]
+            step=data["step"],  # type: ignore[arg-type]  # CardDict.step is int | None; to_dict() types values loosely
+            stability=data["stability"],  # type: ignore[arg-type]  # CardDict.stability is float | None
+            difficulty=data["difficulty"],  # type: ignore[arg-type]  # CardDict.difficulty is float | None
             last_review=datetime.fromisoformat(str(last)) if last else None,
         )
