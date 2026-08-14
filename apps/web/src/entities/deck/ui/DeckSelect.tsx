@@ -18,7 +18,11 @@ export function DeckSelect({
       }}
     >
       <SelectTrigger className="w-56">
-        <SelectValue placeholder="Select a deck" />
+        <SelectValue>
+          {(selected: string | null) =>
+            decks.find((d) => String(d.id) === selected)?.name ?? "Select a deck"
+          }
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {decks.map((d) => (
