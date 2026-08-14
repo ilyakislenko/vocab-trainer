@@ -20,7 +20,9 @@ class RaisingLlm:
 @pytest.fixture
 async def client():
     # llm_provider defaults to "none"
-    container = Container(Settings(database_url="sqlite+aiosqlite:///:memory:"))
+    container = Container(
+        Settings(database_url="sqlite+aiosqlite:///:memory:", llm_provider="none")
+    )
     await container.init()
     transport = httpx.ASGITransport(app=create_app(container))
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as c:
@@ -57,7 +59,9 @@ async def test_check_missing_card_404(client: httpx.AsyncClient):
 async def test_check_returns_502_when_llm_provider_unavailable():
     # llm_provider defaults to "none"; swap the check_sentence use case's llm
     # for one that raises LlmUnavailable, reusing the container's own repos/clock.
-    container = Container(Settings(database_url="sqlite+aiosqlite:///:memory:"))
+    container = Container(
+        Settings(database_url="sqlite+aiosqlite:///:memory:", llm_provider="none")
+    )
     await container.init()
     original = container.check_sentence
     container.check_sentence = CheckSentence(

@@ -8,7 +8,9 @@ from vocab_api.main import create_app
 
 @pytest.fixture
 async def client():
-    container = Container(Settings(database_url="sqlite+aiosqlite:///:memory:"))
+    container = Container(
+        Settings(database_url="sqlite+aiosqlite:///:memory:", llm_provider="none")
+    )
     await container.init()
     app = create_app(container)
     transport = httpx.ASGITransport(app=app)

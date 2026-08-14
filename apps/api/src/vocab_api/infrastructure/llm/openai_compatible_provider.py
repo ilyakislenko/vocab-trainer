@@ -27,11 +27,13 @@ class OpenAiCompatibleProvider(LlmProvider):
         base_url: str,
         model: str,
         api_key: str | None = None,
+        timeout: float = 60.0,
         client: httpx.AsyncClient | None = None,
     ) -> None:
         self._base_url = base_url.rstrip("/")
         self._model = model
         self._api_key = api_key
+        self._timeout = timeout
         self._client = client
 
     async def _chat(self, system: str, user: str) -> str:
@@ -44,7 +46,7 @@ class OpenAiCompatibleProvider(LlmProvider):
             ],
             "temperature": 0.2,
         }
-        client = self._client or httpx.AsyncClient(timeout=30.0)
+        client = self._client or httpx.AsyncClient(timeout=self._timeout)
         try:
             try:
                 response = await client.post(

@@ -37,7 +37,10 @@ class Container:
         attempts = SqlSentenceAttemptRepository(self._db)
         provider: LlmProvider = (
             OpenAiCompatibleProvider(
-                settings.llm_base_url, settings.llm_model, settings.llm_api_key
+                settings.llm_base_url,
+                settings.llm_model,
+                settings.llm_api_key,
+                timeout=settings.llm_timeout,
             )
             if settings.llm_provider == "api"
             else NullProvider()
