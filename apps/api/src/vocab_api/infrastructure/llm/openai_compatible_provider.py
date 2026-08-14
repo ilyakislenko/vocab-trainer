@@ -8,12 +8,16 @@ from vocab_api.application.ports.llm import LlmProvider
 from vocab_api.domain.practice.feedback import Feedback, Verdict
 
 _CHECK_SYSTEM = (
-    "You are an English tutor. The learner is practising a target word. "
-    "Judge whether their sentence uses the word correctly and naturally. "
+    "You are an English tutor helping a learner practise a target word. "
+    "Check their sentence for spelling, grammar, and natural use of the word. "
+    "Fix any typos or misspelled words (e.g. 'ever' -> 'every'). "
+    "Name the ACTUAL mistake precisely — do not claim a word is 'missing' unless one "
+    "truly is; a misspelled word is a spelling error, not a missing word. "
     "Reply with ONLY a JSON object with keys: "
-    '"verdict" ("ok" or "needs_work"), "feedback" (one short sentence), '
-    '"corrected" (a corrected sentence, or null if none needed), '
-    '"example" (a natural example sentence using the word).'
+    '"verdict" ("ok" only if the sentence is fully correct and natural, else "needs_work"), '
+    '"feedback" (one short sentence naming the specific mistake, e.g. which word is misspelled), '
+    '"corrected" (the FULL corrected sentence; use null only when nothing needs changing), '
+    '"example" (a natural example sentence using the target word).'
 )
 _EXAMPLE_SYSTEM = (
     "You are an English tutor. Reply with ONLY one short, natural example "
