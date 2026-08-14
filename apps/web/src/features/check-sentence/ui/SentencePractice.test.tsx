@@ -24,6 +24,15 @@ describe("SentencePractice", () => {
     expect(screen.getByText(/I ran\./)).toBeInTheDocument();
   });
 
+  it("shows a loader while the check is pending", async () => {
+    server.use(http.post("/api/practice/check", () => new Promise(() => {})));
+    renderWithProviders(<SentencePractice cardId={1} word="run" />);
+    await userEvent.type(screen.getByRole("textbox"), "I run.");
+    await userEvent.click(screen.getByRole("button", { name: /check/i }));
+    await waitFor(() => expect(screen.getByText(/just a moment/i)).toBeInTheDocument());
+    expect(screen.getByRole("status")).toBeInTheDocument();
+  });
+
   it("shows a provider-error alert on failure", async () => {
     server.use(
       http.post("/api/practice/check", () =>

@@ -135,3 +135,33 @@
     @apply font-sans;
   }
 }
+
+/* Loader: an ellipsis that fills from one dot to three, then repeats.
+   Dot 1 is always shown; dots 2 and 3 fade in on a synced 1.2s cycle. */
+@keyframes dot-fill-2 {
+  0%,
+  33% {
+    opacity: 0;
+  }
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes dot-fill-3 {
+  0%,
+  66% {
+    opacity: 0;
+  }
+  73%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.dot-fill-2 {
+  animation: dot-fill-2 1.2s infinite;
+}
+.dot-fill-3 {
+  animation: dot-fill-3 1.2s infinite;
+}

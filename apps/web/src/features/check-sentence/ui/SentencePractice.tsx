@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/shared/ui/button";
+import { Loader } from "@/shared/ui/loader";
 import { Textarea } from "@/shared/ui/textarea";
 import { useCheckSentence, useSuggestExample } from "../model/use-practice";
 
@@ -31,6 +32,7 @@ export function SentencePractice({ cardId, word }: { cardId: number; word: strin
           Get an example
         </Button>
       </div>
+      {(check.isPending || example.isPending) && <Loader />}
       {check.isError && (
         <p role="alert" className="text-destructive">
           The language model is unavailable.
