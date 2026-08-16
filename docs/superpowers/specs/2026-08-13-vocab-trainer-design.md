@@ -117,8 +117,9 @@ are separate pure objects; repositories map between the two. Row shapes:
 
 - `decks`: id, name, created_at.
 - `cards`: id, deck_id (fk), word, transcription (nullable), translation, notes
-  (nullable), created_at, plus FSRS state (due, stability, difficulty, elapsed_days,
-  scheduled_days, reps, lapses, state, last_review).
+  (nullable), section (nullable — source list tag, e.g. `main`/`international`/
+  `elementary` from the Britlex seed), created_at, plus FSRS state (due, stability,
+  difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review).
 - `review_logs`: id, card_id (fk), rating (again/hard/good/easy), review_datetime,
   plus FSRS log fields (for stats and future optimization).
 - `sentence_attempts`: id, card_id (fk), sentence, verdict (ok/needs_work), feedback,
@@ -131,10 +132,21 @@ are separate pure objects; repositories map between the two. Row shapes:
   `dry_run=true` (default) it parses and returns a preview (rows + per-row errors)
   without writing; with `dry_run=false` it commits the parsed cards.
 - `GET /review/queue?deck_id=&limit=` — due cards from py-fsrs.
+- `GET /decks/{id}/cards?limit=&offset=&section=` — paginated listing of all cards in
+  a deck, optionally filtered by section tag (practice mode "all words").
 - `POST /review` — `{card_id, rating}` → updates FSRS state, writes a `review_log`.
 - `POST /practice/check` — `{card_id, sentence}` → `LlmProvider.check_sentence` →
   `Feedback`; persists a `sentence_attempt`.
 - `GET /practice/example?card_id=` — `LlmProvider.suggest_example`.
+- `GET /practice/topic?deck_id=&topic=&limit=` — `LlmProvider.select_topic_words` →
+  words matched against the deck via `CardRepository.by_words` (case-insensitive);
+  practice mode "by topic".
+- `GET /practice/hint?card_id=` — `LlmProvider.describe_word` → a learner-facing
+  `WordHint` (meaning in Russian + an English example sentence); powers the word
+  card in practice.
+- `POST /practice/drill` — `{card_id, message}` → `LlmProvider.drill_word` →
+  conversational response + follow-up question, keeping focus on the target word;
+  enables "drill this word" mini-chat on the practice screen.
 - `GET /stats` — basic counts (due today, reviewed, streak).
 - `GET /healthz`.
 
@@ -149,7 +161,15 @@ All request/response bodies are Pydantic v2 models; validation happens at the bo
 class LlmProvider(Protocol):
     async def check_sentence(self, word: str, sentence: str) -> Feedback: ...
     async def suggest_example(self, word: str) -> str: ...
+    async def select_topic_words(self, topic: str, limit: int) -> list[str]: ...
+    async def describe_word(self, word: str) -> WordHint: ...
 ```
+
+`select_topic_words` asks the model for single words related to a topic and
+returns a JSON array (`OpenAiCompatibleProvider` parses tolerantly and clamps to
+`limit`; `NullProvider` returns `[]` — topic practice is a no-op but never errors
+offline). `describe_word` returns a `WordHint` (meaning in Russian + example
+sentence); `NullProvider` returns a "disabled" hint and never errors.
 
 Implementations (adapters):
 - `ClaudeProvider` — `anthropic` SDK; API key from env, server-side only.
@@ -168,7 +188,11 @@ Screens:
 - **Import** — paste/upload → parse → preview table → confirm.
 - **Review** — front (word) → reveal (transcription/translation) → 4 rating buttons;
   keyboard shortcuts (1–4, space); progress bar.
-- **Practice** — target word + hint, textarea, "Check" → feedback card (verdict,
+- **Practice** — three modes selected by tabs: **Due words** (the review queue,
+  bounded by `limit`), **All words** (every card in the deck, with an optional
+  **section filter** derived from the card tags), and **By topic** (a free-form
+  prompt → LLM topic words intersected with the deck). Each mode feeds the same
+  session: target word + hint, textarea, "Check" → feedback card (verdict,
   correction, example); optionally request an example first.
 - **Pronunciation controls** on cards — 🔊 `speechSynthesis` (reference) and
   🎤 `SpeechRecognition` (record → compare transcript to target word → match/no-match).
