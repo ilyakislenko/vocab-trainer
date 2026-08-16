@@ -1,0 +1,122 @@
+{
+  "idle>listening": [
+    490,
+    505
+  ],
+  "idle>sad": [
+    506,
+    521
+  ],
+  "idle>speaking": [
+    522,
+    537
+  ],
+  "idle>thinking": [
+    538,
+    553
+  ],
+  "idle>happy": [
+    554,
+    569
+  ],
+  "listening>idle": [
+    570,
+    585
+  ],
+  "listening>sad": [
+    586,
+    601
+  ],
+  "listening>speaking": [
+    602,
+    617
+  ],
+  "listening>thinking": [
+    618,
+    633
+  ],
+  "listening>happy": [
+    634,
+    649
+  ],
+  "sad>idle": [
+    650,
+    665
+  ],
+  "sad>listening": [
+    666,
+    681
+  ],
+  "sad>speaking": [
+    682,
+    697
+  ],
+  "sad>thinking": [
+    698,
+    713
+  ],
+  "sad>happy": [
+    714,
+    729
+  ],
+  "speaking>idle": [
+    730,
+    745
+  ],
+  "speaking>listening": [
+    746,
+    761
+  ],
+  "speaking>sad": [
+    762,
+    777
+  ],
+  "speaking>thinking": [
+    778,
+    793
+  ],
+  "speaking>happy": [
+    794,
+    809
+  ],
+  "thinking>idle": [
+    810,
+    825
+  ],
+  "thinking>listening": [
+    826,
+    841
+  ],
+  "thinking>sad": [
+    842,
+    857
+  ],
+  "thinking>speaking": [
+    858,
+    873
+  ],
+  "thinking>happy": [
+    874,
+    889
+  ],
+  "happy>idle": [
+    890,
+    905
+  ],
+  "happy>listening": [
+    906,
+    921
+  ],
+  "happy>sad": [
+    922,
+    937
+  ],
+  "happy>speaking": [
+    938,
+    953
+  ],
+  "happy>thinking": [
+    954,
+    969
+  ]
+}
