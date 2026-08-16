@@ -18,7 +18,7 @@ router = APIRouter(tags=["decks"])
 def _card_out(card: Card) -> CardOut:
     return CardOut(
         id=card.id, word=card.word, translation=card.translation,
-        transcription=card.transcription,
+        transcription=card.transcription, section=card.section,
     )
 
 
@@ -37,6 +37,18 @@ async def list_decks(c: Container = Depends(get_container)) -> list[DeckOut]:
         assert d.id is not None  # persisted decks always have an id
         out.append(DeckOut(id=d.id, name=d.name))
     return out
+
+
+@router.get("/decks/{deck_id}/cards", response_model=list[CardOut])
+async def list_deck_cards(
+    deck_id: int,
+    limit: int = 100,
+    offset: int = 0,
+    section: str | None = None,
+    c: Container = Depends(get_container),
+) -> list[CardOut]:
+    cards = await c.list_deck_cards.execute(deck_id, limit, offset, section)
+    return [_card_out(card) for card in cards]
 
 
 @router.post("/decks/{deck_id}/import", response_model=ImportOut)

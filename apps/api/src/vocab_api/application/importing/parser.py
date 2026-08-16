@@ -7,6 +7,7 @@ class ParsedRow:
     word: str
     translation: str
     transcription: str | None
+    notes: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,7 +24,12 @@ def _split(line: str, fmt: Format) -> list[str]:
     sep = "," if fmt == "csv" else "|"
     cells = [c.strip() for c in line.split(sep)]
     if fmt == "markdown":
-        cells = [c for c in cells if c != ""] or [""]
+        # Tables written with surrounding pipes add empty edge cells; drop those
+        # but keep inner empties so `word | | translation | example` (no IPA) works.
+        while cells and cells[0] == "":
+            cells.pop(0)
+        while cells and cells[-1] == "":
+            cells.pop()
     return cells
 
 
@@ -45,22 +51,31 @@ def parse_words(raw: str, fmt: Format) -> tuple[list[ParsedRow], list[RowError]]
         if fmt == "markdown" and not seen_header and rows == [] and _looks_like_header(cells):
             continue
         word = cells[0] if cells else ""
-        if len(cells) >= 3:
-            transcription: str | None = cells[1] or None
+        if len(cells) >= 4:
+            transcription = cells[1] or None
             translation = cells[2]
+            notes = cells[3] or None
+        elif len(cells) == 3:
+            transcription = cells[1] or None
+            translation = cells[2]
+            notes = None
         elif len(cells) == 2:
             transcription = None
             translation = cells[1]
+            notes = None
         else:
             transcription = None
             translation = ""
+            notes = None
         if not word:
             errors.append(RowError(line=index, raw=line, reason="empty word"))
             continue
         if not translation:
             errors.append(RowError(line=index, raw=line, reason="empty translation"))
             continue
-        rows.append(ParsedRow(word=word, translation=translation, transcription=transcription))
+        rows.append(
+            ParsedRow(word=word, translation=translation, transcription=transcription, notes=notes)
+        )
     return rows, errors
 
 

@@ -5,7 +5,7 @@ from datetime import datetime
 @dataclass(frozen=True, slots=True)
 class FsrsState:
     due: datetime
-    state: int = 1  # 1=Learning, 2=Review, 3=Relearning
+    state: int = 0  # 0=New, 1=Learning, 2=Review, 3=Relearning
     step: int | None = 0
     stability: float | None = None
     difficulty: float | None = None
@@ -13,4 +13,4 @@ class FsrsState:
 
     @staticmethod
     def new(now: datetime) -> "FsrsState":
-        return FsrsState(due=now)
+        return FsrsState(due=now, state=0)

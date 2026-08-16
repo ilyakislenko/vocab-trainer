@@ -11,3 +11,4 @@ class Settings(BaseSettings):
     llm_model: str = "llama3.1"
     llm_api_key: str | None = None
     llm_timeout: float = 60.0  # seconds; generous so a cold model load doesn't 502
+    seed_default_deck: bool = True  # create the bundled Britlex deck on startup

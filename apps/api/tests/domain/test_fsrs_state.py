@@ -4,11 +4,11 @@ from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.card.rating import Rating
 
 
-def test_new_state_is_due_now_and_learning():
+def test_new_state_is_due_now_and_new():
     now = datetime(2026, 8, 13, tzinfo=UTC)
     state = FsrsState.new(now)
     assert state.due == now
-    assert state.state == 1
+    assert state.state == 0
     assert state.step == 0
     assert state.stability is None
     assert state.last_review is None

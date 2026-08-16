@@ -9,7 +9,11 @@ from vocab_api.main import create_app
 @pytest.fixture
 async def client():
     container = Container(
-        Settings(database_url="sqlite+aiosqlite:///:memory:", llm_provider="none")
+        Settings(
+            database_url="sqlite+aiosqlite:///:memory:",
+            llm_provider="none",
+            seed_default_deck=False,
+        )
     )
     await container.init()
     app = create_app(container)
@@ -52,3 +56,19 @@ async def test_import_into_missing_deck_returns_404(client: httpx.AsyncClient):
         "/decks/999/import", json={"raw": "run,бежать", "format": "csv", "dry_run": True}
     )
     assert resp.status_code == 404
+
+
+async def test_list_deck_cards_with_section_filter(client: httpx.AsyncClient):
+    deck = (await client.post("/decks", json={"name": "Britlex"})).json()
+    deck_id = deck["id"]
+    await client.post(
+        f"/decks/{deck_id}/import",
+        json={"raw": "run,бежать\njump,прыгать", "format": "csv", "dry_run": False},
+    )
+    cards = (await client.get(f"/decks/{deck_id}/cards")).json()
+    assert [c["word"] for c in cards] == ["run", "jump"]
+    assert all(c["section"] is None for c in cards)
+    filtered = (await client.get(f"/decks/{deck_id}/cards", params={"section": "main"})).json()
+    assert filtered == []
+    missing = await client.get("/decks/999/cards")
+    assert missing.status_code == 404

@@ -23,6 +23,16 @@ class Database:
     async def init(self) -> None:
         async with self._engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
+        # create_all never alters existing tables, so migrate the cards table in
+        # place when an older database lacks the section column (added later).
+        await self._ensure_section_column()
+
+    async def _ensure_section_column(self) -> None:
+        async with self._engine.begin() as conn:
+            columns = await conn.exec_driver_sql("PRAGMA table_info(cards)")
+            has_section = any(row[1] == "section" for row in columns)
+            if not has_section:
+                await conn.exec_driver_sql("ALTER TABLE cards ADD COLUMN section VARCHAR")
 
     def session(self) -> AsyncSession:
         return self._session_factory()

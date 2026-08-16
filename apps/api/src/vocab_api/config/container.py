@@ -1,9 +1,23 @@
 from vocab_api.application.ports.llm import LlmProvider
-from vocab_api.application.use_cases.decks import CreateDeck, ListDecks
+from vocab_api.application.use_cases.decks import CreateDeck, ListDeckCards, ListDecks
 from vocab_api.application.use_cases.importing import ImportWords
-from vocab_api.application.use_cases.practice import CheckSentence, SuggestExample
+from vocab_api.application.use_cases.practice import (
+    CheckSentence,
+    ConductInterview,
+    DescribeWord,
+    DrillWord,
+    SelectTopicWords,
+    SuggestExample,
+    TranslateSentence,
+)
 from vocab_api.application.use_cases.review import GetReviewQueue, RecordReview
 from vocab_api.application.use_cases.stats import GetStats
+from vocab_api.config.britlex_seed import (
+    BritlexSeeder,
+    ItInterviewSeeder,
+    load_britlex_sources,
+    load_it_sources,
+)
 from vocab_api.config.settings import Settings
 from vocab_api.infrastructure.clock import SystemClock
 from vocab_api.infrastructure.llm.null_provider import NullProvider
@@ -15,11 +29,13 @@ from vocab_api.infrastructure.persistence.review_log_repo import SqlReviewLogRep
 from vocab_api.infrastructure.persistence.sentence_attempt_repo import (
     SqlSentenceAttemptRepository,
 )
+from vocab_api.infrastructure.question_bank import JsonQuestionBank, load_interview_questions
 from vocab_api.infrastructure.scheduling.py_fsrs_scheduler import PyFsrsScheduler
 
 
 class Container:
     def __init__(self, settings: Settings) -> None:
+        self._settings = settings
         self._db = Database(settings.database_url)
         clock = SystemClock()
         scheduler = PyFsrsScheduler()
@@ -29,6 +45,7 @@ class Container:
 
         self.create_deck = CreateDeck(decks, clock)
         self.list_decks = ListDecks(decks)
+        self.list_deck_cards = ListDeckCards(decks, cards)
         self.import_words = ImportWords(decks, cards, clock)
         self.get_review_queue = GetReviewQueue(cards, clock)
         self.record_review = RecordReview(cards, logs, scheduler, clock)
@@ -47,6 +64,18 @@ class Container:
         )
         self.check_sentence = CheckSentence(cards, attempts, provider, clock)
         self.suggest_example = SuggestExample(cards, provider)
+        self.select_topic_words = SelectTopicWords(cards, provider)
+        self.describe_word = DescribeWord(cards, provider)
+        self.drill_word = DrillWord(cards, provider)
+        self.translate_sentence = TranslateSentence(provider)
+        self.conduct_interview = ConductInterview(
+            provider, JsonQuestionBank(load_interview_questions())
+        )
+        self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
+        self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)
 
     async def init(self) -> None:
         await self._db.init()
+        if self._settings.seed_default_deck:
+            await self._britlex_seed.execute(load_britlex_sources())
+            await self._it_seed.execute(load_it_sources())

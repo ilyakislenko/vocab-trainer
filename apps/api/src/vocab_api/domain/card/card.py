@@ -20,6 +20,7 @@ class Card:
     fsrs: FsrsState
     transcription: str | None = None
     notes: str | None = None
+    section: str | None = None
     id: int | None = None
     created_at: datetime | None = None
 
@@ -31,6 +32,7 @@ class Card:
         now: datetime,
         transcription: str | None = None,
         notes: str | None = None,
+        section: str | None = None,
     ) -> "Card":
         clean_word = word.strip()
         if not clean_word:
@@ -44,6 +46,7 @@ class Card:
             translation=clean_translation,
             transcription=_clean_optional(transcription),
             notes=_clean_optional(notes),
+            section=_clean_optional(section),
             fsrs=FsrsState.new(now),
             created_at=now,
         )

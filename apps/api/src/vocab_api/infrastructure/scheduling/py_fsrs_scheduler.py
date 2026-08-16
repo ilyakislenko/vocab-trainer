@@ -22,9 +22,11 @@ class PyFsrsScheduler(Scheduler):
 
     @staticmethod
     def _to_dict(state: FsrsState) -> dict[str, object]:
+        # py-fsrs has no New(0) state: an unreviewed card is Learning(1)/step 0.
+        fsrs_state = state.state or 1
         return {
             "card_id": 1,
-            "state": state.state,
+            "state": fsrs_state,
             "step": state.step,
             "stability": state.stability,
             "difficulty": state.difficulty,

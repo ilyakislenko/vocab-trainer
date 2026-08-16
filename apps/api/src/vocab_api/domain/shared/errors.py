@@ -22,6 +22,11 @@ class EmptySentence(DomainError):
         super().__init__("Sentence must not be empty.")
 
 
+class EmptyTopic(DomainError):
+    def __init__(self) -> None:
+        super().__init__("Topic must not be empty.")
+
+
 class DeckNotFound(DomainError):
     def __init__(self, deck_id: int) -> None:
         super().__init__(f"deck {deck_id} not found")

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from sqlalchemy import func
 from sqlmodel import select
 
@@ -34,3 +36,46 @@ class SqlReviewLogRepository(ReviewLogRepository):
         async with self._db.session() as session:
             result = await session.execute(statement)
             return result.scalar_one()
+
+    async def streak(self, deck_id: int) -> int:
+        # Count consecutive days ending today with at least one review.
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        stmt = (
+            select(func.date(ReviewLogRow.reviewed_at))
+            .join(CardRow, CardRow.id == ReviewLogRow.card_id)  # type: ignore[arg-type]
+            .where(CardRow.deck_id == deck_id)
+            .group_by(func.date(ReviewLogRow.reviewed_at))
+            .order_by(func.date(ReviewLogRow.reviewed_at).desc())
+        )
+        async with self._db.session() as session:
+            result = await session.execute(stmt)
+            dates = [str(r[0]) for r in result.all()]
+        if not dates:
+            return 0
+        streak = 0
+        check = today
+        for d in dates:
+            expected = check.strftime("%Y-%m-%d")
+            yesterday = (check - timedelta(days=1)).strftime("%Y-%m-%d")
+            if d == expected or d == yesterday:
+                streak += 1
+                check -= timedelta(days=1)
+            else:
+                break
+        return streak
+
+    async def activity(self, deck_id: int, days: int) -> list[dict[str, int | str]]:
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        stmt = (
+            select(func.date(ReviewLogRow.reviewed_at).label("day"), func.count().label("count"))
+            .join(CardRow, CardRow.id == ReviewLogRow.card_id)  # type: ignore[arg-type]
+            .where(
+                CardRow.deck_id == deck_id,
+                ReviewLogRow.reviewed_at >= today - timedelta(days=days),
+            )
+            .group_by(func.date(ReviewLogRow.reviewed_at))
+            .order_by(func.date(ReviewLogRow.reviewed_at))
+        )
+        async with self._db.session() as session:
+            result = await session.execute(stmt)
+            return [{"date": str(r[0]), "count": int(r[1])} for r in result.all()]

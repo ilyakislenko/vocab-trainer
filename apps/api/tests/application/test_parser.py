@@ -27,3 +27,17 @@ def test_row_missing_word_is_reported_but_others_parse():
     rows, errors = parse_words(",ipa,бежать\njump,dʒʌmp,прыгать", "csv")
     assert rows == [ParsedRow(word="jump", translation="прыгать", transcription="dʒʌmp")]
     assert errors == [RowError(line=1, raw=",ipa,бежать", reason="empty word")]
+
+
+def test_markdown_four_columns_captures_notes():
+    md = "useState | | стейт | useState lets a component hold data."
+    rows, errors = parse_words(md, "markdown")
+    assert rows == [
+        ParsedRow(
+            word="useState",
+            translation="стейт",
+            transcription=None,
+            notes="useState lets a component hold data.",
+        )
+    ]
+    assert errors == []

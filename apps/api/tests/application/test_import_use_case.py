@@ -40,3 +40,14 @@ async def test_missing_deck_raises():
         await ImportWords(FakeDeckRepository(), FakeCardRepository(), FixedClock()).execute(
             999, "run,бежать", "csv", dry_run=True
         )
+
+
+async def test_commit_tags_rows_with_section():
+    decks, cards = FakeDeckRepository(), FakeCardRepository()
+    deck_id = await _deck(decks)
+    result = await ImportWords(decks, cards, FixedClock()).execute(
+        deck_id, "run,rʌn,бежать", "csv", dry_run=False, section="main"
+    )
+    assert result.imported[0].section == "main"
+    stored = await cards.get(result.imported[0].id or 0)
+    assert stored.section == "main"

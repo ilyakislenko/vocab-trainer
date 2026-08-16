@@ -61,3 +61,41 @@ class SqlCardRepository(CardRepository):
         async with self._db.session() as session:
             result = await session.execute(statement)
             return result.scalar_one()
+
+    async def list_all(
+        self, deck_id: int, limit: int, offset: int, section: str | None
+    ) -> list[Card]:
+        # CardRow.id is typed int | None; mypy sees it as a plain value instead
+        # of the runtime InstrumentedAttribute order_by() expects.
+        statement = select(CardRow).where(CardRow.deck_id == deck_id).order_by(CardRow.id)  # type: ignore[arg-type]
+        if section is not None:
+            statement = statement.where(CardRow.section == section)
+        statement = statement.limit(limit).offset(offset)
+        async with self._db.session() as session:
+            result = await session.execute(statement)
+            rows = result.scalars().all()
+        return [card_from_row(row) for row in rows]
+
+    async def by_words(self, deck_id: int, words: list[str]) -> list[Card]:
+        lower = [w.lower() for w in words]
+        statement = (
+            select(CardRow)
+            .where(CardRow.deck_id == deck_id, func.lower(CardRow.word).in_(lower))
+            .order_by(CardRow.id)  # type: ignore[arg-type]  # same CardRow.id typing quirk as above
+        )
+        async with self._db.session() as session:
+            result = await session.execute(statement)
+            rows = result.scalars().all()
+        return [card_from_row(row) for row in rows]
+
+    async def count_by_state(self, deck_id: int) -> dict[str, int]:
+        statement = (
+            select(CardRow.fsrs_state, func.count())
+            .where(CardRow.deck_id == deck_id)
+            .group_by(CardRow.fsrs_state)  # type: ignore[arg-type]  # same InstrumentedAttribute quirk
+        )
+        async with self._db.session() as session:
+            result = await session.execute(statement)
+            rows = result.all()
+        state_names = {0: "new", 1: "learning", 2: "review", 3: "relearning"}
+        return {state_names.get(int(r[0]), "unknown"): int(r[1]) for r in rows}

@@ -30,3 +30,13 @@ def test_with_fsrs_returns_updated_copy():
     updated = card.with_fsrs(later)
     assert updated.fsrs == later
     assert card.fsrs != later  # original unchanged
+
+
+def test_create_cleans_and_stores_section():
+    card = Card.create(deck_id=1, word="run", translation="бежать", now=NOW, section=" main ")
+    assert card.section == "main"
+
+
+def test_create_without_section_defaults_to_none():
+    card = Card.create(deck_id=1, word="run", translation="бежать", now=NOW)
+    assert card.section is None

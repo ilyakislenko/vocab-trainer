@@ -25,6 +25,7 @@ class CardOut(BaseModel):
     word: str
     translation: str
     transcription: str | None
+    section: str | None = None
 
 
 class RowErrorOut(BaseModel):
@@ -46,6 +47,12 @@ class ReviewIn(BaseModel):
 class StatsOut(BaseModel):
     due_today: int
     total_reviews: int
+    streak: int = 0
+    fsrs_new: int = 0
+    fsrs_learning: int = 0
+    fsrs_review: int = 0
+    fsrs_relearning: int = 0
+    activity: list[dict[str, int | str]] = []
 
 
 class CheckSentenceIn(BaseModel):
@@ -62,3 +69,49 @@ class FeedbackOut(BaseModel):
 
 class ExampleOut(BaseModel):
     example: str
+
+
+class WordHintOut(BaseModel):
+    meaning: str
+    example: str | None = None
+
+
+class DrillIn(BaseModel):
+    card_id: int
+    message: str
+
+
+class DrillOut(BaseModel):
+    response: str
+    question: str | None = None
+
+
+class WordTranslation(BaseModel):
+    word: str
+    translation: str
+
+
+class SentenceTranslation(BaseModel):
+    full: str
+    words: list[WordTranslation] = []
+
+
+class InterviewMessage(BaseModel):
+    role: Literal["user", "interviewer"]
+    content: str
+
+
+class InterviewIn(BaseModel):
+    topic: str
+    lang: Literal["ru", "en"] = "en"
+    mode: Literal["auto", "next", "random"] = "auto"
+    used_question_ids: list[int] = []
+    messages: list[InterviewMessage] = []
+
+
+class InterviewOut(BaseModel):
+    verdict: Verdict | None = None
+    feedback: str | None = None
+    corrected: str | None = None
+    question: str
+    question_id: int | None = None

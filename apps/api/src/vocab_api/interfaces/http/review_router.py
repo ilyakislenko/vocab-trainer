@@ -15,7 +15,7 @@ async def review_queue(
     cards = await c.get_review_queue.execute(deck_id, limit)
     return [
         CardOut(id=card.id, word=card.word, translation=card.translation,
-                transcription=card.transcription)
+                transcription=card.transcription, section=card.section)
         for card in cards
     ]
 
@@ -24,4 +24,4 @@ async def review_queue(
 async def record_review(body: ReviewIn, c: Container = Depends(get_container)) -> CardOut:
     card = await c.record_review.execute(body.card_id, Rating(body.rating))
     return CardOut(id=card.id, word=card.word, translation=card.translation,
-                   transcription=card.transcription)
+                   transcription=card.transcription, section=card.section)

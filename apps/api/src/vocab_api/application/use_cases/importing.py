@@ -19,12 +19,27 @@ class ImportWords:
         self._cards = cards
         self._clock = clock
 
-    async def execute(self, deck_id: int, raw: str, fmt: Format, dry_run: bool) -> ImportResult:
+    async def execute(
+        self,
+        deck_id: int,
+        raw: str,
+        fmt: Format,
+        dry_run: bool,
+        section: str | None = None,
+    ) -> ImportResult:
         await self._decks.get(deck_id)  # raises DeckNotFound
         now = self._clock.now()
         parsed, errors = parse_words(raw, fmt)
         cards = [
-            Card.create(deck_id, row.word, row.translation, now, row.transcription)
+            Card.create(
+                deck_id,
+                row.word,
+                row.translation,
+                now,
+                row.transcription,
+                notes=row.notes,
+                section=section,
+            )
             for row in parsed
         ]
         if dry_run:
