@@ -1,4 +1,5 @@
 import type { Deck } from "@/shared/api";
+import { useI18n } from "@/shared/lib/i18n";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 
 export function DeckSelect({
@@ -10,6 +11,7 @@ export function DeckSelect({
   value: number | null;
   onChange: (id: number) => void;
 }) {
+  const { t } = useI18n();
   return (
     <Select
       value={value ? String(value) : null}
@@ -17,10 +19,10 @@ export function DeckSelect({
         if (v) onChange(Number(v));
       }}
     >
-      <SelectTrigger className="w-56">
+      <SelectTrigger className="w-full">
         <SelectValue>
           {(selected: string | null) =>
-            decks.find((d) => String(d.id) === selected)?.name ?? "Select a deck"
+            decks.find((d) => String(d.id) === selected)?.name ?? t("header.selectDeck")
           }
         </SelectValue>
       </SelectTrigger>

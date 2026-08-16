@@ -10,8 +10,9 @@ describe("DeckPicker", () => {
     server.use(http.post("/api/decks", () => HttpResponse.json({ id: 9, name: "Travel" })));
     const onChange = vi.fn();
     renderWithProviders(<DeckPicker value={null} onChange={onChange} />);
-    await userEvent.type(screen.getByPlaceholderText(/new deck/i), "Travel");
-    await userEvent.click(screen.getByRole("button", { name: /create/i }));
+    await userEvent.click(screen.getByRole("button", { name: /new deck|новая колода/i }));
+    await userEvent.type(screen.getByPlaceholderText(/new deck|новая колода/i), "Travel");
+    await userEvent.click(screen.getByRole("button", { name: /create|создать/i }));
     await waitFor(() => expect(onChange).toHaveBeenCalledWith(9));
   });
 });

@@ -4,6 +4,7 @@ import {
   isSpeechSynthesisSupported,
   recognizeOnce,
   speak,
+  startRecognition,
 } from "./speech";
 
 afterEach(() => {
@@ -37,24 +38,87 @@ describe("speak", () => {
 });
 
 type RecognitionResultEvent = {
-  results: ArrayLike<ArrayLike<{ transcript: string }>>;
+  resultIndex: number;
+  results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal?: boolean }>;
 };
 
 class FakeRecognition {
   lang = "";
+  continuous = false;
+  interimResults = false;
   onresult: ((event: RecognitionResultEvent) => void) | null = null;
   onerror: ((event: unknown) => void) | null = null;
+  onend: (() => void) | null = null;
   start(): void {
-    this.onresult?.({ results: [[{ transcript: "  Run  " }]] });
+    // Interim result first, then the final one — the browser may send several.
+    this.onresult?.({
+      resultIndex: 0,
+      results: [{ 0: { transcript: "  Christian  " }, isFinal: false, length: 1 }],
+    });
+    this.onresult?.({
+      resultIndex: 0,
+      results: [{ 0: { transcript: "  Hoisting  " }, isFinal: true, length: 1 }],
+    });
+  }
+  stop(): void {
+    this.onend?.();
+  }
+}
+
+class ContinuousRecognition {
+  lang = "";
+  continuous = true;
+  interimResults = true;
+  onresult: ((event: RecognitionResultEvent) => void) | null = null;
+  onerror: ((event: unknown) => void) | null = null;
+  onend: (() => void) | null = null;
+  start(): void {
+    // Several final results arrive as the user speaks in bursts; each event
+    // carries the full accumulated results list like the browser API does.
+    this.onresult?.({
+      resultIndex: 0,
+      results: [
+        { 0: { transcript: "  first  " }, isFinal: true, length: 1 },
+        { 0: { transcript: "second" }, isFinal: true, length: 1 },
+      ],
+    });
+  }
+  stop(): void {
+    this.onend?.();
+  }
+}
+
+class InterimOnlyRecognition {
+  lang = "";
+  continuous = false;
+  interimResults = false;
+  onresult: ((event: RecognitionResultEvent) => void) | null = null;
+  onerror: ((event: unknown) => void) | null = null;
+  onend: (() => void) | null = null;
+  start(): void {
+    this.onresult?.({
+      resultIndex: 0,
+      results: [{ 0: { transcript: "ability" }, isFinal: false, length: 1 }],
+    });
+    this.onend?.();
+  }
+  stop(): void {
+    this.onend?.();
   }
 }
 
 class FailingRecognition {
   lang = "";
+  continuous = false;
+  interimResults = false;
   onresult: ((event: RecognitionResultEvent) => void) | null = null;
   onerror: ((event: unknown) => void) | null = null;
+  onend: (() => void) | null = null;
   start(): void {
     this.onerror?.(new Error("boom"));
+  }
+  stop(): void {
+    this.onend?.();
   }
 }
 
@@ -84,13 +148,49 @@ describe("recognizeOnce", () => {
     await expect(recognizeOnce()).rejects.toThrow();
   });
 
-  it("resolves with the first transcript lowercased and trimmed", async () => {
+  it("waits for the final transcript instead of an interim one", async () => {
     vi.stubGlobal("SpeechRecognition", FakeRecognition);
-    await expect(recognizeOnce()).resolves.toBe("run");
+    await expect(recognizeOnce()).resolves.toBe("hoisting");
+  });
+
+  it("rejects when recognition ends without a final result", async () => {
+    vi.stubGlobal("SpeechRecognition", InterimOnlyRecognition);
+    await expect(recognizeOnce()).rejects.toThrow(/without a final result/);
   });
 
   it("rejects when recognition emits an error", async () => {
     vi.stubGlobal("SpeechRecognition", FailingRecognition);
     await expect(recognizeOnce()).rejects.toThrow();
+  });
+});
+
+describe("startRecognition", () => {
+  it("returns null when speech recognition is unsupported", () => {
+    vi.stubGlobal("SpeechRecognition", undefined);
+    vi.stubGlobal("webkitSpeechRecognition", undefined);
+    expect(startRecognition()).toBeNull();
+  });
+
+  it("stays open across pauses and resolves with the joined transcript on stop", async () => {
+    vi.stubGlobal("SpeechRecognition", ContinuousRecognition);
+    const session = startRecognition();
+    if (session === null) throw new Error("expected a session");
+    const promise = session.result;
+    session.stop();
+    await expect(promise).resolves.toBe("first second");
+  });
+
+  it("rejects when recognition ends on its own without a stop", async () => {
+    vi.stubGlobal("SpeechRecognition", InterimOnlyRecognition);
+    const session = startRecognition();
+    if (session === null) throw new Error("expected a session");
+    await expect(session.result).rejects.toThrow(/without a result/);
+  });
+
+  it("rejects when recognition emits an error", async () => {
+    vi.stubGlobal("SpeechRecognition", FailingRecognition);
+    const session = startRecognition();
+    if (session === null) throw new Error("expected a session");
+    await expect(session.result).rejects.toThrow();
   });
 });

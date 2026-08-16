@@ -27,19 +27,23 @@ describe("ReviewSession", () => {
     renderWithProviders(<ReviewSession deckId={1} />);
     await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
     expect(screen.queryByText("бежать")).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: /show answer/i }));
+    await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
     expect(screen.getByText("бежать")).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: /good/i }));
+    await userEvent.click(screen.getByRole("button", { name: /good|хорошо/i }));
     await waitFor(() => expect(screen.getByText("jump")).toBeInTheDocument());
-    await userEvent.click(screen.getByRole("button", { name: /show answer/i }));
-    await userEvent.click(screen.getByRole("button", { name: /easy/i }));
-    await waitFor(() => expect(screen.getByText(/caught up/i)).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
+    await userEvent.click(screen.getByRole("button", { name: /easy|легко/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/session complete|сессия завершена/i)).toBeInTheDocument(),
+    );
   });
 
   it("shows the empty state when nothing is due", async () => {
     server.use(http.get("/api/review/queue", () => HttpResponse.json([])));
     renderWithProviders(<ReviewSession deckId={1} />);
-    await waitFor(() => expect(screen.getByText(/caught up/i)).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(/session complete|сессия завершена/i)).toBeInTheDocument(),
+    );
   });
 
   it("does not skip the next due card when a post-rating refetch returns a shorter queue", async () => {
@@ -71,16 +75,18 @@ describe("ReviewSession", () => {
 
     renderWithProviders(<ReviewSession deckId={1} />);
     await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
-    await userEvent.click(screen.getByRole("button", { name: /show answer/i }));
-    await userEvent.click(screen.getByRole("button", { name: /good/i }));
+    await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
+    await userEvent.click(screen.getByRole("button", { name: /good|хорошо/i }));
 
     // Let the invalidated background refetch (shrunk queue) land before asserting.
     await waitFor(() => expect(queueCalls).toBeGreaterThanOrEqual(2));
 
     await waitFor(() => expect(screen.getByText("jump")).toBeInTheDocument());
-    expect(screen.queryByText(/caught up/i)).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: /show answer/i }));
-    await userEvent.click(screen.getByRole("button", { name: /easy/i }));
-    await waitFor(() => expect(screen.getByText(/caught up/i)).toBeInTheDocument());
+    expect(screen.queryByText(/session complete|сессия завершена/i)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
+    await userEvent.click(screen.getByRole("button", { name: /easy|легко/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/session complete|сессия завершена/i)).toBeInTheDocument(),
+    );
   });
 });

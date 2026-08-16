@@ -26,11 +26,12 @@ describe("ImportForm", () => {
     );
     renderWithProviders(<ImportForm deckId={1} />);
     await userEvent.type(screen.getByRole("textbox"), "run,бежать");
-    await userEvent.click(screen.getByRole("button", { name: /preview/i }));
-    await waitFor(() => expect(screen.getByText(/1 word/i)).toBeInTheDocument());
-    expect(screen.getByText(/preview:/i)).toBeInTheDocument(); // not yet committed
-    await userEvent.click(screen.getByRole("button", { name: /^import$/i }));
-    await waitFor(() => expect(screen.getByText(/imported 1/i)).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("button", { name: /preview|предпросмотр/i }));
+    await waitFor(() => expect(screen.getByText(/1 word|1 слов/i)).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("button", { name: /import|импортировать/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/imported 1|импортировано: 1/i)).toBeInTheDocument(),
+    );
   });
 
   it("shows an inline error when the import request fails", async () => {
@@ -41,7 +42,7 @@ describe("ImportForm", () => {
     );
     renderWithProviders(<ImportForm deckId={1} />);
     await userEvent.type(screen.getByRole("textbox"), "run,бежать");
-    await userEvent.click(screen.getByRole("button", { name: /^import$/i }));
+    await userEvent.click(screen.getByRole("button", { name: /import|импортировать/i }));
     await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
   });
 });

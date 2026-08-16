@@ -1,6 +1,12 @@
 import { cn } from "@/shared/lib/utils";
 
-export function Loader({ className }: { className?: string }) {
+export function Loader({
+  label = "Just a moment",
+  className,
+}: {
+  label?: string;
+  className?: string;
+}) {
   return (
     <div
       role="status"
@@ -12,7 +18,7 @@ export function Loader({ className }: { className?: string }) {
         className="size-4 shrink-0 animate-spin rounded-full border-2 border-muted-foreground/25 border-t-muted-foreground"
       />
       <span>
-        Just a moment
+        {label}
         <span aria-hidden className="inline-flex">
           <span>.</span>
           <span className="dot-fill-2">.</span>

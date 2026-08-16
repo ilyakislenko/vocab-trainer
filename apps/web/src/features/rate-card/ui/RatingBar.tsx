@@ -1,12 +1,29 @@
 import { useEffect } from "react";
 import type { Rating } from "@/shared/api";
+import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
 
-const RATINGS: { rating: Rating; label: string }[] = [
-  { rating: 1, label: "Again" },
-  { rating: 2, label: "Hard" },
-  { rating: 3, label: "Good" },
-  { rating: 4, label: "Easy" },
+const RATINGS: { rating: Rating; labelKey: string; classes: string }[] = [
+  {
+    rating: 1,
+    labelKey: "review.ratingAgain",
+    classes: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+  },
+  {
+    rating: 2,
+    labelKey: "review.ratingHard",
+    classes: "bg-amber-500 text-white hover:bg-amber-500/90",
+  },
+  {
+    rating: 3,
+    labelKey: "review.ratingGood",
+    classes: "bg-emerald-500 text-white hover:bg-emerald-500/90",
+  },
+  {
+    rating: 4,
+    labelKey: "review.ratingEasy",
+    classes: "bg-primary text-primary-foreground hover:bg-primary/90",
+  },
 ];
 
 export function RatingBar({
@@ -16,6 +33,7 @@ export function RatingBar({
   onRate: (rating: Rating) => void;
   disabled: boolean;
 }) {
+  const { t } = useI18n();
   useEffect(() => {
     if (disabled) return;
     const handler = (e: KeyboardEvent) => {
@@ -32,10 +50,15 @@ export function RatingBar({
   }, [onRate, disabled]);
 
   return (
-    <div className="flex gap-2">
-      {RATINGS.map(({ rating, label }) => (
-        <Button key={rating} variant="outline" disabled={disabled} onClick={() => onRate(rating)}>
-          {label} <span className="ml-1 text-muted-foreground">{rating}</span>
+    <div className="flex flex-wrap justify-center gap-2">
+      {RATINGS.map(({ rating, labelKey, classes }) => (
+        <Button
+          key={rating}
+          disabled={disabled}
+          onClick={() => onRate(rating)}
+          className={`${classes}`}
+        >
+          {t(labelKey)} <span className="ml-1 opacity-70">{rating}</span>
         </Button>
       ))}
     </div>

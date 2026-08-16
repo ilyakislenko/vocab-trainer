@@ -1,6 +1,29 @@
 import "@testing-library/jest-dom/vitest";
-import { afterAll, afterEach } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach } from "vitest";
+import { llmCache } from "@/shared/lib/llm-cache";
 import { server } from "@/shared/test/server";
+
+// Reset the persistent LLM cache so one test's cached explanation/example does
+// not leak into another test's assertions.
+beforeEach(() => void llmCache.clear());
+
+// Mock Web Audio API for sound effects (jsdom has no AudioContext)
+beforeAll(() => {
+  (globalThis as any).AudioContext = class {
+    createOscillator() {
+      return { connect: () => ({ connect: () => {} }), start: () => {}, stop: () => {} };
+    }
+    createGain() {
+      return { gain: { setValueAtTime: () => {}, exponentialRampToValueAtTime: () => {} } };
+    }
+    get currentTime() {
+      return 0;
+    }
+    get destination() {
+      return {};
+    }
+  };
+});
 
 // Node's native fetch/Request (unlike a real browser) cannot resolve relative
 // URLs against a page origin, but the api client intentionally uses a relative
