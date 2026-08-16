@@ -109,7 +109,7 @@ async def test_check_sentence_raises_llm_unavailable_on_connect_error():
 async def test_interview_parses_evaluation_when_no_answer_yet():
     content = '{"verdict":null,"feedback":null,"corrected":null}'
     provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_client(content))
-    evaluation = await provider.interview("React", "en", [])
+    evaluation = await provider.interview("React", "en", "middle", [])
     assert evaluation.verdict is None
     assert evaluation.feedback is None
     assert evaluation.corrected is None
@@ -126,6 +126,7 @@ async def test_interview_parses_feedback_and_corrected():
     evaluation = await provider.interview(
         "React",
         "en",
+        "middle",
         [
             {"role": "interviewer", "content": "What is a component?"},
             {"role": "user", "content": "a thing"},
@@ -145,6 +146,7 @@ async def test_interview_parses_followup_and_advance():
     evaluation = await provider.interview(
         "React",
         "en",
+        "middle",
         [
             {"role": "interviewer", "content": "What are props?"},
             {"role": "user", "content": "next"},
@@ -161,7 +163,9 @@ async def test_interview_parses_followup_when_not_advancing():
         '"corrected":null,"advance":false,"next_question":"Can you elaborate?"}'
     )
     provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_client(content))
-    evaluation = await provider.interview("React", "en", [{"role": "user", "content": "a thing"}])
+    evaluation = await provider.interview(
+        "React", "en", "middle", [{"role": "user", "content": "a thing"}]
+    )
     assert evaluation.advance is False
     assert evaluation.next_question == "Can you elaborate?"
 
@@ -173,7 +177,7 @@ async def test_interview_parses_explanation_when_verdict_null():
     )
     provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_client(content))
     evaluation = await provider.interview(
-        "React", "en", [{"role": "user", "content": "объясни"}]
+        "React", "en", "middle", [{"role": "user", "content": "объясни"}]
     )
     assert evaluation.verdict is None
     assert evaluation.feedback == "Props это свойства компонента."
@@ -183,7 +187,7 @@ async def test_interview_parses_explanation_when_verdict_null():
 
 async def test_interview_falls_back_on_garbage():
     provider = OpenAiCompatibleProvider("http://x/v1", "m", client=_client("not json"))
-    evaluation = await provider.interview("React", "en", [])
+    evaluation = await provider.interview("React", "en", "middle", [])
     assert evaluation.verdict is None
     assert evaluation.feedback == "not json"
     assert evaluation.advance is False

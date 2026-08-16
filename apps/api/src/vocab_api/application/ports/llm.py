@@ -13,5 +13,9 @@ class LlmProvider(Protocol):
     async def drill_word(self, word: str, user_message: str) -> tuple[str, str]: ...
     async def translate_sentence(self, text: str) -> tuple[str, list[dict[str, str]]]: ...
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self,
+        topic: str,
+        lang: str,
+        difficulty: str,
+        messages: list[dict[str, str]],
     ) -> InterviewEvaluation: ...

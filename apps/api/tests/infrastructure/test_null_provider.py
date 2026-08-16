@@ -20,7 +20,9 @@ async def test_null_provider_returns_disabled_hint():
 
 async def test_null_provider_returns_disabled_interview_evaluation():
     provider = NullProvider()
-    evaluation = await provider.interview("React", "en", [{"role": "user", "content": "hi"}])
+    evaluation = await provider.interview(
+        "React", "en", "middle", [{"role": "user", "content": "hi"}]
+    )
     assert evaluation.verdict is None
     assert evaluation.feedback is None
     assert evaluation.corrected is None

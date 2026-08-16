@@ -62,6 +62,8 @@ _DRILL_SYSTEM = (
 _INTERVIEW_SYSTEM = (
     "You are a friendly but strict technical interviewer for a software developer job. "
     "The candidate is preparing for an interview in {language}. "
+    "The expected level is {difficulty} (junior, middle, or senior) — set the depth and "
+    "difficulty of your questions and follow-ups accordingly. "
     "You are given the conversation history. The last message is the candidate's reply. "
     "Read the candidate's intent before grading: "
     "- If the reply is a request to move on (e.g. 'next', 'дальше', 'next question', 'change "
@@ -146,7 +148,11 @@ class OpenAiCompatibleProvider(LlmProvider):
         return _parse_drill(raw)
 
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self,
+        topic: str,
+        lang: str,
+        difficulty: str,
+        messages: list[dict[str, str]],
     ) -> InterviewEvaluation:
         history = (
             "\n".join(
@@ -156,7 +162,7 @@ class OpenAiCompatibleProvider(LlmProvider):
             or "(no messages yet)"
         )
         language = "Russian" if lang == "ru" else "English"
-        system = _INTERVIEW_SYSTEM.format(language=language)
+        system = _INTERVIEW_SYSTEM.format(language=language, difficulty=difficulty)
         raw = await self._chat(system, f"Topic: {topic}\nHistory:\n{history}")
         return _parse_interview(raw)
 

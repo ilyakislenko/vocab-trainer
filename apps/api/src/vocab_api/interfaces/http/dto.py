@@ -104,6 +104,7 @@ class InterviewMessage(BaseModel):
 class InterviewIn(BaseModel):
     topic: str
     lang: Literal["ru", "en"] = "en"
+    difficulty: Literal["junior", "middle", "senior"] = "middle"
     mode: Literal["auto", "next", "random"] = "auto"
     used_question_ids: list[int] = []
     messages: list[InterviewMessage] = []

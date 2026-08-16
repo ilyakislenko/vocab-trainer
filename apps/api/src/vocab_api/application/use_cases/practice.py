@@ -117,6 +117,7 @@ class ConductInterview:
         used_question_ids: set[int],
         messages: list[dict[str, str]],
         mode: str = "auto",
+        difficulty: str = "middle",
     ) -> InterviewTurn:
         if not topic.strip():
             raise EmptyTopic()
@@ -148,7 +149,7 @@ class ConductInterview:
                 question=text,
                 question_id=question.id,
             )
-        evaluation = await self._llm.interview(topic, lang, messages)
+        evaluation = await self._llm.interview(topic, lang, difficulty, messages)
         if evaluation.advance or not evaluation.next_question:
             return InterviewTurn(
                 verdict=evaluation.verdict,

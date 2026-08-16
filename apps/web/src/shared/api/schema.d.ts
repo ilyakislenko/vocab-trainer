@@ -348,6 +348,18 @@ export interface components {
              */
             lang: "ru" | "en";
             /**
+             * Difficulty
+             * @default middle
+             * @enum {string}
+             */
+            difficulty: "junior" | "middle" | "senior";
+            /**
+             * Mode
+             * @default auto
+             * @enum {string}
+             */
+            mode: "auto" | "next" | "random";
+            /**
              * Used Question Ids
              * @default []
              */
@@ -357,12 +369,6 @@ export interface components {
              * @default []
              */
             messages: components["schemas"]["InterviewMessage"][];
-            /**
-             * Mode
-             * @default auto
-             * @enum {string}
-             */
-            mode: "auto" | "next" | "random";
         };
         /** InterviewMessage */
         InterviewMessage: {
@@ -383,11 +389,8 @@ export interface components {
             corrected?: string | null;
             /** Question */
             question: string;
-            /**
-             * Question Id
-             * @default null
-             */
-            question_id: number | null;
+            /** Question Id */
+            question_id?: number | null;
         };
         /** ReviewIn */
         ReviewIn: {

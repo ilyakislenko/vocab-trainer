@@ -31,7 +31,7 @@ class RaisingLlm:
         raise LlmUnavailable("The language model is unavailable.")
 
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self, topic: str, lang: str, difficulty: str, messages: list[dict[str, str]]
     ) -> InterviewEvaluation:
         raise LlmUnavailable("The language model is unavailable.")
 
@@ -53,7 +53,7 @@ class TopicLlm:
         return f"Nice use of '{word}'!", f"Can you use '{word}' in another sentence?"
 
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self, topic: str, lang: str, difficulty: str, messages: list[dict[str, str]]
     ) -> InterviewEvaluation:
         if not messages:
             return InterviewEvaluation(verdict=None, feedback=None, corrected=None)
@@ -66,7 +66,7 @@ class TopicLlm:
 
 class FollowUpLlm:
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self, topic: str, lang: str, difficulty: str, messages: list[dict[str, str]]
     ) -> InterviewEvaluation:
         if not messages:
             return InterviewEvaluation(verdict=None, feedback=None, corrected=None)
@@ -89,7 +89,7 @@ class FollowUpLlm:
 
 class AdvancingLlm:
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self, topic: str, lang: str, difficulty: str, messages: list[dict[str, str]]
     ) -> InterviewEvaluation:
         if not messages:
             return InterviewEvaluation(verdict=None, feedback=None, corrected=None)

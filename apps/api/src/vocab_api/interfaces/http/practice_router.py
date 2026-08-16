@@ -90,6 +90,7 @@ async def practice_interview(
         set(body.used_question_ids),
         [{"role": m.role, "content": m.content} for m in body.messages],
         body.mode,
+        body.difficulty,
     )
     return InterviewOut(
         verdict=turn.verdict,

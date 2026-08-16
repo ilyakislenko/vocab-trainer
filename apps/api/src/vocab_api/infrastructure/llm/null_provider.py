@@ -29,7 +29,7 @@ class NullProvider(LlmProvider):
         return "", []
 
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self, topic: str, lang: str, difficulty: str, messages: list[dict[str, str]]
     ) -> InterviewEvaluation:
         return InterviewEvaluation(
             verdict=None,

@@ -203,7 +203,7 @@ class StubLlmProvider:
         return f"Перевод: {text}", []
 
     async def interview(
-        self, topic: str, lang: str, messages: list[dict[str, str]]
+        self, topic: str, lang: str, difficulty: str, messages: list[dict[str, str]]
     ) -> InterviewEvaluation:
         return self._interview_evaluation
 
