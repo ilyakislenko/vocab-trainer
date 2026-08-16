@@ -4,6 +4,7 @@
     "includes": [
       "**",
       "!**/src/shared/api/schema.d.ts",
+      "!**/src/shared/assets/ai-robo.json",
       "!**/dist",
       "!**/coverage",
       "!**/public",
