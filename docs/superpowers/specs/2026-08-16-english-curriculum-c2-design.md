@@ -608,10 +608,14 @@ it is done incrementally as data-only additions (in owner+assistant content sess
 existing cheat sheets, and/or by the agent), guarded by the content-bundle test. Nothing about
 having the books lets us skip the writing.
 
-The engine must be **fully general** (loads any content matching §6). Because authoring all six
-levels at once is large, the **code** ships first with a **vertical slice** of real content —
-enough to exercise the whole loop end to end and be genuinely useful for the owner's B2→C1
-goal — while the remaining levels are filled in behind the same schema (§16 Phase 6):
+**Owner decision (2026-08-16): the full A1→C2 content set is a REQUIRED deliverable**, not an
+optional later backlog. Every module across all six levels gets an authored lesson + quiz.
+
+The engine must be **fully general** (loads any content matching §6). Sequencing: the **code**
+still ships first against an initial **testable slice** (below) so the loop can be exercised and
+CI-proven end to end, and then **Phase 6 authors the complete remaining A1→C2 content to full
+coverage** (§16). The slice is the minimum to build/verify the engine — it is not the finish
+line; full coverage is:
 
 **Required initial content (author as files):**
 - **Grammar track, B1→C1**: ≥ 12 modules following the Murphy(blue)/Hewings topic skeleton
@@ -711,9 +715,16 @@ Each phase is independently shippable, fully typed, tested, and boundary-clean. 
   `/progress` roll-up + `progress` entity + A1→C2 progress UI. **Outcome:** the four pillars
   read as one system; visible path to C2.
 
-- **Phase 6 — Content fill (data only).**
-  Author remaining slice modules to the §13 target and expand toward A1/A2/C2 as pure data
-  adds. No engine changes; the content-bundle test guards each addition.
+- **Phase 6 — Full A1→C2 content (REQUIRED, data only).**
+  Author the **complete** A1→C2 content set — every module in the manifest gets a lesson + quiz,
+  no `status:"authoring"` stubs left. Pure data adds, no engine changes; the content-bundle test
+  guards every addition and, at completion, asserts **zero remaining `authoring` modules**.
+  Author module-by-module (each a small, reviewable PR) grounded in the book skeleton: Murphy
+  red (A1–B1), Murphy blue (B1–B2), Hewings (C1–C2), the …in-Use vocab/collocation/idiom/
+  business books, and the English File functional syllabus per level. Lessons in original prose;
+  quiz items re-worded from the books' exercises — never copied. This phase is large; treat it
+  as an ongoing, incremental workstream (it may run in dedicated content sessions), but it is
+  **part of the required deliverable, not optional**.
 
 ---
 
@@ -743,13 +754,12 @@ Each phase is independently shippable, fully typed, tested, and boundary-clean. 
 3. **Landing page:** **Today** becomes the post-onboarding landing.
 4. **Progress is always shown** (level roll-up + A1→C2 bar, §12 `/progress`).
 
-**Still open (sensible defaults assumed; override anytime):**
-- **A. Content-authoring ownership & sequencing (the one real fork).** The *engine* is a bounded
-  code deliverable; authoring the *full A1→C2 lessons/quizzes* is the large, ongoing part.
-  Default: **agent ships engine + the §13 B1→C1 slice first**, then A1/A2/C2 are authored as
-  data-only additions (owner+assistant sessions and/or agent), so you get a working, useful app
-  fast rather than waiting on all six levels. Override if you'd rather the agent author **all**
-  levels before first ship (much longer to first usable build).
+5. **Content scope = FULL A1→C2 (resolved 2026-08-16).** Author **all** levels — the complete
+   set is a required deliverable (§13, §16 Phase 6), not just a slice. Engine ships first
+   against a testable slice; Phase 6 then drives content to 100% coverage (zero `authoring`
+   stubs remaining).
+
+**Still open (sensible default assumed; override anytime):**
 - **B. Interview linkage depth (Phase 5):** a single seeded topic per module (assumed) vs.
   per-module custom prompts.
 
