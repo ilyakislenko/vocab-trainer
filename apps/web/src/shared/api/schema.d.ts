@@ -107,6 +107,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/review/skills/queue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Skill Review Queue */
+        get: operations["skill_review_queue_review_skills_queue_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/review/skills": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Skill Review */
+        post: operations["record_skill_review_review_skills_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/stats": {
         parameters: {
             query?: never;
@@ -345,6 +379,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/session/focus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Focus */
+        get: operations["focus_session_focus_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -543,6 +594,48 @@ export interface components {
             /** Locator */
             locator: string;
         };
+        /** CurriculumSkillItemOut */
+        CurriculumSkillItemOut: {
+            /** Id */
+            id: number;
+            /** Skill */
+            skill: string;
+            /** Module Id */
+            module_id: string;
+            /** Source Item Id */
+            source_item_id: string;
+            /** Is Leech */
+            is_leech: boolean;
+        };
+        /**
+         * CurriculumSkillReviewOut
+         * @description A due skill item with its source quiz item for the review UI.
+         */
+        CurriculumSkillReviewOut: {
+            /** Id */
+            id: number;
+            /** Skill */
+            skill: string;
+            /** Module Id */
+            module_id: string;
+            /** Source Item Id */
+            source_item_id: string;
+            /** Is Leech */
+            is_leech: boolean;
+            /** Type */
+            type: string;
+            /** Prompt */
+            prompt: string;
+            /** Options */
+            options?: string[] | null;
+            /**
+             * Answers
+             * @default []
+             */
+            answers: string[];
+            /** Explanation */
+            explanation: string;
+        };
         /** DeckOut */
         DeckOut: {
             /** Id */
@@ -689,6 +782,16 @@ export interface components {
              * @default []
              */
             words: components["schemas"]["WordTranslation"][];
+        };
+        /** SkillReviewIn */
+        SkillReviewIn: {
+            /** Skill Item Id */
+            skill_item_id: number;
+            /**
+             * Rating
+             * @enum {integer}
+             */
+            rating: 1 | 2 | 3 | 4;
         };
         /** StatsOut */
         StatsOut: {
@@ -967,6 +1070,70 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CardOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    skill_review_queue_review_skills_queue_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumSkillReviewOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_skill_review_review_skills_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SkillReviewIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumSkillItemOut"];
                 };
             };
             /** @description Validation Error */
@@ -1400,6 +1567,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CurriculumQuizGradeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    focus_session_focus_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumSkillItemOut"][];
                 };
             };
             /** @description Validation Error */

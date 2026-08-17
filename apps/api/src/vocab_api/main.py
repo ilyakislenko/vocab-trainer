@@ -10,6 +10,7 @@ from vocab_api.interfaces.http import (
     decks_router,
     practice_router,
     review_router,
+    session_router,
     stats_router,
 )
 from vocab_api.interfaces.http.errors import install_error_handlers
@@ -36,6 +37,7 @@ def create_app(container: Container | None = None) -> FastAPI:
     app.include_router(stats_router.router)
     app.include_router(practice_router.router)
     app.include_router(curriculum_router.router)
+    app.include_router(session_router.router)
     return app
 
 

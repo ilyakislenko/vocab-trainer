@@ -31,3 +31,20 @@ class QuizAttemptRow(SQLModel, table=True):
     given: str
     correct: bool
     answered_at: datetime
+
+
+class SkillItemRow(SQLModel, table=True):
+    """A spaced-repetition unit for a micro-skill (Phase 2)."""
+
+    __tablename__ = "skill_items"
+    id: int | None = Field(default=None, primary_key=True)
+    skill: str = Field(index=True, unique=True)
+    module_id: str = Field(index=True)
+    source_item_id: str
+    fsrs_state: int = 1
+    fsrs_step: int | None = 0
+    fsrs_stability: float | None = None
+    fsrs_difficulty: float | None = None
+    fsrs_due: datetime = Field(index=True)
+    fsrs_last_review: datetime | None = None
+    fsrs_lapses: int = 0

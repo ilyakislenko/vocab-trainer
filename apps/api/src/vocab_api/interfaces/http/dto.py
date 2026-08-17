@@ -45,6 +45,11 @@ class ReviewIn(BaseModel):
     rating: Literal[1, 2, 3, 4]
 
 
+class SkillReviewIn(BaseModel):
+    skill_item_id: int
+    rating: Literal[1, 2, 3, 4]
+
+
 class StatsOut(BaseModel):
     due_today: int
     total_reviews: int
@@ -222,3 +227,21 @@ class CurriculumQuizGradeOut(BaseModel):
     completed: bool
     next_module_id: str | None = None
     items: list[CurriculumQuizItemResultOut]
+
+
+class CurriculumSkillItemOut(BaseModel):
+    id: int
+    skill: str
+    module_id: str
+    source_item_id: str
+    is_leech: bool
+
+
+class CurriculumSkillReviewOut(CurriculumSkillItemOut):
+    """A due skill item with its source quiz item for the review UI."""
+
+    type: str
+    prompt: str
+    options: list[str] | None = None
+    answers: list[str] = []
+    explanation: str

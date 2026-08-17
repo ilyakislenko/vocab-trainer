@@ -104,9 +104,17 @@ export function CurriculumMap() {
 
   return (
     <div className="flex flex-col gap-8">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-3xl font-black tracking-tight text-foreground">{t("learn.title")}</h1>
-        <p className="text-sm font-medium text-muted-foreground">{t("learn.subtitle")}</p>
+      <header className="flex items-end justify-between gap-3">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-black tracking-tight text-foreground">{t("learn.title")}</h1>
+          <p className="text-sm font-medium text-muted-foreground">{t("learn.subtitle")}</p>
+        </div>
+        <Link
+          to="/learn/skills"
+          className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+        >
+          {t("learn.skillReviews")}
+        </Link>
       </header>
 
       {map.isLoading ? (

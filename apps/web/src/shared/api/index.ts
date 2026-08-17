@@ -14,6 +14,8 @@ export type {
   CurriculumQuizItem,
   CurriculumQuizItemResult,
   CurriculumReference,
+  CurriculumSkillItem,
+  CurriculumSkillReview,
   Deck,
   Feedback,
   ImportFormat,
@@ -22,6 +24,7 @@ export type {
   InterviewOut,
   Rating,
   RowError,
+  SkillReviewInput,
   Stats,
   WordHint,
 } from "./types";

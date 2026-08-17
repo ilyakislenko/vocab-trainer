@@ -1,7 +1,12 @@
 from datetime import UTC, datetime
 
 import pytest
-from tests.conftest import FixedClock
+from tests.conftest import (
+    FIXED_NOW,
+    FakeSkillItemRepository,
+    FixedClock,
+    StubScheduler,
+)
 
 from vocab_api.application.use_cases.quiz import GetModuleQuiz, GradeQuiz
 from vocab_api.domain.curriculum.level import Level
@@ -146,7 +151,9 @@ async def test_grade_quiz_grades_all_answers_and_records_attempts():
     attempts = FakeAttempts()
     clock = FixedClock(datetime(2026, 8, 17, 9, 0, tzinfo=UTC))
 
-    outcome = await GradeQuiz(content, progress, attempts, clock).execute(
+    outcome = await GradeQuiz(
+        content, progress, attempts, clock, FakeSkillItemRepository(), StubScheduler()
+    ).execute(
         "b1.grammar.articles",
         [("q1", "1"), ("q2", "the")],
     )
@@ -162,6 +169,49 @@ async def test_grade_quiz_grades_all_answers_and_records_attempts():
     ]
 
 
+async def test_grade_quiz_upserts_skill_item_on_failure():
+    content = FakeContent()
+    skills = FakeSkillItemRepository()
+
+    outcome = await GradeQuiz(
+        content, FakeProgress(), FakeAttempts(), FixedClock(), skills, StubScheduler()
+    ).execute(
+        "b1.grammar.articles",
+        [("q1", "0"), ("q2", "wrong")],
+    )
+
+    assert outcome.items[0].correct is False
+    assert outcome.items[1].correct is False
+    art_indefinite = await skills.by_skill("art.indefinite")
+    art_definite = await skills.by_skill("art.definite")
+    assert art_indefinite is not None
+    assert art_indefinite.module_id == "b1.grammar.articles"
+    assert art_indefinite.source_item_id == "q1"
+    assert art_indefinite.fsrs.due == FIXED_NOW
+    assert art_definite is not None
+    assert art_definite.source_item_id == "q2"
+
+
+async def test_grade_quiz_one_skill_item_per_skill_and_correct_answers_advance_it():
+    content = FakeContent()
+    clock = FixedClock(datetime(2026, 8, 17, 9, 0, tzinfo=UTC))
+    skills = FakeSkillItemRepository()
+    use_case = GradeQuiz(
+        content, FakeProgress(), FakeAttempts(), clock, skills, StubScheduler()
+    )
+    await use_case.execute("b1.grammar.articles", [("q1", "0")])
+    created = await skills.by_skill("art.indefinite")
+    assert created is not None and created.id is not None
+    before = created.fsrs.due
+
+    await use_case.execute("b1.grammar.articles", [("q1", "1")])
+
+    # The skill item is not duplicated; a correct answer advances its schedule.
+    assert await skills.by_skill("art.indefinite") is not None
+    assert (await skills.by_skill("art.indefinite")).id == created.id
+    assert (await skills.by_skill("art.indefinite")).fsrs.due > before
+
+
 async def test_grade_quiz_completes_module_once_lesson_read():
     content = FakeContent()
     progress = FakeProgress()
@@ -174,7 +224,9 @@ async def test_grade_quiz_completes_module_once_lesson_read():
     )
     attempts = FakeAttempts()
 
-    outcome = await GradeQuiz(content, progress, attempts, FixedClock()).execute(
+    outcome = await GradeQuiz(
+        content, progress, attempts, FixedClock(), FakeSkillItemRepository(), StubScheduler()
+    ).execute(
         "b1.grammar.articles",
         [("q1", "0"), ("q2", "the")],
     )
@@ -187,7 +239,9 @@ async def test_grade_quiz_skips_unknown_item_ids():
     content = FakeContent()
     attempts = FakeAttempts()
 
-    outcome = await GradeQuiz(content, FakeProgress(), attempts, FixedClock()).execute(
+    outcome = await GradeQuiz(
+        content, FakeProgress(), attempts, FixedClock(), FakeSkillItemRepository(), StubScheduler()
+    ).execute(
         "b1.grammar.articles",
         [("q1", "1"), ("missing", "x")],
     )
@@ -198,6 +252,9 @@ async def test_grade_quiz_skips_unknown_item_ids():
 
 async def test_grade_quiz_missing_module_raises():
     with pytest.raises(CurriculumQuizNotFound):
-        await GradeQuiz(FakeContent(), FakeProgress(), FakeAttempts(), FixedClock()).execute(
+        await GradeQuiz(
+            FakeContent(), FakeProgress(), FakeAttempts(), FixedClock(),
+            FakeSkillItemRepository(), StubScheduler(),
+        ).execute(
             "x1.missing.slug", []
         )

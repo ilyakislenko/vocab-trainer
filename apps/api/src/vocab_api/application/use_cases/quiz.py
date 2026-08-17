@@ -2,22 +2,28 @@
 
 Only deterministic grading happens here (no LLM calls): each answer goes
 through the pure `grade()` function. A graded miss on an `error_correction`
-item with `llm_gradable` is flagged with `needs_llm` — the LLM path arrives
-in Phase 2. Grading always records the attempt and, once the lesson is read,
-completes the module (no score threshold).
+item with `llm_gradable` is flagged with `needs_llm`; the LLM path is future
+work. Grading always records the attempt, upserts SkillItems for failed
+skills (Phase 2) and, once the lesson is read, completes the module (no score
+threshold).
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 
 from vocab_api.application.ports.clock import Clock
 from vocab_api.application.ports.curriculum_content import CurriculumContent
 from vocab_api.application.ports.curriculum_repos import (
     ModuleProgressRepository,
     QuizAttemptRepository,
+    SkillItemRepository,
 )
+from vocab_api.application.ports.scheduler import Scheduler
 from vocab_api.application.use_cases.curriculum import GetRecommendedModule
+from vocab_api.domain.card.rating import Rating
 from vocab_api.domain.curriculum.progress import ModuleProgress, ModuleStatus
 from vocab_api.domain.curriculum.quiz import Quiz, grade
+from vocab_api.domain.curriculum.skill_item import SkillItem
 from vocab_api.domain.shared.errors import CurriculumQuizNotFound
 
 
@@ -63,11 +69,15 @@ class GradeQuiz:
         progress: ModuleProgressRepository,
         attempts: QuizAttemptRepository,
         clock: Clock,
+        skill_items: SkillItemRepository,
+        scheduler: Scheduler,
     ) -> None:
         self._content = content
         self._progress = progress
         self._attempts = attempts
         self._clock = clock
+        self._skill_items = skill_items
+        self._scheduler = scheduler
 
     async def execute(
         self, module_id: str, answers: list[tuple[str, str]]
@@ -101,6 +111,8 @@ class GradeQuiz:
                 )
             )
 
+        await self._sync_skill_items(module_id, results, now)
+
         graded = len(results)
         score = sum(1 for r in results if r.correct) / graded * 100.0 if graded else 0.0
         progress = await self._progress.mark_quiz_attempted(module_id, score, now)
@@ -112,3 +124,35 @@ class GradeQuiz:
             status=progress.status,
             next_module_id=next_module,
         )
+
+    async def _sync_skill_items(
+        self, module_id: str, results: list[QuizItemResult], now: datetime
+    ) -> None:
+        """Bridge quiz → spaced repetition: one SkillItem per failed skill.
+
+        Per attempt a skill is handled once (first item decides): a miss
+        upserts a due-now SkillItem; a hit on an existing skill item is
+        recorded as a Good review so mastery decays correctly (§8.2).
+        """
+        handled: set[str] = set()
+        for result in results:
+            if result.skill in handled:
+                continue
+            existing = await self._skill_items.by_skill(result.skill)
+            if not result.correct:
+                if existing is None:
+                    await self._skill_items.add(
+                        SkillItem.create(
+                            skill=result.skill,
+                            module_id=module_id,
+                            source_item_id=result.item_id,
+                            now=now,
+                        )
+                    )
+            elif existing is not None:
+                await self._skill_items.save(
+                    existing.with_fsrs(
+                        self._scheduler.review(existing.fsrs, Rating.GOOD, now)
+                    )
+                )
+            handled.add(result.skill)

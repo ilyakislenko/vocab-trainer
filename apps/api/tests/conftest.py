@@ -1,13 +1,16 @@
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 from vocab_api.domain.card.card import Card
+from vocab_api.domain.card.fsrs_state import FsrsState
+from vocab_api.domain.card.rating import Rating
+from vocab_api.domain.curriculum.skill_item import SkillItem
 from vocab_api.domain.deck.deck import Deck
 from vocab_api.domain.practice.feedback import Feedback, Verdict
 from vocab_api.domain.practice.interview import InterviewEvaluation, InterviewQuestion
 from vocab_api.domain.practice.sentence_attempt import SentenceAttempt
 from vocab_api.domain.practice.word_hint import WordHint
 from vocab_api.domain.review.review_log import ReviewLogEntry
-from vocab_api.domain.shared.errors import CardNotFound, DeckNotFound
+from vocab_api.domain.shared.errors import CardNotFound, DeckNotFound, SkillItemNotFound
 
 FIXED_NOW = datetime(2026, 8, 13, 12, 0, tzinfo=UTC)
 
@@ -18,6 +21,20 @@ class FixedClock:
 
     def now(self) -> datetime:
         return self._now
+
+
+class StubScheduler:
+    """Deterministic scheduler: a rating advances due by rating days and lands
+    the item in the Review state, preserving lapses."""
+
+    def review(self, state: FsrsState, rating: Rating, now: datetime) -> FsrsState:
+        return FsrsState(
+            due=now + timedelta(days=int(rating)),
+            state=2,
+            stability=1.0,
+            last_review=now,
+            lapses=state.lapses,
+        )
 
 
 class FakeDeckRepository:
@@ -144,6 +161,49 @@ class FakeReviewLogRepository:
             if card.deck_id == deck_id and entry.reviewed_at.strftime("%Y-%m-%d") == today:
                 count += 1
         return [{"date": today, "count": count}] if count else []
+
+
+class FakeSkillItemRepository:
+    def __init__(self) -> None:
+        self._items: dict[int, SkillItem] = {}
+        self._by_skill: dict[str, SkillItem] = {}
+        self._seq = 0
+
+    async def by_skill(self, skill: str) -> SkillItem | None:
+        return self._by_skill.get(skill)
+
+    async def get(self, skill_item_id: int) -> SkillItem:
+        if skill_item_id not in self._items:
+            raise SkillItemNotFound(skill_item_id)
+        return self._items[skill_item_id]
+
+    async def add(self, item: SkillItem) -> SkillItem:
+        self._seq += 1
+        stored = SkillItem(
+            id=self._seq,
+            skill=item.skill,
+            module_id=item.module_id,
+            source_item_id=item.source_item_id,
+            fsrs=item.fsrs,
+        )
+        self._items[self._seq] = stored
+        self._by_skill[stored.skill] = stored
+        return stored
+
+    async def save(self, item: SkillItem) -> None:
+        assert item.id is not None
+        self._items[item.id] = item
+        self._by_skill[item.skill] = item
+
+    async def due(self, now: datetime, limit: int) -> list[SkillItem]:
+        due = [i for i in self._items.values() if i.fsrs.due <= now]
+        due.sort(key=lambda i: i.fsrs.due)
+        return due[:limit]
+
+    async def leeches(self, limit: int) -> list[SkillItem]:
+        leeches = [i for i in self._items.values() if i.is_leech]
+        leeches.sort(key=lambda i: (-i.fsrs.lapses, i.fsrs.due))
+        return leeches[:limit]
 
 
 class FakeSentenceAttemptRepository:

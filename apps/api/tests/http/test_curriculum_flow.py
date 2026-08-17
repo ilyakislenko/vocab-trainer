@@ -215,3 +215,92 @@ async def test_quiz_best_score_reflected_on_map(client: httpx.AsyncClient):
     b1 = next(s for s in resp.json()["levels"] if s["level"] == "B1")
     module = next(m for m in b1["modules"] if m["id"] == "b1.grammar.articles")
     assert module["quiz_best_score"] == pytest.approx(50.0)
+
+
+async def test_grade_quiz_creates_skill_items_for_failures(client: httpx.AsyncClient):
+    answers = [
+        {"item_id": "b1.grammar.articles.q1", "given": "99"},
+        {"item_id": "b1.grammar.articles.q4", "given": "wrong"},
+    ]
+    resp = await client.post(
+        "/curriculum/quiz/grade",
+        json={"module_id": "b1.grammar.articles", "answers": answers},
+    )
+    assert resp.status_code == 200
+    by_id = {item["item_id"]: item for item in resp.json()["items"]}
+    assert by_id["b1.grammar.articles.q1"]["correct"] is False
+    assert by_id["b1.grammar.articles.q4"]["correct"] is False
+
+    resp = await client.get("/review/skills/queue?limit=20")
+    assert resp.status_code == 200
+    queue = resp.json()
+    skills = {item["skill"] for item in queue}
+    assert "art.indefinite" in skills
+    assert "art.definite" in skills
+    for item in queue:
+        assert item["id"] > 0
+        assert item["module_id"] == "b1.grammar.articles"
+        assert item["source_item_id"]
+        assert item["prompt"]
+        assert item["explanation"]
+        assert item["answers"]
+        assert item["is_leech"] is False
+
+
+async def test_skill_review_queue_respects_limit_and_advances(client: httpx.AsyncClient):
+    await client.post(
+        "/curriculum/quiz/grade",
+        json={
+            "module_id": "b1.grammar.articles",
+            "answers": [{"item_id": "b1.grammar.articles.q1", "given": "99"}],
+        },
+    )
+    queue = (await client.get("/review/skills/queue?limit=1")).json()
+    assert len(queue) == 1
+    item = queue[0]
+    assert item["skill"] == "art.indefinite"
+    assert item["type"] == "mcq"
+    assert item["answers"] == ["a"]
+
+    resp = await client.post(
+        "/review/skills", json={"skill_item_id": item["id"], "rating": 3}
+    )
+    assert resp.status_code == 200
+    assert resp.json()["id"] == item["id"]
+    assert resp.json()["is_leech"] is False
+
+
+async def test_skill_review_missing_item_returns_404(client: httpx.AsyncClient):
+    resp = await client.post("/review/skills", json={"skill_item_id": 99999, "rating": 3})
+    assert resp.status_code == 404
+
+
+async def test_skill_review_invalid_rating_returns_422(client: httpx.AsyncClient):
+    resp = await client.post("/review/skills", json={"skill_item_id": 1, "rating": 7})
+    assert resp.status_code == 422
+
+
+async def test_focus_lists_leeches(client: httpx.AsyncClient):
+    await client.post(
+        "/curriculum/quiz/grade",
+        json={
+            "module_id": "b1.grammar.articles",
+            "answers": [{"item_id": "b1.grammar.articles.q1", "given": "99"}],
+        },
+    )
+    item = (await client.get("/review/skills/queue?limit=1")).json()[0]
+
+    assert (await client.get("/session/focus")).json() == []
+
+    # Graduate the item into Review state, then fail it four times.
+    for rating in (3, 3, 1, 1, 1, 1):
+        resp = await client.post(
+            "/review/skills",
+            json={"skill_item_id": item["id"], "rating": rating},
+        )
+        assert resp.status_code == 200
+
+    focus = (await client.get("/session/focus")).json()
+    assert len(focus) == 1
+    assert focus[0]["skill"] == "art.indefinite"
+    assert focus[0]["is_leech"] is True

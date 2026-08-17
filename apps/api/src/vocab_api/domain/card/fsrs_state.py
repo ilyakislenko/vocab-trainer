@@ -10,6 +10,7 @@ class FsrsState:
     stability: float | None = None
     difficulty: float | None = None
     last_review: datetime | None = None
+    lapses: int = 0  # count of review-state failures; drives leech detection
 
     @staticmethod
     def new(now: datetime) -> "FsrsState":

@@ -21,6 +21,7 @@ import { MascotDemoPage } from "@/pages/mascot";
 import { PracticePage } from "@/pages/practice";
 import { QuizPage } from "@/pages/quiz";
 import { ReviewPage } from "@/pages/review";
+import { ReviewSkillsPage } from "@/pages/review-skills";
 import { StatsPage } from "@/pages/stats";
 import { useI18n } from "@/shared/lib/i18n";
 import { Providers } from "./providers";
@@ -158,6 +159,7 @@ function AppShell() {
             <Route path="/learn" element={<LearnPage />} />
             <Route path="/learn/:moduleId" element={<LessonPage />} />
             <Route path="/learn/:moduleId/quiz" element={<QuizPage />} />
+            <Route path="/learn/skills" element={<ReviewSkillsPage />} />
             <Route path="/practice" element={<PracticePage deckId={deckId} />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/import" element={<ImportPage deckId={deckId} />} />

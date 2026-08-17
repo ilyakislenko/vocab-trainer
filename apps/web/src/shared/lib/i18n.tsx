@@ -233,6 +233,28 @@ const dict: Translations = {
   "review.ratingGood": { en: "Good", ru: "Хорошо" },
   "review.ratingEasy": { en: "Easy", ru: "Легко" },
 
+  // Skill reviews (Phase 2)
+  "skill.title": { en: "Skill reviews", ru: "Повторение навыков" },
+  "skill.hint": {
+    en: "Skills you got wrong in quizzes resurface here on a schedule.",
+    ru: "Навыки, в которых ты ошибся в тестах, появляются здесь по расписанию.",
+  },
+  "skill.answers": { en: "Answer", ru: "Ответ" },
+  "skill.explanation": { en: "Why", ru: "Почему" },
+  "skill.reviewed": { en: "Skill items reviewed", ru: "Навыков повторено" },
+  "skill.answerYourself": {
+    en: "Recall it, then reveal the answer and rate yourself.",
+    ru: "Вспомни, затем покажи ответ и оцени себя.",
+  },
+
+  // Focus (leech) list
+  "focus.title": { en: "Focus — weak spots", ru: "Фокус — слабые места" },
+  "focus.empty": {
+    en: "No weak spots yet — keep quizzing!",
+    ru: "Слабых мест пока нет — продолжай тесты!",
+  },
+  "focus.leeches": { en: "skills to drill", ru: "навыков для отработки" },
+
   // Stats
   "stats.dueToday": { en: "Due today", ru: "На сегодня" },
   "stats.totalReviews": { en: "Total reviews", ru: "Всего повторов" },
@@ -302,6 +324,7 @@ const dict: Translations = {
   "learn.skills": { en: "Skills", ru: "Навыки" },
   "learn.references": { en: "References", ru: "Источники" },
   "learn.estMinutes": { en: "{n} min read", ru: "{n} мин чтения" },
+  "learn.skillReviews": { en: "Skill reviews", ru: "Повторение навыков" },
 
   // Quiz
   "quiz.title": { en: "Quiz", ru: "Тест" },

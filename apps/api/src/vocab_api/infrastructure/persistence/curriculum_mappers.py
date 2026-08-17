@@ -1,11 +1,14 @@
 from datetime import UTC, datetime
 from typing import overload
 
+from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.curriculum.level import Level
 from vocab_api.domain.curriculum.progress import LearnerProfile, ModuleProgress, ModuleStatus
+from vocab_api.domain.curriculum.skill_item import SkillItem
 from vocab_api.infrastructure.persistence.curriculum_tables import (
     LearnerProfileRow,
     ModuleProgressRow,
+    SkillItemRow,
 )
 
 
@@ -57,4 +60,38 @@ def module_progress_to_row(progress: ModuleProgress) -> ModuleProgressRow:
         lesson_read_at=progress.lesson_read_at,
         quiz_best_score=progress.quiz_best_score,
         completed_at=progress.completed_at,
+    )
+
+
+def skill_item_from_row(row: SkillItemRow) -> SkillItem:
+    return SkillItem(
+        id=row.id,
+        skill=row.skill,
+        module_id=row.module_id,
+        source_item_id=row.source_item_id,
+        fsrs=FsrsState(
+            due=_as_utc(row.fsrs_due),
+            state=row.fsrs_state,
+            step=row.fsrs_step,
+            stability=row.fsrs_stability,
+            difficulty=row.fsrs_difficulty,
+            last_review=_as_utc(row.fsrs_last_review),
+            lapses=row.fsrs_lapses,
+        ),
+    )
+
+
+def skill_item_to_row(item: SkillItem) -> SkillItemRow:
+    return SkillItemRow(
+        id=item.id,
+        skill=item.skill,
+        module_id=item.module_id,
+        source_item_id=item.source_item_id,
+        fsrs_state=item.fsrs.state,
+        fsrs_step=item.fsrs.step,
+        fsrs_stability=item.fsrs.stability,
+        fsrs_difficulty=item.fsrs.difficulty,
+        fsrs_due=item.fsrs.due,
+        fsrs_last_review=item.fsrs.last_review,
+        fsrs_lapses=item.fsrs.lapses,
     )

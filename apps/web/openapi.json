@@ -310,6 +310,90 @@
         }
       }
     },
+    "/review/skills/queue": {
+      "get": {
+        "tags": ["review"],
+        "summary": "Skill Review Queue",
+        "operationId": "skill_review_queue_review_skills_queue_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CurriculumSkillReviewOut"
+                  },
+                  "title": "Response Skill Review Queue Review Skills Queue Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/review/skills": {
+      "post": {
+        "tags": ["review"],
+        "summary": "Record Skill Review",
+        "operationId": "record_skill_review_review_skills_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkillReviewIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumSkillItemOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/stats": {
       "get": {
         "tags": ["stats"],
@@ -867,6 +951,51 @@
           }
         }
       }
+    },
+    "/session/focus": {
+      "get": {
+        "tags": ["session"],
+        "summary": "Focus",
+        "operationId": "focus_session_focus_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 3,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CurriculumSkillItemOut"
+                  },
+                  "title": "Response Focus Session Focus Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1398,6 +1527,104 @@
         "required": ["book", "locator"],
         "title": "CurriculumReferenceOut"
       },
+      "CurriculumSkillItemOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "source_item_id": {
+            "type": "string",
+            "title": "Source Item Id"
+          },
+          "is_leech": {
+            "type": "boolean",
+            "title": "Is Leech"
+          }
+        },
+        "type": "object",
+        "required": ["id", "skill", "module_id", "source_item_id", "is_leech"],
+        "title": "CurriculumSkillItemOut"
+      },
+      "CurriculumSkillReviewOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "source_item_id": {
+            "type": "string",
+            "title": "Source Item Id"
+          },
+          "is_leech": {
+            "type": "boolean",
+            "title": "Is Leech"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
+          "answers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Answers",
+            "default": []
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "skill",
+          "module_id",
+          "source_item_id",
+          "is_leech",
+          "type",
+          "prompt",
+          "explanation"
+        ],
+        "title": "CurriculumSkillReviewOut",
+        "description": "A due skill item with its source quiz item for the review UI."
+      },
       "DeckOut": {
         "properties": {
           "id": {
@@ -1720,6 +1947,22 @@
         "type": "object",
         "required": ["full"],
         "title": "SentenceTranslation"
+      },
+      "SkillReviewIn": {
+        "properties": {
+          "skill_item_id": {
+            "type": "integer",
+            "title": "Skill Item Id"
+          },
+          "rating": {
+            "type": "integer",
+            "enum": [1, 2, 3, 4],
+            "title": "Rating"
+          }
+        },
+        "type": "object",
+        "required": ["skill_item_id", "rating"],
+        "title": "SkillReviewIn"
       },
       "StatsOut": {
         "properties": {

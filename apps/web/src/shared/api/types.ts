@@ -26,3 +26,6 @@ export type CurriculumQuizGrade = components["schemas"]["CurriculumQuizGradeOut"
 export type CurriculumQuizGradeInput = components["schemas"]["CurriculumQuizGradeIn"];
 export type CurriculumQuizAnswer = components["schemas"]["CurriculumQuizAnswerIn"];
 export type CurriculumQuizItemResult = components["schemas"]["CurriculumQuizItemResultOut"];
+export type CurriculumSkillItem = components["schemas"]["CurriculumSkillItemOut"];
+export type CurriculumSkillReview = components["schemas"]["CurriculumSkillReviewOut"];
+export type SkillReviewInput = components["schemas"]["SkillReviewIn"];

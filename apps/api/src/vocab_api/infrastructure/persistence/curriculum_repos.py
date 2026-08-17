@@ -6,22 +6,28 @@ from vocab_api.application.ports.curriculum_repos import (
     LearnerProfileRepository,
     ModuleProgressRepository,
     QuizAttemptRepository,
+    SkillItemRepository,
 )
 from vocab_api.domain.curriculum.progress import (
     LearnerProfile,
     ModuleProgress,
     ModuleStatus,
 )
+from vocab_api.domain.curriculum.skill_item import LEECH_LAPSES, SkillItem
+from vocab_api.domain.shared.errors import SkillItemNotFound
 from vocab_api.infrastructure.persistence.curriculum_mappers import (
     learner_profile_from_row,
     learner_profile_to_row,
     module_progress_from_row,
     module_progress_to_row,
+    skill_item_from_row,
+    skill_item_to_row,
 )
 from vocab_api.infrastructure.persistence.curriculum_tables import (
     LearnerProfileRow,
     ModuleProgressRow,
     QuizAttemptRow,
+    SkillItemRow,
 )
 from vocab_api.infrastructure.persistence.engine import Database
 
@@ -140,3 +146,65 @@ class SqlQuizAttemptRepository(QuizAttemptRepository):
         async with self._db.session() as session:
             session.add(row)
             await session.commit()
+
+
+class SqlSkillItemRepository(SkillItemRepository):
+    def __init__(self, db: Database) -> None:
+        self._db = db
+
+    async def by_skill(self, skill: str) -> SkillItem | None:
+        statement = select(SkillItemRow).where(SkillItemRow.skill == skill).limit(1)
+        async with self._db.session() as session:
+            row = (await session.execute(statement)).scalar_one_or_none()
+        return skill_item_from_row(row) if row is not None else None
+
+    async def get(self, skill_item_id: int) -> SkillItem:
+        async with self._db.session() as session:
+            row = await session.get(SkillItemRow, skill_item_id)
+        if row is None:
+            raise SkillItemNotFound(skill_item_id)
+        return skill_item_from_row(row)
+
+    async def add(self, item: SkillItem) -> SkillItem:
+        row = skill_item_to_row(item)
+        async with self._db.session() as session:
+            session.add(row)
+            await session.commit()
+            await session.refresh(row)
+        return skill_item_from_row(row)
+
+    async def save(self, item: SkillItem) -> None:
+        row = skill_item_to_row(item)
+        async with self._db.session() as session:
+            await session.merge(row)
+            await session.commit()
+
+    async def due(self, now: datetime, limit: int) -> list[SkillItem]:
+        # SkillItemRow.fsrs_due is a plain datetime class attribute; mypy can't
+        # see the runtime InstrumentedAttribute order_by() expects (same quirk
+        # as CardRow).
+        statement = (
+            select(SkillItemRow)
+            .where(SkillItemRow.fsrs_due <= now)
+            .order_by(SkillItemRow.fsrs_due)  # type: ignore[arg-type]
+            .limit(limit)
+        )
+        async with self._db.session() as session:
+            rows = (await session.execute(statement)).scalars().all()
+        return [skill_item_from_row(row) for row in rows]
+
+    async def leeches(self, limit: int) -> list[SkillItem]:
+        # Leech detection orders the weakest skills first: highest lapse count,
+        # then the soonest due.
+        statement = (
+            select(SkillItemRow)
+            .where(SkillItemRow.fsrs_lapses >= LEECH_LAPSES)
+            .order_by(
+                SkillItemRow.fsrs_lapses.desc(),  # type: ignore[attr-defined]  # sqlmodel class attr is typed int
+                SkillItemRow.fsrs_due,  # type: ignore[arg-type]  # same InstrumentedAttribute quirk
+            )
+            .limit(limit)
+        )
+        async with self._db.session() as session:
+            rows = (await session.execute(statement)).scalars().all()
+        return [skill_item_from_row(row) for row in rows]
