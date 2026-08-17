@@ -61,17 +61,44 @@ Named thresholds (constants): `GOOD_THRESHOLD`, `WEAK_THRESHOLD` map a phoneme
 score → `Verdict`. Pure functions; unit-tested.
 
 ## 4. GOP method (what the scorer computes)
-1. **G2P:** target text → target phoneme sequence (e.g. `g2p_en` or espeak-ng
-   `phonemizer`), so we know the expected phonemes per word.
-2. **Acoustic model:** a wav2vec2 CTC **phoneme** model (concrete candidate:
-   `facebook/wav2vec2-lv-60-espeak-cv-ft`, IPA/espeak output).
-3. **Forced alignment:** align the audio frames to the target phoneme sequence
-   (torchaudio `forced_align`, or MFA).
-4. **GOP per phoneme:** the mean frame-level log-posterior of the *target* phoneme
-   over its aligned segment, normalised to 0..1. Low → mispronounced. Aggregate to
-   word and overall scores. (Classic GOP; wav2vec2 variant.)
-5. Output the `PronunciationAssessment`. The exact model/lib is the implementer's
-   call as long as the port contract and output shape hold.
+
+**Whisper alone is not enough — and is not the phoneme model.** Whisper outputs
+orthographic words/BPE tokens, not phonemes. Its only role here is an *optional*
+transcript + rough word timings ("what did they say", for the degraded/STT path).
+The actual pronunciation scoring is a **wav2vec2 phoneme model + forced alignment
++ GOP** — do not expect Whisper to score sounds.
+
+Pipeline:
+1. **G2P:** target text → expected phoneme sequence (`g2p_en`, or espeak-ng
+   `phonemizer`), so we know which phonemes each word should contain.
+2. **Phoneme acoustic model:** a wav2vec2 CTC phoneme model — concrete candidate
+   `facebook/wav2vec2-lv-60-espeak-cv-ft` (IPA/espeak output) — giving per-frame
+   phoneme posteriors.
+3. **Forced alignment:** align the audio to the expected phoneme sequence
+   (torchaudio `forced_align`; or Montreal Forced Aligner / Gentle as a Kaldi-based
+   alternative).
+4. **GOP per phoneme:** mean frame-level log-posterior of the *target* phoneme over
+   its aligned segment, normalised to 0..1. Low → mispronounced. Aggregate to word
+   and overall scores. (Classic GOP; wav2vec2 variant.)
+5. Output the `PronunciationAssessment`.
+
+**Tooling menu (implementer/owner picks; the port contract is what's fixed):**
+- **WhisperX** — Whisper + wav2vec2 forced alignment in one package; convenient if
+  we also want the transcript. Gives char/near-phoneme timings, *not* GOP scores by
+  itself — still pair with posteriors for scoring.
+- **wav2vec2-lv-60-espeak-cv-ft** — direct IPA phoneme output; the recommended core
+  for GOP scoring.
+- **Allosaurus** — universal phoneme recogniser (free phoneme decoding, no target
+  needed). Good complement for **mispronunciation detection**: decode what was
+  actually said, diff against the expected phonemes → "said /s/ instead of /θ/".
+  Consider running it alongside GOP to power the per-phoneme feedback text.
+- **MFA / Gentle** — industrial Kaldi forced aligners for precise phoneme timings if
+  torchaudio alignment proves too coarse.
+
+Recommended default: **wav2vec2-lv-60-espeak-cv-ft for GOP scoring**, optionally
+**Allosaurus** for the "what you actually said" diff, Whisper/WhisperX only if a
+word transcript is wanted. The exact stack is the implementer's call as long as the
+port contract and output shape hold.
 
 ## 5. The rtx inference service (separate component)
 A minimal standalone Python service (its own venv/deps: torch, transformers,
