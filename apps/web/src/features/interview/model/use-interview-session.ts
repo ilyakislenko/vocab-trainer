@@ -56,11 +56,14 @@ const DEFAULT_CONFIG: SessionConfig = {
 
 const EMPTY_STATS: SessionStats = { questions: 0, ok: 0, needsWork: 0, corrections: [] };
 
-export function useInterviewSession() {
+export function useInterviewSession(initialTopic?: string) {
   const { t } = useI18n();
   const interview = useInterview();
   const [phase, setPhase] = useState<SessionPhase>("setup");
-  const [config, setConfig] = useState<SessionConfig>(DEFAULT_CONFIG);
+  const [config, setConfig] = useState<SessionConfig>({
+    ...DEFAULT_CONFIG,
+    ...(initialTopic ? { topic: initialTopic } : {}),
+  });
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stats, setStats] = useState<SessionStats>(EMPTY_STATS);
   const [reaction, setReaction] = useState<VerdictReaction | null>(null);

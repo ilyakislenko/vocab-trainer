@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useDeckCards, useReviewQueue, useTopicWords } from "@/entities/card";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
@@ -16,8 +17,10 @@ const MODES: { value: Mode; labelKey: string }[] = [
 
 export function PracticePage({ deckId }: { deckId: number | null }) {
   const { t } = useI18n();
-  const [mode, setMode] = useState<Mode>("due");
-  const [section, setSection] = useState<string>("");
+  const [searchParams] = useSearchParams();
+  const linkedSection = searchParams.get("section") ?? "";
+  const [mode, setMode] = useState<Mode>(linkedSection ? "all" : "due");
+  const [section, setSection] = useState<string>(linkedSection);
   const [topic, setTopic] = useState("");
   const [appliedTopic, setAppliedTopic] = useState<string | null>(null);
 
@@ -28,7 +31,13 @@ export function PracticePage({ deckId }: { deckId: number | null }) {
   if (deckId === null) return <p className="text-muted-foreground">{t("practice.noDeck")}</p>;
 
   const sections = [...new Set((all.data ?? []).map((c) => c.section).filter(Boolean))];
-  const sectioned = section ? (all.data ?? []).filter((c) => c.section === section) : all.data;
+  const allCards = all.data;
+  const sectioned =
+    allCards === undefined
+      ? undefined
+      : section
+        ? allCards.filter((c) => c.section === section)
+        : allCards;
 
   const cards = mode === "due" ? due.data : mode === "all" ? sectioned : topicWords.data;
   const isLoading =

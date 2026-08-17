@@ -60,6 +60,8 @@ async def test_today_include_produce_after_first_review(client: httpx.AsyncClien
     produce = next(s for s in steps if s["kind"] == "produce")
     assert produce["word"] == word
     assert produce["card_id"] == card_id
+    assert produce["vocab_sections"] == []
+    assert produce["interview_topic"] is None
 
 
 async def test_today_switches_to_take_quiz_after_lesson_read(client: httpx.AsyncClient):

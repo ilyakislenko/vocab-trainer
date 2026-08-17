@@ -18,6 +18,7 @@ from vocab_api.application.use_cases.practice import (
     SuggestExample,
     TranslateSentence,
 )
+from vocab_api.application.use_cases.progress import GetProgress
 from vocab_api.application.use_cases.quiz import GetModuleQuiz, GradeQuiz
 from vocab_api.application.use_cases.review import GetReviewQueue, RecordReview
 from vocab_api.application.use_cases.skills import (
@@ -133,6 +134,7 @@ class Container:
             self.get_recommended_module,
             clock,
         )
+        self.get_progress = GetProgress(curriculum, module_progress, decks, logs)
 
         self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
         self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)

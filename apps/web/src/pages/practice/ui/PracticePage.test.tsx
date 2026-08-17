@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { renderWithProviders, server } from "@/shared/test";
 import { PracticePage } from "./PracticePage";
@@ -12,15 +13,43 @@ vi.mock("@/shared/lib/speech", () => ({
   isSpeechRecognitionSupported: vi.fn(() => false),
 }));
 
+function renderPage(deckId: number | null, initialEntries?: string[]) {
+  return renderWithProviders(
+    <MemoryRouter initialEntries={initialEntries}>
+      <PracticePage deckId={deckId} />
+    </MemoryRouter>,
+  );
+}
+
 describe("PracticePage", () => {
   it("is empty without a deck", () => {
-    renderWithProviders(<PracticePage deckId={null} />);
+    renderPage(null);
     expect(screen.getByText(/create a deck above|создай колоду/i)).toBeInTheDocument();
   });
 
   it("practises due words by default", async () => {
-    renderWithProviders(<PracticePage deckId={1} />);
+    renderPage(1);
     await waitFor(() => expect(document.querySelector(".text-4xl")).toHaveTextContent("run"));
+  });
+
+  it("opens the section linked via the query param", async () => {
+    server.use(
+      http.get("/api/decks/:id/cards", () =>
+        HttpResponse.json([
+          { id: 1, word: "run", translation: "бежать", transcription: null, section: "main" },
+          {
+            id: 2,
+            word: "jump",
+            translation: "прыгать",
+            transcription: null,
+            section: "elementary",
+          },
+        ]),
+      ),
+    );
+    renderPage(1, ["/practice?section=main"]);
+    await waitFor(() => expect(document.querySelector(".text-4xl")).toHaveTextContent("run"));
+    expect(document.querySelector(".text-4xl")).not.toHaveTextContent("jump");
   });
 
   it("filters all words by section", async () => {
@@ -38,7 +67,7 @@ describe("PracticePage", () => {
         ]),
       ),
     );
-    renderWithProviders(<PracticePage deckId={1} />);
+    renderPage(1);
     await userEvent.click(screen.getByRole("button", { name: /all words|все слова/i }));
     await waitFor(() => expect(document.querySelector(".text-4xl")).toHaveTextContent("run"));
 
@@ -57,7 +86,7 @@ describe("PracticePage", () => {
         ]),
       ),
     );
-    renderWithProviders(<PracticePage deckId={1} />);
+    renderPage(1);
     await userEvent.click(screen.getByRole("button", { name: /by topic|по теме/i }));
     await userEvent.type(screen.getByRole("textbox"), "travelling");
     await userEvent.click(screen.getByRole("button", { name: /find topic words|найти слова/i }));

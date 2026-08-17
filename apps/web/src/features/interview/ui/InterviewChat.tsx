@@ -23,7 +23,7 @@ const SCENES: { value: CallSceneKey; labelKey: string }[] = [
   { value: "night", labelKey: "interview.callSceneNight" },
 ];
 
-export function InterviewChat() {
+export function InterviewChat({ initialTopic }: { initialTopic?: string }) {
   const { t } = useI18n();
   const {
     phase,
@@ -41,7 +41,7 @@ export function InterviewChat() {
     steerTopic,
     end,
     backToSetup,
-  } = useInterviewSession();
+  } = useInterviewSession(initialTopic);
 
   const [input, setInput] = useState("");
   const [customTopic, setCustomTopic] = useState("");

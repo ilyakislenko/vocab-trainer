@@ -1,5 +1,5 @@
 import Markdown from "react-markdown";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import { useLesson, useMarkLessonRead } from "@/entities/curriculum";
 import { useI18n } from "@/shared/lib/i18n";
@@ -66,6 +66,29 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
           </span>
         </div>
         <h1 className="text-2xl font-black tracking-tight text-foreground">{meta.title}</h1>
+        {meta.vocab?.length ? (
+          <div className="flex flex-wrap gap-2">
+            {meta.vocab.map((section) => (
+              <Link
+                key={section}
+                to={`/practice?section=${encodeURIComponent(section)}`}
+                className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary"
+              >
+                {t("learn.practiceSection")}: {section}
+              </Link>
+            ))}
+          </div>
+        ) : null}
+        {meta.interview_topic ? (
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to={`/interview?topic=${encodeURIComponent(meta.interview_topic)}`}
+              className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary"
+            >
+              {t("learn.interviewTopic")}: {meta.interview_topic}
+            </Link>
+          </div>
+        ) : null}
         <div className="flex flex-wrap gap-2">
           <Button
             onClick={handleMarkRead}

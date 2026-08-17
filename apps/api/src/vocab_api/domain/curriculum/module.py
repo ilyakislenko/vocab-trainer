@@ -23,3 +23,5 @@ class Module:
     references: tuple[Reference, ...]
     estimated_minutes: int = 5
     order: int = 0
+    vocab: tuple[str, ...] = ()
+    interview_topic: str | None = None

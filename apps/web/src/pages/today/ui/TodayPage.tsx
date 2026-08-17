@@ -1,5 +1,6 @@
 import { useI18n } from "@/shared/lib/i18n";
 import { DailyPlan } from "@/widgets/daily-plan";
+import { ProgressDashboard } from "@/widgets/progress-dashboard";
 
 export function TodayPage() {
   const { t } = useI18n();
@@ -11,6 +12,7 @@ export function TodayPage() {
         </h2>
         <p className="mt-1 text-sm font-bold text-muted-foreground">{t("today.pageHint")}</p>
       </header>
+      <ProgressDashboard />
       <DailyPlan />
     </div>
   );

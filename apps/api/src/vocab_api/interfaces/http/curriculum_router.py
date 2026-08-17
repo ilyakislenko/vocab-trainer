@@ -82,6 +82,8 @@ async def module_detail(
         has_quiz=c.get_module.has_quiz(module_id),
         estimated_minutes=module.estimated_minutes,
         quiz_best_score=progress.quiz_best_score,
+        vocab=list(module.vocab),
+        interview_topic=module.interview_topic,
     )
 
 
@@ -102,6 +104,8 @@ async def lesson(module_id: str, c: Container = Depends(get_container)) -> Curri
                 CurriculumReferenceOut(book=ref[0], locator=ref[1])
                 for ref in lesson.references
             ],
+            vocab=list(lesson.vocab),
+            interview_topic=lesson.interview_topic,
         ),
     )
 

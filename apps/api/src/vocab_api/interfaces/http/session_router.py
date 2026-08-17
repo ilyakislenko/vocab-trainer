@@ -49,7 +49,13 @@ def _to_out(step: TodayStep) -> TodayStepOut:
             items=step.items,
         )
     if isinstance(step, ProduceStep):
-        return TodayStepOut(kind=step.kind.value, word=step.word, card_id=step.card_id)
+        return TodayStepOut(
+            kind=step.kind.value,
+            word=step.word,
+            card_id=step.card_id,
+            vocab_sections=list(step.vocab_sections),
+            interview_topic=step.interview_topic,
+        )
     # FocusStep — last branch, sequential fall-through like domain/grade().
     return TodayStepOut(
         kind=step.kind.value,

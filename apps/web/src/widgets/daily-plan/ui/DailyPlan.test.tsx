@@ -15,7 +15,7 @@ const TODAY = {
       level: "B1",
       track: "grammar",
     },
-    { kind: "produce", word: "run", card_id: 1 },
+    { kind: "produce", word: "run", card_id: 1, vocab_sections: [], interview_topic: null },
     {
       kind: "focus",
       leeches: [
@@ -77,6 +77,50 @@ describe("DailyPlan", () => {
     const link = await screen.findByRole("link", { name: /Articles/ });
     expect(link).toHaveAttribute("href", "/learn/b1.grammar.articles/quiz");
     expect(await screen.findByText("Вопросов · 2")).toBeInTheDocument();
+  });
+
+  it("links the vocab produce step to the practice section", async () => {
+    server.use(
+      http.get("/api/session/today", () =>
+        HttpResponse.json({
+          steps: [
+            {
+              kind: "produce",
+              word: "",
+              card_id: null,
+              vocab_sections: ["main"],
+              interview_topic: null,
+            },
+          ],
+        }),
+      ),
+    );
+    renderPlan();
+
+    const link = await screen.findByRole("link", { name: /Раздел: main/ });
+    expect(link).toHaveAttribute("href", "/practice?section=main");
+  });
+
+  it("links the interview produce step to the interview topic", async () => {
+    server.use(
+      http.get("/api/session/today", () =>
+        HttpResponse.json({
+          steps: [
+            {
+              kind: "produce",
+              word: "",
+              card_id: null,
+              vocab_sections: [],
+              interview_topic: "Frontend",
+            },
+          ],
+        }),
+      ),
+    );
+    renderPlan();
+
+    const link = await screen.findByRole("link", { name: "Frontend" });
+    expect(link).toHaveAttribute("href", "/interview?topic=Frontend");
   });
 
   it("shows an empty state when nothing is due", async () => {

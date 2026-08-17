@@ -73,6 +73,26 @@ def _require_int(data: dict[str, object], key: str, context: str) -> int:
     return value
 
 
+def _optional_str_list(data: dict[str, object], key: str, context: str) -> tuple[str, ...]:
+    value = data.get(key, [])
+    if value == []:
+        return ()
+    if not isinstance(value, list) or not all(isinstance(v, str) and v.strip() for v in value):
+        raise ContentValidationError(
+            f"{context}: field {key!r} must be a list of non-empty strings"
+        )
+    return tuple(value)
+
+
+def _optional_str(data: dict[str, object], key: str, context: str) -> str | None:
+    value = data.get(key)
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise ContentValidationError(f"{context}: field {key!r} must be a non-empty string")
+    return value.strip()
+
+
 def _module_id_parts(module_id: str) -> tuple[Level, Track]:
     parts = module_id.split(".")
     if len(parts) < 3:
@@ -279,6 +299,10 @@ class ContentBundle:
                     references=references,
                     estimated_minutes=estimated_minutes,
                     order=section.entries.index(entry),
+                    vocab=_optional_str_list(frontmatter, "vocab", f"lesson {entry.id}"),
+                    interview_topic=_optional_str(
+                        frontmatter, "interview_topic", f"lesson {entry.id}"
+                    ),
                 )
                 self._lessons[entry.id] = Lesson(
                     id=entry.id,
@@ -288,6 +312,10 @@ class ContentBundle:
                     objectives=objectives,
                     skills=skills,
                     references=tuple((r.book, r.locator) for r in references),
+                    vocab=_optional_str_list(frontmatter, "vocab", f"lesson {entry.id}"),
+                    interview_topic=_optional_str(
+                        frontmatter, "interview_topic", f"lesson {entry.id}"
+                    ),
                 )
 
     def _load_quizzes(self) -> None:

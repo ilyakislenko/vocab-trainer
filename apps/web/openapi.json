@@ -1073,6 +1073,25 @@
           }
         }
       }
+    },
+    "/progress": {
+      "get": {
+        "tags": ["progress"],
+        "summary": "Progress",
+        "operationId": "progress_progress_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressOut"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1193,6 +1212,25 @@
             },
             "type": "array",
             "title": "References"
+          },
+          "vocab": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Vocab",
+            "default": []
+          },
+          "interview_topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interview Topic"
           }
         },
         "type": "object",
@@ -1330,6 +1368,25 @@
               }
             ],
             "title": "Quiz Best Score"
+          },
+          "vocab": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Vocab",
+            "default": []
+          },
+          "interview_topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interview Topic"
           }
         },
         "type": "object",
@@ -1548,7 +1605,7 @@
         "type": "object",
         "required": ["id", "type", "skill", "prompt"],
         "title": "CurriculumQuizItemOut",
-        "description": "A quiz item as served to the learner — answers are never sent."
+        "description": "A quiz item as served to the learner \u2014 answers are never sent."
       },
       "CurriculumQuizItemResultOut": {
         "properties": {
@@ -1986,6 +2043,25 @@
         "required": ["question"],
         "title": "InterviewOut"
       },
+      "LevelProgressOut": {
+        "properties": {
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "completed": {
+            "type": "integer",
+            "title": "Completed"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": ["level", "completed", "total"],
+        "title": "LevelProgressOut"
+      },
       "PlacementAnswerIn": {
         "properties": {
           "item_id": {
@@ -2077,7 +2153,7 @@
         "type": "object",
         "required": ["id", "level", "skill", "type", "prompt"],
         "title": "PlacementItemOut",
-        "description": "A diagnostic item as served to the learner — answers are never sent."
+        "description": "A diagnostic item as served to the learner \u2014 answers are never sent."
       },
       "PlacementOut": {
         "properties": {
@@ -2092,6 +2168,28 @@
         "type": "object",
         "required": ["items"],
         "title": "PlacementOut"
+      },
+      "ProgressOut": {
+        "properties": {
+          "levels": {
+            "items": {
+              "$ref": "#/components/schemas/LevelProgressOut"
+            },
+            "type": "array",
+            "title": "Levels"
+          },
+          "overall_percent": {
+            "type": "integer",
+            "title": "Overall Percent"
+          },
+          "streak": {
+            "type": "integer",
+            "title": "Streak"
+          }
+        },
+        "type": "object",
+        "required": ["levels", "overall_percent", "streak"],
+        "title": "ProgressOut"
       },
       "ReviewIn": {
         "properties": {
@@ -2323,6 +2421,25 @@
               }
             ],
             "title": "Card Id"
+          },
+          "vocab_sections": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Vocab Sections",
+            "default": []
+          },
+          "interview_topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interview Topic"
           },
           "leeches": {
             "items": {

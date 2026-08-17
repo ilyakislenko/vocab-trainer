@@ -56,17 +56,52 @@ function LearnCard({ step }: { step: TodayStep }) {
 
 function ProduceCard({ step }: { step: TodayStep }) {
   const { t } = useI18n();
+  const sections = step.vocab_sections ?? [];
+  const interviewTopic = step.interview_topic ?? null;
   return (
     <StepCard>
       <h3 className="text-lg font-black tracking-tight text-foreground">
         {t("today.produce.title")}
       </h3>
-      <p className="text-sm font-bold text-muted-foreground">
-        {t("today.produce.prompt")}: &quot;{step.word}&quot;
-      </p>
-      <Link to="/practice" className="text-base font-extrabold text-primary">
-        {t("today.produce.go")}
-      </Link>
+      {sections.length > 0 ? (
+        <>
+          <p className="text-sm font-bold text-muted-foreground">
+            {t("today.produce.vocabPrompt")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {sections.map((name) => (
+              <Link
+                key={name}
+                to={`/practice?section=${encodeURIComponent(name)}`}
+                className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary"
+              >
+                {t("today.produce.section")}: {name}
+              </Link>
+            ))}
+          </div>
+        </>
+      ) : interviewTopic ? (
+        <>
+          <p className="text-sm font-bold text-muted-foreground">
+            {t("today.produce.interviewPrompt")}
+          </p>
+          <Link
+            to={`/interview?topic=${encodeURIComponent(interviewTopic)}`}
+            className="text-base font-extrabold text-primary"
+          >
+            {interviewTopic}
+          </Link>
+        </>
+      ) : (
+        <>
+          <p className="text-sm font-bold text-muted-foreground">
+            {t("today.produce.prompt")}: &quot;{step.word}&quot;
+          </p>
+          <Link to="/practice" className="text-base font-extrabold text-primary">
+            {t("today.produce.go")}
+          </Link>
+        </>
+      )}
     </StepCard>
   );
 }

@@ -380,9 +380,30 @@ const dict: Translations = {
   "today.produce.title": { en: "Produce", ru: "Продукция" },
   "today.produce.prompt": { en: "Write a sentence with", ru: "Составь предложение со словом" },
   "today.produce.go": { en: "Open practice →", ru: "К практике →" },
+  "today.produce.vocabPrompt": {
+    en: "Practice the module's word set:",
+    ru: "Потренируй словарный набор модуля:",
+  },
+  "today.produce.section": { en: "Section", ru: "Раздел" },
+  "today.produce.interviewPrompt": {
+    en: "Prepare a job-interview topic:",
+    ru: "Потренируй тему для собеседования:",
+  },
   "today.focus.title": { en: "Focus", ru: "Фокус" },
   "today.focus.leeches": { en: "weak spots", ru: "слабых мест" },
   "today.focus.go": { en: "Drill skills →", ru: "Тренировать навыки →" },
+  "progress.title": { en: "Progress", ru: "Прогресс" },
+  "progress.hint": {
+    en: "A1 → C2. Every level is one step on the path.",
+    ru: "A1 → C2. Каждый уровень — шаг на пути.",
+  },
+  "progress.overall": { en: "Overall", ru: "Общий" },
+  "progress.streak": { en: "streak", ru: "дней подряд" },
+  "progress.completed": { en: "completed", ru: "пройдено" },
+  "progress.loading": { en: "Loading progress…", ru: "Загружаем прогресс…" },
+  "progress.error": { en: "Failed to load progress.", ru: "Не удалось загрузить прогресс." },
+  "learn.practiceSection": { en: "Practice section", ru: "Раздел практики" },
+  "learn.interviewTopic": { en: "Interview topic", ru: "Тема собеседования" },
 
   // Quiz
   "quiz.title": { en: "Quiz", ru: "Тест" },

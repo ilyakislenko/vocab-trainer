@@ -17,3 +17,5 @@ class Lesson:
     skills: tuple[str, ...] = ()
     references: tuple[tuple[str, str], ...] = ()
     title: str = ""
+    vocab: tuple[str, ...] = ()
+    interview_topic: str | None = None

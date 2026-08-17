@@ -161,6 +161,8 @@ class CurriculumModuleDetailOut(BaseModel):
     has_quiz: bool
     estimated_minutes: int
     quiz_best_score: float | None = None
+    vocab: list[str] = []
+    interview_topic: str | None = None
 
 
 class CurriculumLessonMetaOut(BaseModel):
@@ -172,6 +174,8 @@ class CurriculumLessonMetaOut(BaseModel):
     objectives: list[str]
     skills: list[str]
     references: list[CurriculumReferenceOut]
+    vocab: list[str] = []
+    interview_topic: str | None = None
 
 
 class CurriculumLessonOut(BaseModel):
@@ -292,8 +296,22 @@ class TodayStepOut(BaseModel):
     items: int | None = None
     word: str | None = None
     card_id: int | None = None
+    vocab_sections: list[str] = []
+    interview_topic: str | None = None
     leeches: list[CurriculumSkillItemOut] = []
 
 
 class TodaySessionOut(BaseModel):
     steps: list[TodayStepOut]
+
+
+class LevelProgressOut(BaseModel):
+    level: str
+    completed: int
+    total: int
+
+
+class ProgressOut(BaseModel):
+    levels: list[LevelProgressOut]
+    overall_percent: int
+    streak: int

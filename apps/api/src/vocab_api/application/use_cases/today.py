@@ -110,6 +110,9 @@ class BuildTodaySession:
         )
 
     async def _produce_step(self) -> ProduceStep | None:
+        linked = await self._produce_from_module()
+        if linked is not None:
+            return linked
         recent = await self._logs.most_recent(1)
         if not recent:
             return None
@@ -117,6 +120,22 @@ class BuildTodaySession:
         if card.id is None:
             return None
         return ProduceStep(word=card.word, card_id=card.id)
+
+    async def _produce_from_module(self) -> ProduceStep | None:
+        """Prefer the recommended module's pillar links (§11/§5): vocab section
+        before interview topic. Only links, never new vocab/interview code."""
+        module_id = await self._recommend.execute()
+        if module_id is None:
+            return None
+        try:
+            module = self._content.module(module_id)
+        except CurriculumModuleNotFound:
+            return None
+        if module.vocab:
+            return ProduceStep(vocab_sections=module.vocab)
+        if module.interview_topic:
+            return ProduceStep(interview_topic=module.interview_topic)
+        return None
 
     async def _focus_step(self) -> FocusStep | None:
         leeches = await self._skills.leeches(self.FOCUS_LIMIT)

@@ -121,3 +121,28 @@ def test_bundle_placement_spans_levels_without_answers():
         by_level[item.level] = by_level.get(item.level, 0) + 1
     assert len(by_level) == 4
     assert all(count >= 6 for count in by_level.values())
+
+
+def test_bundle_parses_pillar_links_into_modules_and_lessons():
+    bundle = ContentBundle.from_files()
+
+    phrasal = bundle.module("b1.phrasal_verbs.work-business")
+    assert phrasal is not None
+    assert phrasal.vocab == ("main",)
+    assert phrasal.interview_topic is None
+    phrasal_lesson = bundle.lesson("b1.phrasal_verbs.work-business")
+    assert phrasal_lesson is not None
+    assert phrasal_lesson.vocab == ("main",)
+
+    tech = bundle.module("b2.vocabulary.technology")
+    assert tech is not None
+    assert tech.interview_topic == "Frontend"
+    assert tech.vocab == ()
+    tech_lesson = bundle.lesson("b2.vocabulary.technology")
+    assert tech_lesson is not None
+    assert tech_lesson.interview_topic == "Frontend"
+
+    plain = bundle.module("b1.grammar.articles")
+    assert plain is not None
+    assert plain.vocab == ()
+    assert plain.interview_topic is None

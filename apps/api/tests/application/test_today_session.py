@@ -355,3 +355,71 @@ async def test_learn_step_omitted_when_recommended_module_completed():
     steps = await session.execute()
 
     assert [type(s).__name__ for s in steps] == ["ReviewStep"]
+
+
+class ModuleContent(FakeContent):
+    """FakeContent whose recommended module carries pillar links."""
+
+    def __init__(self, vocab: tuple[str, ...] = (), interview_topic: str | None = None) -> None:
+        super().__init__()
+        self._modules["b1.grammar.articles"] = Module(
+            id="b1.grammar.articles",
+            title="Articles",
+            objectives=("Pick the article",),
+            skills=("art.definite",),
+            references=(),
+            vocab=vocab,
+            interview_topic=interview_topic,
+        )
+
+
+async def _session_with_content(content: FakeContent) -> BuildTodaySession:
+    decks = FakeDeckRepository()
+    cards = FakeCardRepository()
+    logs = FakeReviewLogRepository(cards)
+    skills = FakeSkillItemRepository()
+    progress = FakeProgress()
+    profile = FakeLearnerProfileRepository()
+    recommend = GetRecommendedModule(content, progress, profile)
+    return BuildTodaySession(
+        content,
+        progress,
+        decks,
+        cards,
+        logs,
+        skills,
+        recommend,
+        FixedClock(NOW),
+    )
+
+
+async def test_produce_uses_module_vocab_link_when_declared():
+    session = await _session_with_content(ModuleContent(vocab=("main",)))
+
+    steps = await session.execute()
+
+    produce = next(s for s in steps if isinstance(s, ProduceStep))
+    assert produce.vocab_sections == ("main",)
+    assert produce.interview_topic is None
+    assert produce.word == ""
+
+
+async def test_produce_uses_module_interview_topic_when_declared():
+    session = await _session_with_content(ModuleContent(interview_topic="Frontend"))
+
+    steps = await session.execute()
+
+    produce = next(s for s in steps if isinstance(s, ProduceStep))
+    assert produce.interview_topic == "Frontend"
+    assert produce.vocab_sections == ()
+    assert produce.word == ""
+
+
+async def test_produce_prefers_vocab_link_over_interview_topic():
+    session = await _session_with_content(ModuleContent(vocab=("main",), interview_topic="Backend"))
+
+    steps = await session.execute()
+
+    produce = next(s for s in steps if isinstance(s, ProduceStep))
+    assert produce.vocab_sections == ("main",)
+    assert produce.interview_topic is None

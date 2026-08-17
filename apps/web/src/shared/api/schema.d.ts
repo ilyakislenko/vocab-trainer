@@ -447,6 +447,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/progress": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Progress */
+        get: operations["progress_progress_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -494,6 +511,13 @@ export interface components {
             skills: string[];
             /** References */
             references: components["schemas"]["CurriculumReferenceOut"][];
+            /**
+             * Vocab
+             * @default []
+             */
+            vocab: string[];
+            /** Interview Topic */
+            interview_topic?: string | null;
         };
         /** CurriculumLessonOut */
         CurriculumLessonOut: {
@@ -539,6 +563,13 @@ export interface components {
             estimated_minutes: number;
             /** Quiz Best Score */
             quiz_best_score?: number | null;
+            /**
+             * Vocab
+             * @default []
+             */
+            vocab: string[];
+            /** Interview Topic */
+            interview_topic?: string | null;
         };
         /** CurriculumModuleOut */
         CurriculumModuleOut: {
@@ -809,6 +840,15 @@ export interface components {
             /** Question Id */
             question_id?: number | null;
         };
+        /** LevelProgressOut */
+        LevelProgressOut: {
+            /** Level */
+            level: string;
+            /** Completed */
+            completed: number;
+            /** Total */
+            total: number;
+        };
         /** PlacementAnswerIn */
         PlacementAnswerIn: {
             /** Item Id */
@@ -850,6 +890,15 @@ export interface components {
         PlacementOut: {
             /** Items */
             items: components["schemas"]["PlacementItemOut"][];
+        };
+        /** ProgressOut */
+        ProgressOut: {
+            /** Levels */
+            levels: components["schemas"]["LevelProgressOut"][];
+            /** Overall Percent */
+            overall_percent: number;
+            /** Streak */
+            streak: number;
         };
         /** ReviewIn */
         ReviewIn: {
@@ -965,6 +1014,13 @@ export interface components {
             word?: string | null;
             /** Card Id */
             card_id?: number | null;
+            /**
+             * Vocab Sections
+             * @default []
+             */
+            vocab_sections: string[];
+            /** Interview Topic */
+            interview_topic?: string | null;
             /**
              * Leeches
              * @default []
@@ -1819,6 +1875,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    progress_progress_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgressOut"];
                 };
             };
         };

@@ -51,10 +51,14 @@ class TakeQuizStep:
 
 @dataclass(frozen=True, slots=True)
 class ProduceStep:
-    """Output task: a sentence prompt on the most recently reviewed word."""
+    """Output task — one of: a module's linked vocab section, a module's
+    interview topic, or (fallback) a sentence prompt on the most recently
+    reviewed word. Exactly one source is set (Phase 5)."""
 
-    word: str
-    card_id: int
+    vocab_sections: tuple[str, ...] = ()
+    interview_topic: str | None = None
+    word: str = ""
+    card_id: int | None = None
     kind: Literal[TodayStepKind.PRODUCE] = TodayStepKind.PRODUCE
 
 
