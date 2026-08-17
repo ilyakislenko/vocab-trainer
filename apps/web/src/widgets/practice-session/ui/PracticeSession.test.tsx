@@ -95,9 +95,9 @@ describe("PracticeSession", () => {
       expect(screen.getByText(/Тренировка завершена|Run complete/)).toBeInTheDocument(),
     );
     expect(screen.getByText(/2\s+слов пройдено|2\s+words practised/)).toBeInTheDocument();
-    const backLinks = screen.getAllByRole("link", { name: /назад к плану|back to curriculum/i });
+    const backLinks = screen.getAllByRole("link", { name: /повторение|review/i });
     expect(backLinks.length).toBeGreaterThanOrEqual(1);
-    for (const link of backLinks) expect(link).toHaveAttribute("href", "/learn");
+    for (const link of backLinks) expect(link).toHaveAttribute("href", "/");
     await userEvent.click(screen.getByRole("button", { name: /повторить ещё|practise more/i }));
     await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("run"));
   });

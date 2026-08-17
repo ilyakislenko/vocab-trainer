@@ -60,18 +60,6 @@ describe("ReviewSession", () => {
     );
   });
 
-  it("shows a back-to-map link to leave the session", async () => {
-    mockQueue(CARD_QUEUE);
-    mockReview();
-    mockSummary({ next_due: null, reviewed_today: 0 });
-    renderSession();
-    await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
-    expect(screen.getByRole("link", { name: /назад к плану|back to curriculum/i })).toHaveAttribute(
-      "href",
-      "/learn",
-    );
-  });
-
   it("shows the empty state when nothing is due", async () => {
     mockQueue([]);
     mockSummary({ next_due: null, reviewed_today: 0 });

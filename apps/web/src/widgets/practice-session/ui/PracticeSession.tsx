@@ -72,10 +72,10 @@ export function PracticeSession({
     return (
       <div className="flex flex-col gap-4">
         <Link
-          to="/learn"
+          to="/"
           className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
         >
-          {t("learn.backToMap")}
+          {t("nav.review")}
         </Link>
         <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
           <span className="text-5xl">🎉</span>
@@ -104,10 +104,10 @@ export function PracticeSession({
               {t("practice.practiseMore")}
             </Button>
             <Link
-              to="/learn"
+              to="/"
               className="rounded-full border border-border px-6 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
             >
-              {t("learn.backToMap")}
+              {t("nav.review")}
             </Link>
           </div>
         </div>

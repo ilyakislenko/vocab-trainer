@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { CardFace, useReviewQueue, useReviewSummary } from "@/entities/card";
 import { RatingBar, useRecordReview } from "@/features/rate-card";
@@ -28,17 +27,6 @@ function duePhrase(t: (key: string) => string, due: string | null | undefined): 
   return t("review.returnsIn").replace("{n}", String(days));
 }
 
-function LeaveSessionLink({ t }: { t: (key: string) => string }) {
-  return (
-    <Link
-      to="/learn"
-      className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
-    >
-      {t("learn.backToMap")}
-    </Link>
-  );
-}
-
 export function ReviewSession({ deckId }: { deckId: number }) {
   const { t } = useI18n();
   const queue = useReviewQueue(deckId);
@@ -63,7 +51,6 @@ export function ReviewSession({ deckId }: { deckId: number }) {
   if (plan === null) {
     return (
       <div className="flex flex-col gap-4">
-        <LeaveSessionLink t={t} />
         <p>{t("practice.loading")}</p>
       </div>
     );
@@ -74,7 +61,6 @@ export function ReviewSession({ deckId }: { deckId: number }) {
     const returnsIn = duePhrase(t, nextDue);
     return (
       <div className="flex flex-col gap-4">
-        <LeaveSessionLink t={t} />
         <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
           <span className="text-5xl">🎉</span>
           <p className="text-2xl font-black tracking-tight">{t("review.summary")}</p>
@@ -137,7 +123,6 @@ export function ReviewSession({ deckId }: { deckId: number }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <LeaveSessionLink t={t} />
       <div className="flex flex-col items-center gap-4">
         {/* Progress bar */}
         <div className="flex w-full max-w-md items-center gap-3">
