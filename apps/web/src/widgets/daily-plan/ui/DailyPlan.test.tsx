@@ -47,6 +47,7 @@ describe("DailyPlan", () => {
     expect(await screen.findByText("Разминка")).toBeInTheDocument();
     expect(screen.getByText("Слова · 3")).toBeInTheDocument();
     expect(screen.getByText("Навыки · 1")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Слова/ })).toHaveAttribute("href", "/");
     expect(await screen.findByText("Прочитай урок")).toBeInTheDocument();
     expect(screen.getByText("Articles · B1 grammar")).toBeInTheDocument();
     expect(await screen.findByText("Продукция")).toBeInTheDocument();

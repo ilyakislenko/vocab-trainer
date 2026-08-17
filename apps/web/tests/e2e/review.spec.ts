@@ -6,5 +6,5 @@ test("shows the due card and lets you reveal the answer", async ({ page }) => {
   // default MSW handlers auto-select the sample deck and return one due
   // card, so the review face and its reveal control render.
   await expect(page.getByText("run")).toBeVisible();
-  await expect(page.getByRole("button", { name: /show answer/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /show answer|показать ответ/i })).toBeVisible();
 });

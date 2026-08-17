@@ -53,6 +53,13 @@ const dict: Translations = {
   "practice.drillTitle": { en: "💬 Training", ru: "💬 Тренировка" },
   "practice.back": { en: "← Back", ru: "← Назад" },
   "practice.continue": { en: "Continue →", ru: "Далее →" },
+  "practice.finish": { en: "Finish", ru: "Завершить" },
+  "practice.summary": { en: "Run complete!", ru: "Тренировка завершена!" },
+  "practice.completed": { en: "words practised", ru: "слов пройдено" },
+  "practice.okCount": { en: "✓ Looks good", ru: "✓ Получилось" },
+  "practice.needsWorkCount": { en: "Needs work", ru: "Подучить" },
+  "practice.practiseMore": { en: "Practise more", ru: "Повторить ещё" },
+  "practice.practising": { en: "Studying section", ru: "Практикуешь раздел" },
   "practice.hear": { en: "🔊 Hear it", ru: "🔊 Слушать" },
   "practice.say": { en: "🎤 Say it", ru: "🎤 Говорить" },
   "practice.saySentence": { en: "🎤 Say the sentence", ru: "🎤 Произнеси предложение" },
@@ -262,6 +269,7 @@ const dict: Translations = {
     ru: "Слабых мест пока нет — продолжай тесты!",
   },
   "focus.leeches": { en: "skills to drill", ru: "навыков для отработки" },
+  "focus.go": { en: "Drill skills →", ru: "Тренировать навыки →" },
 
   // Stats
   "stats.dueToday": { en: "Due today", ru: "На сегодня" },

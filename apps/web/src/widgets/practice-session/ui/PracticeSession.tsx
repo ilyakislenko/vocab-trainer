@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { SentencePractice } from "@/features/check-sentence";
 import { DrillChat } from "@/features/drill-word";
 import { PracticeFeedback } from "@/features/practice-feedback";
@@ -29,6 +30,7 @@ export function PracticeSession({
   const [index, setIndex] = useState(0);
   const [verdict, setVerdict] = useState<"ok" | "needs_work" | "idle">("idle");
   const [pronounceVerdict, setPronounceVerdict] = useState<"ok" | "needs_work" | "idle">("idle");
+  const [results, setResults] = useState<Record<number, "ok" | "needs_work">>({});
   const [drillOpen, setDrillOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("sentence");
 
@@ -36,13 +38,22 @@ export function PracticeSession({
     if (snapshot === null && cards !== undefined) setSnapshot(cards);
   }, [snapshot, cards]);
 
-  const handleFeedback = useCallback((v: "ok" | "needs_work") => {
-    setVerdict(v);
-  }, []);
+  const handleFeedback = useCallback(
+    (v: "ok" | "needs_work") => {
+      setVerdict(v);
+      setResults((prev) => ({ ...prev, [index]: v }));
+    },
+    [index],
+  );
 
-  const handlePronounceResult = useCallback((matched: boolean) => {
-    setPronounceVerdict(matched ? "ok" : "needs_work");
-  }, []);
+  const handlePronounceResult = useCallback(
+    (matched: boolean) => {
+      const v = matched ? "ok" : "needs_work";
+      setPronounceVerdict(v);
+      setResults((prev) => ({ ...prev, [index]: v }));
+    },
+    [index],
+  );
 
   const currentCardId = snapshot?.[index]?.id;
   useEffect(() => {
@@ -53,6 +64,57 @@ export function PracticeSession({
   }, [currentCardId]);
 
   if (isLoading && snapshot === null) return <p>{t("practice.loading")}</p>;
+
+  const done = snapshot !== null && snapshot.length > 0 && index >= snapshot.length;
+  if (done && snapshot !== null) {
+    const okCount = Object.values(results).filter((v) => v === "ok").length;
+    const needsWorkCount = Object.values(results).filter((v) => v === "needs_work").length;
+    return (
+      <div className="flex flex-col gap-4">
+        <Link
+          to="/learn"
+          className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+        >
+          {t("learn.backToMap")}
+        </Link>
+        <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
+          <span className="text-5xl">🎉</span>
+          <p className="text-2xl font-black tracking-tight">{t("practice.summary")}</p>
+          <p className="text-muted-foreground">
+            {snapshot.length} {t("practice.completed")}
+          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            <span className="rounded-full bg-green-500/10 px-3 py-1 text-sm font-extrabold text-green-700">
+              {t("practice.okCount")}: {okCount}
+            </span>
+            <span className="rounded-full bg-amber-500/10 px-3 py-1 text-sm font-extrabold text-amber-700">
+              {t("practice.needsWorkCount")}: {needsWorkCount}
+            </span>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Button
+              onClick={() => {
+                setIndex(0);
+                setResults({});
+                setVerdict("idle");
+                setPronounceVerdict("idle");
+              }}
+              className="rounded-full"
+            >
+              {t("practice.practiseMore")}
+            </Button>
+            <Link
+              to="/learn"
+              className="rounded-full border border-border px-6 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+            >
+              {t("learn.backToMap")}
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const card = snapshot?.[index];
   if (!card) {
     return <p className="text-lg text-muted-foreground">{t("practice.nothing")}</p>;
@@ -173,11 +235,10 @@ export function PracticeSession({
         <Button
           variant="default"
           onClick={() => setIndex((i) => i + 1)}
-          disabled={index >= snapshot.length - 1}
           className="rounded-full px-8"
         >
-          {t("practice.continue")}
-        </Button>
+          {index >= snapshot.length - 1 ? t("practice.finish") : t("practice.continue")}
+        </Button>{" "}
       </div>
     </div>
   );

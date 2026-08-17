@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { renderWithProviders, server } from "@/shared/test";
 import { PracticeSession } from "./PracticeSession";
@@ -17,9 +18,17 @@ const CARDS = [
   { id: 2, word: "jump", translation: "прыгать", transcription: null, section: null },
 ];
 
+function renderSession(cards: unknown[] = CARDS) {
+  return renderWithProviders(
+    <MemoryRouter>
+      <PracticeSession cards={cards as never} isLoading={false} />
+    </MemoryRouter>,
+  );
+}
+
 describe("PracticeSession", () => {
   it("practises the first word and advances", async () => {
-    renderWithProviders(<PracticeSession cards={CARDS} isLoading={false} />);
+    renderSession();
     const main = document.body;
     await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("run"));
     await userEvent.click(screen.getByRole("button", { name: /далее|continue/i }));
@@ -27,12 +36,12 @@ describe("PracticeSession", () => {
   });
 
   it("shows a caught-up message when there is nothing to practise", async () => {
-    renderWithProviders(<PracticeSession cards={[]} isLoading={false} />);
+    renderSession([]);
     await waitFor(() => expect(screen.getByText(/нечего|nothing/i)).toBeInTheDocument());
   });
 
   it("navigates back to the previous word", async () => {
-    renderWithProviders(<PracticeSession cards={CARDS} isLoading={false} />);
+    renderSession();
     const main = document.body;
     await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("run"));
     await userEvent.click(screen.getByRole("button", { name: /далее|continue/i }));
@@ -42,7 +51,7 @@ describe("PracticeSession", () => {
   });
 
   it("shows progress bar and card face with translation", async () => {
-    renderWithProviders(<PracticeSession cards={CARDS} isLoading={false} />);
+    renderSession();
     await waitFor(() => {
       expect(screen.getByText("1 / 2")).toBeInTheDocument();
       expect(screen.getByText("бежать")).toBeInTheDocument();
@@ -52,7 +61,7 @@ describe("PracticeSession", () => {
   });
 
   it("back button is disabled at the first word", async () => {
-    renderWithProviders(<PracticeSession cards={CARDS} isLoading={false} />);
+    renderSession();
     await waitFor(() => {
       const btn = screen.getByRole("button", { name: /назад|back/i });
       expect(btn).toBeDisabled();
@@ -65,7 +74,7 @@ describe("PracticeSession", () => {
         HttpResponse.json({ example: "Unique example sentence for the test." }),
       ),
     );
-    renderWithProviders(<PracticeSession cards={CARDS} isLoading={false} />);
+    renderSession();
     const main = document.body;
     await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("run"));
     await userEvent.click(screen.getByRole("button", { name: /example|пример/i }));
@@ -73,5 +82,23 @@ describe("PracticeSession", () => {
     await userEvent.click(screen.getByRole("button", { name: /далее|continue/i }));
     await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("jump"));
     expect(screen.queryByText(/Unique example sentence/)).not.toBeInTheDocument();
+  });
+
+  it("finishes the run with a completion screen and can restart", async () => {
+    renderSession();
+    const main = document.body;
+    await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("run"));
+    await userEvent.click(screen.getByRole("button", { name: /далее|continue/i }));
+    await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("jump"));
+    await userEvent.click(screen.getByRole("button", { name: /завершить|finish/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/Тренировка завершена|Run complete/)).toBeInTheDocument(),
+    );
+    expect(screen.getByText(/2\s+слов пройдено|2\s+words practised/)).toBeInTheDocument();
+    const backLinks = screen.getAllByRole("link", { name: /назад к плану|back to curriculum/i });
+    expect(backLinks.length).toBeGreaterThanOrEqual(1);
+    for (const link of backLinks) expect(link).toHaveAttribute("href", "/learn");
+    await userEvent.click(screen.getByRole("button", { name: /повторить ещё|practise more/i }));
+    await waitFor(() => expect(main.querySelector(".text-4xl")).toHaveTextContent("run"));
   });
 });

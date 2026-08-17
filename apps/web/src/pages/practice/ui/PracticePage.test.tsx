@@ -52,6 +52,21 @@ describe("PracticePage", () => {
     expect(document.querySelector(".text-4xl")).not.toHaveTextContent("jump");
   });
 
+  it("shows which deck and section are being studied when linked", async () => {
+    server.use(
+      http.get("/api/decks/:id/cards", () =>
+        HttpResponse.json([
+          { id: 1, word: "run", translation: "бежать", transcription: null, section: "main" },
+        ]),
+      ),
+    );
+    renderPage(1, ["/practice?section=main"]);
+    await waitFor(() => expect(document.querySelector(".text-4xl")).toHaveTextContent("run"));
+    expect(screen.getByText(/Практикуешь раздел|Studying section/i)).toBeInTheDocument();
+    expect(screen.getByText(/«main»/)).toBeInTheDocument();
+    expect(screen.getByText(/Sample/)).toBeInTheDocument();
+  });
+
   it("filters all words by section", async () => {
     server.use(
       http.get("/api/decks/:id/cards", () =>

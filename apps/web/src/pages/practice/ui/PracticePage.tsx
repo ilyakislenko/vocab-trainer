@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDeckCards, useReviewQueue, useTopicWords } from "@/entities/card";
+import { useDecks } from "@/entities/deck";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
@@ -28,6 +29,8 @@ export function PracticePage({ deckId }: { deckId: number | null }) {
   const due = useReviewQueue(deckId, 20, mode === "due");
   const all = useDeckCards(deckId, mode === "all");
   const topicWords = useTopicWords(deckId, appliedTopic);
+  const decks = useDecks();
+  const deckName = decks.data?.find((d) => d.id === deckId)?.name;
 
   if (deckId === null) return <NoDeck />;
 
@@ -46,6 +49,11 @@ export function PracticePage({ deckId }: { deckId: number | null }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {linkedSection && deckName && (
+        <p className="w-fit rounded-full bg-primary/10 px-4 py-2 text-sm font-extrabold text-primary">
+          {t("practice.practising")} «{section}» · {deckName}
+        </p>
+      )}
       <div className="flex flex-wrap items-center gap-2">
         <div className="flex gap-1 rounded-2xl border border-border bg-card p-1">
           {MODES.map((m) => (

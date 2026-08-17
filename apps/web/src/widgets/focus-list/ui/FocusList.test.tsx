@@ -1,5 +1,6 @@
 import { screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { renderWithProviders, server } from "@/shared/test";
 import { FocusList } from "./FocusList";
@@ -17,17 +18,29 @@ function mockFocus(items: unknown[]) {
 }
 
 describe("FocusList", () => {
-  it("lists leech skills", async () => {
+  it("lists leech skills and links to skill reviews", async () => {
     mockFocus([LEECH]);
-    renderWithProviders(<FocusList />);
+    renderWithProviders(
+      <MemoryRouter>
+        <FocusList />
+      </MemoryRouter>,
+    );
 
     expect(await screen.findByText("art.definite")).toBeInTheDocument();
     expect(screen.getByText(/Фокус — слабые места|Focus — weak spots/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Тренировать навыки|Drill skills/i })).toHaveAttribute(
+      "href",
+      "/learn/skills",
+    );
   });
 
   it("renders nothing when there are no leeches", async () => {
     mockFocus([]);
-    renderWithProviders(<FocusList />);
+    renderWithProviders(
+      <MemoryRouter>
+        <FocusList />
+      </MemoryRouter>,
+    );
 
     await waitFor(() =>
       expect(screen.queryByText(/Фокус — слабые места|Focus — weak spots/)).not.toBeInTheDocument(),

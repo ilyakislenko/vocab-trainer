@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useFocusLeeches } from "@/entities/skill-item";
 import { useI18n } from "@/shared/lib/i18n";
 
@@ -25,6 +26,9 @@ export function FocusList({ limit = 3 }: { limit?: number }) {
           </li>
         ))}
       </ul>
+      <Link to="/learn/skills" className="text-base font-extrabold text-primary">
+        {t("focus.go")}
+      </Link>
     </section>
   );
 }

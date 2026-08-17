@@ -30,13 +30,31 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
   const markRead = useMarkLessonRead();
 
   if (lesson.isLoading) {
-    return <p className="text-sm font-semibold text-muted-foreground">{t("practice.loading")}</p>;
+    return (
+      <div className="flex flex-col gap-4">
+        <Link
+          to="/learn"
+          className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+        >
+          {t("learn.backToMap")}
+        </Link>
+        <p className="text-sm font-semibold text-muted-foreground">{t("practice.loading")}</p>
+      </div>
+    );
   }
   if (lesson.error || !lesson.data) {
     return (
-      <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
-        {t("misc.error")}
-      </p>
+      <div className="flex flex-col gap-4">
+        <Link
+          to="/learn"
+          className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+        >
+          {t("learn.backToMap")}
+        </Link>
+        <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
+          {t("misc.error")}
+        </p>
+      </div>
     );
   }
 
@@ -52,7 +70,13 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
+      <Link
+        to="/learn"
+        className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+      >
+        {t("learn.backToMap")}
+      </Link>
       <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
         <div className="flex flex-wrap items-center gap-2 text-xs font-extrabold">
           <span className="rounded-full bg-tint-lavender px-3 py-1 text-secondary-foreground">

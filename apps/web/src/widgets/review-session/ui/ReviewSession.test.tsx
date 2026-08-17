@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { renderWithProviders, server } from "@/shared/test";
 import { ReviewSession } from "./ReviewSession";
@@ -32,12 +33,20 @@ function mockReview() {
   );
 }
 
+function renderSession() {
+  return renderWithProviders(
+    <MemoryRouter>
+      <ReviewSession deckId={1} />
+    </MemoryRouter>,
+  );
+}
+
 describe("ReviewSession", () => {
   it("reveals, rates, advances, and finishes", async () => {
     mockQueue(CARD_QUEUE);
     mockReview();
     mockSummary({ next_due: null, reviewed_today: 0 });
-    renderWithProviders(<ReviewSession deckId={1} />);
+    renderSession();
     await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
     expect(screen.queryByText("бежать")).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
@@ -51,10 +60,22 @@ describe("ReviewSession", () => {
     );
   });
 
+  it("shows a back-to-map link to leave the session", async () => {
+    mockQueue(CARD_QUEUE);
+    mockReview();
+    mockSummary({ next_due: null, reviewed_today: 0 });
+    renderSession();
+    await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
+    expect(screen.getByRole("link", { name: /назад к плану|back to curriculum/i })).toHaveAttribute(
+      "href",
+      "/learn",
+    );
+  });
+
   it("shows the empty state when nothing is due", async () => {
     mockQueue([]);
     mockSummary({ next_due: null, reviewed_today: 0 });
-    renderWithProviders(<ReviewSession deckId={1} />);
+    renderSession();
     await waitFor(() =>
       expect(screen.getByText(/session complete|сессия завершена/i)).toBeInTheDocument(),
     );
@@ -65,7 +86,7 @@ describe("ReviewSession", () => {
     mockReview();
     mockSummary({ next_due: null, reviewed_today: 0 });
 
-    renderWithProviders(<ReviewSession deckId={1} />);
+    renderSession();
     await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
     await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
     await userEvent.click(screen.getByRole("button", { name: /again|заново/i }));
@@ -92,7 +113,7 @@ describe("ReviewSession", () => {
       next_due: new Date(Date.now() + 2 * 86_400_000).toISOString(),
       reviewed_today: 7,
     });
-    renderWithProviders(<ReviewSession deckId={1} />);
+    renderSession();
     await waitFor(() =>
       expect(screen.getByText(/session complete|сессия завершена/i)).toBeInTheDocument(),
     );
@@ -129,7 +150,7 @@ describe("ReviewSession", () => {
       }),
     );
 
-    renderWithProviders(<ReviewSession deckId={1} />);
+    renderSession();
     await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
     await userEvent.click(screen.getByRole("button", { name: /show answer|показать/i }));
     await userEvent.click(screen.getByRole("button", { name: /good|хорошо/i }));

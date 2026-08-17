@@ -19,7 +19,7 @@ function ReviewCard({ step }: { step: TodayStep }) {
       </h3>
       <div className="flex flex-wrap gap-2 text-sm font-extrabold text-muted-foreground">
         {step.vocab_due > 0 && (
-          <Link to="/review" className="rounded-full bg-primary/10 px-3 py-1 text-primary">
+          <Link to="/" className="rounded-full bg-primary/10 px-3 py-1 text-primary">
             {t("today.review.vocab")} · {step.vocab_due}
           </Link>
         )}
