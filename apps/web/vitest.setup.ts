@@ -9,7 +9,7 @@ beforeEach(() => void llmCache.clear());
 
 // Mock Web Audio API for sound effects (jsdom has no AudioContext)
 beforeAll(() => {
-  (globalThis as any).AudioContext = class {
+  (globalThis as { AudioContext?: unknown }).AudioContext = class {
     createOscillator() {
       return { connect: () => ({ connect: () => {} }), start: () => {}, stop: () => {} };
     }
