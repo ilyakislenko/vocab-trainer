@@ -347,6 +347,7 @@ class ContentBundle:
                 lesson_skills = set(self._modules[entry.id].skills)
                 items: list[QuizItem] = []
                 seen_item_ids: set[str] = set()
+                seen_prompts: set[str] = set()
                 for idx, item_raw in enumerate(items_raw):
                     item = self._parse_quiz_item(item_raw, entry.id, idx, lesson_skills)
                     if item.id in seen_item_ids:
@@ -354,6 +355,12 @@ class ContentBundle:
                             f"quiz {entry.id}: duplicate item id {item.id!r}"
                         )
                     seen_item_ids.add(item.id)
+                    prompt_key = item.prompt.casefold()
+                    if prompt_key in seen_prompts:
+                        raise ContentValidationError(
+                            f"quiz {entry.id}: duplicate prompt {item.prompt!r}"
+                        )
+                    seen_prompts.add(prompt_key)
                     items.append(item)
                 self._quizzes[entry.id] = Quiz(module_id=entry.id, items=tuple(items))
                 self._has_quiz.add(entry.id)
@@ -391,6 +398,7 @@ class ContentBundle:
             answer_index = raw.get("answer_index")
             if not isinstance(answer_index, int) or not 0 <= answer_index < len(options_raw):
                 raise ContentValidationError(f"{context}: mcq needs a valid 'answer_index'")
+            self._check_leak(context, prompt, (options_raw[answer_index],))
             return QuizItem(
                 id=item_id,
                 module_id=module_id,
@@ -455,6 +463,8 @@ class ContentBundle:
             )
         llm_gradable = raw.get("llm_gradable")
         tokens = tuple(tokens_raw) if isinstance(tokens_raw, list) else None
+        if item_type is not QuizItemType.LISTENING:
+            self._check_leak(context, prompt, tuple(answers_raw))
         return QuizItem(
             id=item_id,
             module_id=module_id,
@@ -468,6 +478,19 @@ class ContentBundle:
             tokens=tokens,
             llm_gradable=llm_gradable is True and item_type is QuizItemType.ERROR_CORRECTION,
         )
+
+    @staticmethod
+    def _check_leak(context: str, prompt: str, variants: tuple[str, ...]) -> None:
+        """Guard against prompts that spell out the answer (generalised from
+        the placement work). Only multi-word variants or long single words are
+        a reliable signal: short single words ("give", "be", "open") are
+        common instruction verbs that naturally appear in any prompt."""
+        for variant in variants:
+            words = variant.split()
+            if len(words) < 2 and len(variant) < 8:
+                continue
+            if variant.lower() in prompt.lower():
+                raise ContentValidationError(f"{context}: prompt leaks the answer {variant!r}")
 
     def _cross_validate(self) -> None:
         for section in self._levels:

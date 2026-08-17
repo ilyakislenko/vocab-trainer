@@ -139,8 +139,8 @@ def test_listening_both_sub_modes_load():
                 "id": "q2",
                 "type": "listening",
                 "skill": "pres.he-she-it",
-                "prompt": "She watches TV every evening.",
-                "options": ["She watches TV.", "He watches TV."],
+                "prompt": "She doesn't like coffee.",
+                "options": ["She doesn't like coffee.", "He doesn't like coffee."],
                 "answer_index": 0,
                 "explanation": "Explanation",
             },
@@ -150,9 +150,50 @@ def test_listening_both_sub_modes_load():
     assert dictation.type is QuizItemType.LISTENING
     assert dictation.answers == ("she watches tv every evening",)
     assert dictation.options is None
-    assert choice.options == ("She watches TV.", "He watches TV.")
+    assert choice.options == ("She doesn't like coffee.", "He doesn't like coffee.")
     assert choice.answer_index == 0
     assert choice.answers is None
+
+
+def test_quiz_item_prompt_leaking_answer_is_rejected():
+    with pytest.raises(ContentValidationError, match="prompt leaks the answer"):
+        _make_bundle(
+            [
+                {
+                    "id": "q1",
+                    "type": "transform",
+                    "skill": "pres.he-she-it",
+                    "prompt": "Rewrite: She watches TV every evening.",
+                    "answers": ["She watches TV every evening"],
+                    "explanation": "Explanation",
+                }
+            ]
+        )
+
+
+def test_quiz_duplicate_prompts_are_rejected():
+    item = {
+        "id": "q1",
+        "type": "cloze",
+        "skill": "pres.he-she-it",
+        "prompt": "She ___ TV every evening.",
+        "answers": ["watches"],
+        "explanation": "Explanation",
+    }
+    with pytest.raises(ContentValidationError, match="duplicate prompt"):
+        _make_bundle(
+            [
+                item,
+                {
+                    "id": "q2",
+                    "type": "cloze",
+                    "skill": "pres.he-she-it",
+                    "prompt": "SHE ___ TV every evening.",
+                    "answers": ["watches"],
+                    "explanation": "Explanation",
+                },
+            ]
+        )
 
 
 def test_bundle_loads_all_six_levels_in_order():
