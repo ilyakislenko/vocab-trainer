@@ -9,6 +9,8 @@ const dict: Translations = {
   "nav.learn": { en: "Learn", ru: "Изучение" },
   "nav.review": { en: "Review", ru: "Повторение" },
   "nav.practice": { en: "Practice", ru: "Практика" },
+  "nav.profile": { en: "Profile", ru: "Профиль" },
+  "nav.tools": { en: "Tools", ru: "Инструменты" },
   "nav.import": { en: "Import", ru: "Импорт" },
   "nav.stats": { en: "Stats", ru: "Статистика" },
   "nav.dark": { en: "Dark", ru: "Тёмная" },
@@ -294,9 +296,41 @@ const dict: Translations = {
     en: "Welcome! Create a deck to get started.",
     ru: "Добро пожаловать! Создай колоду, чтобы начать.",
   },
+  "onboarding.firstRun": {
+    en: "Your daily review starts here — learn a few new words, then practice them.",
+    ru: "Ежедневное повторение начинается здесь — выучи несколько новых слов и потренируйся.",
+  },
   "onboarding.step1": { en: "Create a deck", ru: "Создай колоду" },
   "onboarding.step2": { en: "Import words", ru: "Импортируй слова" },
   "onboarding.step3": { en: "Start reviewing", ru: "Начни повторять" },
+
+  // Empty / no-deck states
+  "noDeck.title": { en: "No deck yet", ru: "Пока нет колоды" },
+  "noDeck.hint": {
+    en: "Create one in the sidebar, or import a ready-made word list, then come back here.",
+    ru: "Создай её в сайдбаре или импортируй готовый список слов — и возвращайся сюда.",
+  },
+  "noDeck.import": { en: "Import words", ru: "Импортировать слова" },
+
+  // Profile
+  "profile.title": { en: "Profile", ru: "Профиль" },
+  "profile.level": { en: "Estimated level", ru: "Предполагаемый уровень" },
+  "profile.levelNotAssessed": { en: "Not assessed", ru: "Не определён" },
+  "profile.takePlacement": { en: "Take the level test", ru: "Пройти тест уровня" },
+  "profile.streak": { en: "Day streak", ru: "Серия дней" },
+  "profile.totalReviews": { en: "Total reviews", ru: "Всего повторений" },
+  "profile.cardsByState": { en: "Cards by state", ru: "Карточки по состоянию" },
+  "profile.curriculum": { en: "Curriculum progress", ru: "Прогресс программы" },
+  "profile.displayName": { en: "Display name", ru: "Имя" },
+  "profile.saveName": { en: "Save", ru: "Сохранить" },
+  "profile.noDeck": {
+    en: "Create a deck first, then come back to see your profile.",
+    ru: "Сначала создай колоду, потом возвращайся в профиль.",
+  },
+  "profile.stateNew": { en: "New", ru: "Новые" },
+  "profile.stateLearning": { en: "Learning", ru: "В процессе" },
+  "profile.stateReview": { en: "Review", ru: "На повторении" },
+  "profile.stateRelearning": { en: "Relearning", ru: "Переучивание" },
 
   // Curriculum / Learn
   "learn.title": { en: "Curriculum", ru: "Учебный план" },

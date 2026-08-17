@@ -1,7 +1,6 @@
 import {
   BarChart3,
   BookOpen,
-  CalendarCheck,
   Globe,
   GraduationCap,
   MessageSquare,
@@ -9,9 +8,11 @@ import {
   Pencil,
   Sun,
   Upload,
+  User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
+import { useCurriculumMap } from "@/entities/curriculum";
 import { useDecks } from "@/entities/deck";
 import { DeckPicker } from "@/features/select-deck";
 import { ImportPage } from "@/pages/import";
@@ -21,6 +22,7 @@ import { LessonPage } from "@/pages/lesson";
 import { MascotDemoPage } from "@/pages/mascot";
 import { PlacementPage } from "@/pages/placement";
 import { PracticePage } from "@/pages/practice";
+import { ProfilePage } from "@/pages/profile";
 import { QuizPage } from "@/pages/quiz";
 import { ReviewPage } from "@/pages/review";
 import { ReviewSkillsPage } from "@/pages/review-skills";
@@ -29,11 +31,14 @@ import { TodayPage } from "@/pages/today";
 import { useI18n } from "@/shared/lib/i18n";
 import { Providers } from "./providers";
 
-const NAV_ITEMS = [
-  { to: "/", icon: CalendarCheck, label: "nav.today" },
-  { to: "/review", icon: BookOpen, label: "nav.review" },
-  { to: "/learn", icon: GraduationCap, label: "nav.learn" },
+const PRIMARY_NAV = [
+  { to: "/", icon: BookOpen, label: "nav.review" },
   { to: "/practice", icon: Pencil, label: "nav.practice" },
+  { to: "/learn", icon: GraduationCap, label: "nav.learn" },
+  { to: "/profile", icon: User, label: "nav.profile" },
+] as const;
+
+const TOOLS_NAV = [
   { to: "/interview", icon: MessageSquare, label: "nav.interview" },
   { to: "/import", icon: Upload, label: "nav.import" },
   { to: "/stats", icon: BarChart3, label: "nav.stats" },
@@ -65,6 +70,16 @@ function Logo() {
   );
 }
 
+function LevelBadge() {
+  const map = useCurriculumMap();
+  const level = map.data?.placement_level ?? null;
+  return (
+    <span className="w-fit rounded-full bg-tint-lavender px-3 py-1 text-xs font-black tracking-wide text-secondary-foreground">
+      {level ?? "—"}
+    </span>
+  );
+}
+
 function SidebarNav({
   locale,
   setLocale,
@@ -75,25 +90,34 @@ function SidebarNav({
   const { t } = useI18n();
   const location = useLocation();
 
+  const renderLinks = (items: readonly { to: string; icon: typeof BookOpen; label: string }[]) =>
+    items.map(({ to, icon: Icon, label }) => {
+      const active = location.pathname === to;
+      return (
+        <Link
+          key={to}
+          to={to}
+          className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold transition-all ${
+            active
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:bg-white hover:text-foreground"
+          }`}
+        >
+          <Icon className="size-4.5" strokeWidth={2.5} />
+          {t(label)}
+        </Link>
+      );
+    });
+
   return (
-    <div className="flex flex-1 flex-col gap-1">
-      {NAV_ITEMS.map(({ to, icon: Icon, label }) => {
-        const active = location.pathname === to;
-        return (
-          <Link
-            key={to}
-            to={to}
-            className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold transition-all ${
-              active
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-white hover:text-foreground"
-            }`}
-          >
-            <Icon className="size-4.5" strokeWidth={2.5} />
-            {t(label)}
-          </Link>
-        );
-      })}
+    <div className="flex flex-1 flex-col gap-4">
+      <div className="flex flex-col gap-1">{renderLinks(PRIMARY_NAV)}</div>
+      <div className="flex flex-col gap-1">
+        <p className="px-4 text-[11px] font-black uppercase tracking-widest text-muted-foreground/70">
+          {t("nav.tools")}
+        </p>
+        {renderLinks(TOOLS_NAV)}
+      </div>
       <button
         type="button"
         onClick={() => setLocale(locale === "en" ? "ru" : "en")}
@@ -136,7 +160,10 @@ function AppShell() {
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col gap-6 border-r border-sidebar-border bg-sidebar px-5 py-7">
-          <Logo />
+          <div className="flex flex-col gap-2">
+            <Logo />
+            <LevelBadge />
+          </div>
           <SidebarNav locale={locale} setLocale={setLocale} />
           <div className="flex flex-col gap-3">
             <DeckPicker value={deckId} onChange={setDeckId} />
@@ -159,8 +186,9 @@ function AppShell() {
         {/* Content */}
         <main className="flex-1 px-8 py-8">
           <Routes>
-            <Route path="/" element={<TodayPage />} />
-            <Route path="/review" element={<ReviewPage deckId={deckId} />} />
+            <Route path="/" element={<ReviewPage deckId={deckId} />} />
+            <Route path="/today" element={<TodayPage />} />
+            <Route path="/profile" element={<ProfilePage deckId={deckId} />} />
             <Route path="/learn" element={<LearnPage />} />
             <Route path="/placement" element={<PlacementPage />} />
             <Route path="/learn/:moduleId" element={<LessonPage />} />

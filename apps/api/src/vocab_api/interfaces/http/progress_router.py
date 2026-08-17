@@ -21,4 +21,5 @@ async def progress(c: Container = Depends(get_container)) -> ProgressOut:
         ],
         overall_percent=report.overall_percent,
         streak=report.streak,
+        has_reviewed=report.has_reviewed,
     )

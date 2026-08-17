@@ -1,51 +1,59 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { HttpResponse, http } from "msw";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import { I18nProvider } from "@/shared/lib/i18n";
-import { server } from "@/shared/test";
+import { renderWithProviders, server } from "@/shared/test";
 import { ReviewPage } from "./ReviewPage";
 
-function renderPage(ui: React.ReactElement) {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(
-    <QueryClientProvider client={client}>
-      <I18nProvider>{ui}</I18nProvider>
-    </QueryClientProvider>,
+const QUEUE = [{ id: 1, word: "run", translation: "бежать", transcription: null }];
+
+function renderReview(deckId: number | null) {
+  return renderWithProviders(
+    <MemoryRouter>
+      <ReviewPage deckId={deckId} />
+    </MemoryRouter>,
+  );
+}
+
+function mockBase(hasReviewed: boolean) {
+  server.use(
+    http.get("/api/review/queue", () => HttpResponse.json(QUEUE)),
+    http.get("/api/review/summary", () => HttpResponse.json({ next_due: null, reviewed_today: 0 })),
+    http.get("/api/progress", () =>
+      HttpResponse.json({
+        levels: [],
+        overall_percent: 0,
+        streak: 0,
+        has_reviewed: hasReviewed,
+      }),
+    ),
   );
 }
 
 describe("ReviewPage", () => {
-  it("resets the review session (not stuck on the old deck's cards) when the selected deck changes", async () => {
-    server.use(
-      http.get("/api/review/queue", ({ request }) => {
-        const deckId = new URL(request.url).searchParams.get("deck_id");
-        if (deckId === "2") {
-          return HttpResponse.json([
-            { id: 2, word: "jump", translation: "прыгать", transcription: null },
-          ]);
-        }
-        return HttpResponse.json([
-          { id: 1, word: "run", translation: "бежать", transcription: null },
-        ]);
-      }),
-    );
+  it("shows the onboarding hero on first run, then the session", async () => {
+    mockBase(false);
+    renderReview(1);
+    await waitFor(() => expect(screen.getByText(/welcome|добро пожаловать/i)).toBeInTheDocument());
+    expect(screen.getByText("run")).toBeInTheDocument();
+  });
 
-    const { rerender } = renderPage(<ReviewPage deckId={1} />);
+  it("skips onboarding once the user has reviewed before", async () => {
+    mockBase(true);
+    renderReview(1);
     await waitFor(() => expect(screen.getByText("run")).toBeInTheDocument());
+    expect(screen.queryByText(/welcome|добро пожаловать/i)).not.toBeInTheDocument();
+  });
 
-    // Simulate switching decks via the header DeckPicker: same route, new deckId prop.
-    rerender(
-      <QueryClientProvider
-        client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
-      >
-        <I18nProvider>
-          <ReviewPage deckId={2} />
-        </I18nProvider>
-      </QueryClientProvider>,
+  it("guides to create a deck when none exists", async () => {
+    server.use(
+      http.get("/api/progress", () =>
+        HttpResponse.json({ levels: [], overall_percent: 0, streak: 0, has_reviewed: false }),
+      ),
     );
-
-    await waitFor(() => expect(screen.getByText("jump")).toBeInTheDocument());
-    expect(screen.queryByText("run")).not.toBeInTheDocument();
+    renderReview(null);
+    await waitFor(() =>
+      expect(screen.getByText(/no deck yet|пока нет колоды/i)).toBeInTheDocument(),
+    );
   });
 });

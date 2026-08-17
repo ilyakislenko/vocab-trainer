@@ -133,6 +133,24 @@ async def test_progress_streak_takes_the_strongest_deck():
     report = await _use_case(FakeProgress(), decks, logs).execute()
 
     assert report.streak == 1
+    assert report.has_reviewed is True
+
+
+async def test_progress_has_reviewed_flips_with_review_history():
+    progress = FakeProgress()
+    decks = FakeDeckRepository()
+    cards = FakeCardRepository()
+    logs = FakeReviewLogRepository(cards)
+    deck = await decks.add(Deck(name="a", created_at=NOW))
+    assert deck.id is not None
+    await cards.add_many(
+        [Card(deck_id=deck.id, word="a", translation="tr", fsrs=FsrsState.new(NOW))]
+    )
+
+    assert (await _use_case(progress, decks, logs).execute()).has_reviewed is False
+
+    await logs.add(ReviewLogEntry(card_id=1, rating=3, reviewed_at=NOW))
+    assert (await _use_case(progress, decks, logs).execute()).has_reviewed is True
 
 
 async def test_progress_empty_is_zero_percent():
@@ -140,4 +158,5 @@ async def test_progress_empty_is_zero_percent():
 
     assert report.overall_percent == 0
     assert report.streak == 0
+    assert report.has_reviewed is False
     assert all(level.completed == 0 for level in report.levels)

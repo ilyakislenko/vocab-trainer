@@ -5,6 +5,7 @@ import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { Textarea } from "@/shared/ui/textarea";
+import { NoDeck } from "@/widgets/no-deck";
 import { PracticeSession } from "@/widgets/practice-session";
 
 type Mode = "due" | "all" | "topic";
@@ -28,7 +29,7 @@ export function PracticePage({ deckId }: { deckId: number | null }) {
   const all = useDeckCards(deckId, mode === "all");
   const topicWords = useTopicWords(deckId, appliedTopic);
 
-  if (deckId === null) return <p className="text-muted-foreground">{t("practice.noDeck")}</p>;
+  if (deckId === null) return <NoDeck />;
 
   const sections = [...new Set((all.data ?? []).map((c) => c.section).filter(Boolean))];
   const allCards = all.data;

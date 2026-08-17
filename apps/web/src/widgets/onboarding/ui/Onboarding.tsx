@@ -11,7 +11,10 @@ export function Onboarding() {
   const { t } = useI18n();
   return (
     <div className="flex flex-col items-center gap-8 rounded-3xl border border-border bg-card p-12 text-center">
-      <p className="text-3xl font-black tracking-tight">{t("onboarding.welcome")}</p>
+      <div className="flex flex-col gap-2">
+        <p className="text-3xl font-black tracking-tight">{t("onboarding.welcome")}</p>
+        <p className="max-w-md text-muted-foreground">{t("onboarding.firstRun")}</p>
+      </div>
       <div className="flex gap-6">
         {STEPS.map(({ icon: Icon, key, tint }) => (
           <div

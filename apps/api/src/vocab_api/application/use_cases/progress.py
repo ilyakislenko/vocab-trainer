@@ -31,6 +31,7 @@ class ProgressReport:
     levels: tuple[LevelProgress, ...]
     overall_percent: int
     streak: int
+    has_reviewed: bool
 
 
 class GetProgress:
@@ -74,4 +75,9 @@ class GetProgress:
                 continue
             streak = max(streak, await self._logs.streak(deck.id))
 
-        return ProgressReport(levels=tuple(levels), overall_percent=overall, streak=streak)
+        return ProgressReport(
+            levels=tuple(levels),
+            overall_percent=overall,
+            streak=streak,
+            has_reviewed=await self._logs.has_any(),
+        )

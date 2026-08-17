@@ -188,6 +188,9 @@ class FakeReviewLogRepository:
                 count += 1
         return count
 
+    async def has_any(self) -> bool:
+        return bool(self.entries)
+
     async def streak(self, deck_id: int) -> int:
         # Simplified: count today if there are reviews, else 0.
         from datetime import datetime

@@ -24,7 +24,7 @@ function renderPage(deckId: number | null, initialEntries?: string[]) {
 describe("PracticePage", () => {
   it("is empty without a deck", () => {
     renderPage(null);
-    expect(screen.getByText(/create a deck above|создай колоду/i)).toBeInTheDocument();
+    expect(screen.getByText(/no deck yet|пока нет колоды/i)).toBeInTheDocument();
   });
 
   it("practises due words by default", async () => {

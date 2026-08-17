@@ -3,12 +3,12 @@ import { expect, test } from "@playwright/test";
 test("practise a sentence with LLM feedback", async ({ page }) => {
   await page.goto("/practice");
   const main = page.getByRole("main");
-  await expect(main.getByText(/write a sentence using/i)).toBeVisible();
-  // Scope to <main>: the header also has a "New deck…" textbox, so the bare
-  // role would be ambiguous.
+  // Default MSW handlers auto-select the sample deck and return one due card,
+  // so the sentence tab renders immediately. The app's default locale is
+  // Russian, so the UI strings below are the ru translations.
+  await expect(main.getByText(/Составь предложение с/i)).toBeVisible();
   await main.getByRole("textbox").fill("I run every day.");
-  await main.getByRole("button", { name: /check/i }).click();
-  // Exact match: the feedback body text "Looks good." (with period) would
-  // also match a loose /looks good/i, making the locator ambiguous.
-  await expect(main.getByText("Looks good", { exact: true })).toBeVisible(); // default practice handler → verdict ok
+  await main.getByRole("button", { name: /Проверить/i }).click();
+  // Default practice handler → verdict ok → feedback.ok ("✓ Отлично!").
+  await expect(main.getByText("✓ Отлично!")).toBeVisible();
 });

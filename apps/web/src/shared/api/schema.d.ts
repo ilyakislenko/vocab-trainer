@@ -918,6 +918,8 @@ export interface components {
             overall_percent: number;
             /** Streak */
             streak: number;
+            /** Has Reviewed */
+            has_reviewed: boolean;
         };
         /** ReviewIn */
         ReviewIn: {

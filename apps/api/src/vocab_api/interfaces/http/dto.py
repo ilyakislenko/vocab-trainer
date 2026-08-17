@@ -321,3 +321,4 @@ class ProgressOut(BaseModel):
     levels: list[LevelProgressOut]
     overall_percent: int
     streak: int
+    has_reviewed: bool

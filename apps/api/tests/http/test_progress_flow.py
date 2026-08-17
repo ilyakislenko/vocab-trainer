@@ -56,6 +56,7 @@ async def test_progress_rolls_up_levels_and_streak(client: httpx.AsyncClient):
     assert by_level["A1"]["completed"] == 0
     assert body["streak"] == 1
     assert body["overall_percent"] > 0
+    assert body["has_reviewed"] is True
 
 
 async def test_module_detail_exposes_pillar_links(client: httpx.AsyncClient):

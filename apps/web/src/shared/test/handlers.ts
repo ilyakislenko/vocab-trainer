@@ -25,6 +25,12 @@ export const handlers = [
     });
   }),
   http.get("/api/stats", () => HttpResponse.json({ due_today: 0, total_reviews: 0 })),
+  http.get("/api/progress", () =>
+    HttpResponse.json({ levels: [], overall_percent: 0, streak: 0, has_reviewed: false }),
+  ),
+  http.get("/api/curriculum", () =>
+    HttpResponse.json({ levels: [], recommended_module_id: null, placement_level: null }),
+  ),
   http.post("/api/practice/check", () =>
     HttpResponse.json({
       verdict: "ok",

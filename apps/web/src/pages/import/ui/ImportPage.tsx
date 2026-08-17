@@ -1,11 +1,7 @@
 import { ImportPanel } from "@/widgets/import-panel";
+import { NoDeck } from "@/widgets/no-deck";
 
 export function ImportPage({ deckId }: { deckId: number | null }) {
-  if (deckId === null)
-    return (
-      <p className="text-muted-foreground">
-        Create a deck first — use the “New deck…” box above — then import words into it here.
-      </p>
-    );
+  if (deckId === null) return <NoDeck />;
   return <ImportPanel deckId={deckId} />;
 }

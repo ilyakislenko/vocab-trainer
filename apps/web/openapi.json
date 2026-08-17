@@ -2237,10 +2237,14 @@
           "streak": {
             "type": "integer",
             "title": "Streak"
+          },
+          "has_reviewed": {
+            "type": "boolean",
+            "title": "Has Reviewed"
           }
         },
         "type": "object",
-        "required": ["levels", "overall_percent", "streak"],
+        "required": ["levels", "overall_percent", "streak", "has_reviewed"],
         "title": "ProgressOut"
       },
       "ReviewIn": {
