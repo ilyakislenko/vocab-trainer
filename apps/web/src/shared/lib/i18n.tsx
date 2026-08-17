@@ -67,7 +67,6 @@ const dict: Translations = {
   "practice.say": { en: "🎤 Say it", ru: "🎤 Говорить" },
   "practice.saySentence": { en: "🎤 Say the sentence", ru: "🎤 Произнеси предложение" },
   "practice.nothing": { en: "Nothing to practise right now 🎉", ru: "Нечего повторять 🎉" },
-  "practice.loading": { en: "Loading…", ru: "Загрузка…" },
   "practice.noDeck": {
     en: "Create a deck above first, then come back here to practise.",
     ru: "Сначала создай колоду выше, затем возвращайся сюда практиковаться.",
