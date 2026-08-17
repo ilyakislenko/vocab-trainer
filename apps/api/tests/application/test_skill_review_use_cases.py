@@ -122,6 +122,27 @@ async def test_record_review_again_on_review_state_counts_lapse():
     assert updated.fsrs.lapses == 2
 
 
+async def test_record_review_again_while_relearning_also_counts_lapse():
+    skills = FakeSkillItemRepository()
+    created = await skills.add(
+        SkillItem(
+            skill="art.indefinite",
+            module_id="b1.grammar.articles",
+            source_item_id="q1",
+            fsrs=FsrsState(due=NOW, state=3, stability=1.0, lapses=2),
+        )
+    )
+
+    updated = await RecordSkillReview(skills, StubScheduler(), FixedClock(NOW)).execute(
+        created.id or 0, Rating.AGAIN
+    )
+
+    # A relapse while relearning counts too, so a skill you keep bombing in one
+    # session still reaches the Focus list promptly. Only initial-learning
+    # misses (state 0/1) are exempt.
+    assert updated.fsrs.lapses == 3
+
+
 async def test_record_review_missing_item_raises():
     skills = FakeSkillItemRepository()
     with pytest.raises(SkillItemNotFound):

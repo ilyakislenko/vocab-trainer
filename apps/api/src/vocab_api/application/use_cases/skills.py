@@ -93,8 +93,12 @@ class RecordSkillReview:
         now = self._clock.now()
         item = await self._skills.get(skill_item_id)  # raises SkillItemNotFound
         fsrs = self._scheduler.review(item.fsrs, rating, now)
-        # Mirror the FSRS lapses convention: failing a review-state item counts
-        # as a lapse; learning-state failures do not.
+        # A lapse is Again on an item that has already graduated past initial
+        # learning — Review (2) or Relearning (3). Counting relearning relapses
+        # too lets a skill you keep bombing reach the Focus list within a
+        # session, so weak-spot help surfaces promptly instead of only after
+        # several spaced-out cycles. First-time learning misses (state 0/1)
+        # don't count — everyone fumbles something new once.
         lapses = item.fsrs.lapses
         if rating is Rating.AGAIN and item.fsrs.state in (2, 3):
             lapses += 1
