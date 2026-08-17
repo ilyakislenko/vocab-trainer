@@ -81,6 +81,13 @@ class EmptyPronunciationText(DomainError):
         super().__init__("Pronunciation target must not be empty.")
 
 
+class AudioTooLarge(DomainError):
+    def __init__(self, size: int, limit: int) -> None:
+        super().__init__(f"Audio recording is too large ({size} bytes; limit {limit}).")
+        self.size = size
+        self.limit = limit
+
+
 class UnsupportedAccent(DomainError):
     def __init__(self, accent: str) -> None:
         super().__init__(f"Unsupported accent {accent!r}; only en-* accents are supported.")

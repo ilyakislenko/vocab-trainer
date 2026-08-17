@@ -1,14 +1,19 @@
 import pytest
 
 from vocab_api.application.errors import PronunciationUnavailable
-from vocab_api.application.use_cases.pronounce import ScorePronunciation
+from vocab_api.application.use_cases.pronounce import MAX_AUDIO_BYTES, ScorePronunciation
 from vocab_api.domain.pronunciation.assessment import (
     PhonemeScore,
     PronunciationAssessment,
     Verdict,
     WordScore,
 )
-from vocab_api.domain.shared.errors import EmptyAudio, EmptyPronunciationText, UnsupportedAccent
+from vocab_api.domain.shared.errors import (
+    AudioTooLarge,
+    EmptyAudio,
+    EmptyPronunciationText,
+    UnsupportedAccent,
+)
 from vocab_api.infrastructure.pronunciation.null_scorer import NullScorer
 
 
@@ -41,6 +46,12 @@ async def test_score_validates_audio():
     use_case = ScorePronunciation(FakeScorer(), NullScorer())
     with pytest.raises(EmptyAudio):
         await use_case.execute(b"", "hello")
+
+
+async def test_score_rejects_oversized_audio():
+    use_case = ScorePronunciation(FakeScorer(), NullScorer())
+    with pytest.raises(AudioTooLarge):
+        await use_case.execute(b"x" * (MAX_AUDIO_BYTES + 1), "hello")
 
 
 async def test_score_validates_target():

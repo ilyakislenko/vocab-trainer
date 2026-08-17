@@ -1,7 +1,16 @@
 from vocab_api.application.errors import PronunciationUnavailable
 from vocab_api.application.ports.pronunciation import PronunciationScorer
 from vocab_api.domain.pronunciation.assessment import PronunciationAssessment
-from vocab_api.domain.shared.errors import EmptyAudio, EmptyPronunciationText, UnsupportedAccent
+from vocab_api.domain.shared.errors import (
+    AudioTooLarge,
+    EmptyAudio,
+    EmptyPronunciationText,
+    UnsupportedAccent,
+)
+
+# A short spoken utterance is well under a megabyte; cap the upload so a rogue or
+# runaway recording cannot exhaust memory (spec §7).
+MAX_AUDIO_BYTES = 10 * 1024 * 1024
 
 
 class ScorePronunciation:
@@ -22,6 +31,8 @@ class ScorePronunciation:
     ) -> PronunciationAssessment:
         if not audio:
             raise EmptyAudio()
+        if len(audio) > MAX_AUDIO_BYTES:
+            raise AudioTooLarge(len(audio), MAX_AUDIO_BYTES)
         target = target_text.strip()
         if not target:
             raise EmptyPronunciationText()
