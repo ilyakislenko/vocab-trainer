@@ -9,7 +9,7 @@ export function CardFace({ card, revealed }: { card: Card; revealed: boolean }) 
         {revealed && (
           <>
             {card.transcription && (
-              <span className="rounded-full bg-white px-3 py-1 text-sm font-extrabold text-primary">
+              <span className="rounded-full bg-background px-3 py-1 text-sm font-extrabold text-primary">
                 /{card.transcription}/
               </span>
             )}

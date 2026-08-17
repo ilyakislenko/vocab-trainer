@@ -124,7 +124,7 @@ function FocusCard({ step }: { step: TodayStep }) {
         {leeches.map((item) => (
           <li
             key={item.id}
-            className="rounded-full bg-white px-3 py-1 text-sm font-extrabold text-destructive"
+            className="rounded-full bg-background px-3 py-1 text-sm font-extrabold text-destructive"
           >
             {item.skill}
           </li>

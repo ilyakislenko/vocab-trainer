@@ -21,7 +21,7 @@ export function Onboarding() {
             key={key}
             className={`flex w-40 flex-col items-center gap-3 rounded-2xl border border-border p-6 ${tint}`}
           >
-            <div className="flex size-14 items-center justify-center rounded-full bg-white">
+            <div className="flex size-14 items-center justify-center rounded-full bg-background">
               <Icon className="size-6 text-primary" strokeWidth={2.5} />
             </div>
             <span className="text-sm font-extrabold">{t(key)}</span>

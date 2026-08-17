@@ -99,7 +99,7 @@ function SidebarNav({
           className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold transition-all ${
             active
               ? "bg-primary text-primary-foreground"
-              : "text-muted-foreground hover:bg-white hover:text-foreground"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
           <Icon className="size-4.5" strokeWidth={2.5} />
@@ -120,7 +120,7 @@ function SidebarNav({
       <button
         type="button"
         onClick={() => setLocale(locale === "en" ? "ru" : "en")}
-        className="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground hover:bg-white hover:text-foreground"
+        className="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground hover:bg-muted hover:text-foreground"
         title={locale === "en" ? "Switch to Russian" : "Переключить на английский"}
       >
         <Globe className="size-4.5" strokeWidth={2.5} />
@@ -169,7 +169,7 @@ function AppShell() {
             <button
               type="button"
               onClick={() => setDark(!dark)}
-              className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground hover:bg-white hover:text-foreground"
+              className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground hover:bg-muted hover:text-foreground"
               title={dark ? "Light mode" : "Dark mode"}
             >
               {dark ? (

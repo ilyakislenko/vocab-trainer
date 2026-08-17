@@ -90,7 +90,7 @@ export function SentencePractice({
           )}
 
           {feedback.corrected && feedback.verdict === "needs_work" && (
-            <div className="mt-2 rounded-md bg-white/70 px-3 py-2">
+            <div className="mt-2 rounded-md bg-foreground/10 px-3 py-2">
               <span className="text-xs font-medium text-muted-foreground">
                 {t("feedback.correctedLabel")}
               </span>

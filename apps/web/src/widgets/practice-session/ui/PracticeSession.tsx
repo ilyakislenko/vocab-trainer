@@ -151,13 +151,13 @@ export function PracticeSession({
             text={card.word}
             variant="ghost"
             size="icon"
-            className="rounded-full bg-white text-lg hover:bg-white/80"
+            className="rounded-full bg-background text-lg hover:bg-muted"
           />
         </div>
         {card.transcription && <p className="mt-1 text-muted-foreground">/{card.transcription}/</p>}
         <p className="mt-2 text-xl font-extrabold text-foreground/80">{card.translation}</p>
         {card.section && (
-          <span className="mt-3 inline-block rounded-full bg-white px-3 py-1 text-xs font-black text-primary">
+          <span className="mt-3 inline-block rounded-full bg-background px-3 py-1 text-xs font-black text-primary">
             {card.section}
           </span>
         )}
@@ -177,7 +177,7 @@ export function PracticeSession({
               className={`flex-1 rounded-xl px-3 py-1.5 text-sm font-extrabold transition-all ${
                 (key === "drill" && drillOpen) || (key !== "drill" && tab === key)
                   ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-white hover:text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               {icon} {t(labelKey)}

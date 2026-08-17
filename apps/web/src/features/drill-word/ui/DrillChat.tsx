@@ -67,7 +67,7 @@ export function DrillChat({
               className={`max-w-[85%] rounded-lg px-3 py-2 ${
                 m.role === "user"
                   ? "ml-auto bg-primary text-primary-foreground"
-                  : "mr-auto bg-white text-foreground"
+                  : "mr-auto bg-background text-foreground"
               }`}
             >
               {m.text}

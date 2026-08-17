@@ -86,7 +86,7 @@ export function PlacementRunner() {
 
       <UICard className="border-border bg-tint-lavender">
         <CardContent className="flex flex-col gap-4 py-10 text-center">
-          <span className="rounded-full bg-white px-3 py-1 text-xs font-extrabold text-primary">
+          <span className="rounded-full bg-background px-3 py-1 text-xs font-extrabold text-primary">
             {t("placement.level").replace("{level}", item.level)}
           </span>
           <p className="text-2xl font-black leading-snug tracking-tight text-foreground">
