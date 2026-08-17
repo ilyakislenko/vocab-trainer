@@ -58,17 +58,20 @@ class BuildTodaySession:
 
     async def execute(self) -> tuple[TodayStep, ...]:
         now = self._clock.now()
+        # Resolve the recommended module once — both the learn and produce steps
+        # key off it, and it does not change within a single (read-only) request.
+        recommended = await self._recommend.execute()
         steps: list[TodayStep] = []
 
         review = await self._review_step(now)
         if review is not None:
             steps.append(review)
 
-        learn = await self._learn_step()
+        learn = await self._learn_step(recommended)
         if learn is not None:
             steps.append(learn)
 
-        produce = await self._produce_step()
+        produce = await self._produce_step(recommended)
         if produce is not None:
             steps.append(produce)
 
@@ -89,8 +92,9 @@ class BuildTodaySession:
             return None
         return ReviewStep(vocab_due=vocab_due, skill_due=skill_due)
 
-    async def _learn_step(self) -> ReadLessonStep | TakeQuizStep | None:
-        module_id = await self._recommend.execute()
+    async def _learn_step(
+        self, module_id: str | None
+    ) -> ReadLessonStep | TakeQuizStep | None:
         if module_id is None:
             return None
         try:
@@ -109,8 +113,8 @@ class BuildTodaySession:
             items=len(quiz.items),
         )
 
-    async def _produce_step(self) -> ProduceStep | None:
-        linked = await self._produce_from_module()
+    async def _produce_step(self, module_id: str | None) -> ProduceStep | None:
+        linked = self._produce_from_module(module_id)
         if linked is not None:
             return linked
         recent = await self._logs.most_recent(1)
@@ -121,10 +125,9 @@ class BuildTodaySession:
             return None
         return ProduceStep(word=card.word, card_id=card.id)
 
-    async def _produce_from_module(self) -> ProduceStep | None:
+    def _produce_from_module(self, module_id: str | None) -> ProduceStep | None:
         """Prefer the recommended module's pillar links (§11/§5): vocab section
         before interview topic. Only links, never new vocab/interview code."""
-        module_id = await self._recommend.execute()
         if module_id is None:
             return None
         try:
