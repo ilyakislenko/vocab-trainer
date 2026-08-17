@@ -4,6 +4,7 @@ import { CardFace, useReviewQueue } from "@/entities/card";
 import { RatingBar, useRecordReview } from "@/features/rate-card";
 import type { Card, Rating } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
+import { useRevealShortcut } from "@/shared/lib/use-reveal-shortcut";
 import { Button } from "@/shared/ui/button";
 
 const RATING_NAME_KEYS: Record<Rating, string> = {
@@ -28,6 +29,8 @@ export function ReviewSession({ deckId }: { deckId: number }) {
       setSessionCards(queue.data);
     }
   }, [queue.data, sessionCards]);
+
+  useRevealShortcut(!revealed && !complete, () => setRevealed(true));
 
   if (sessionCards === null) return <p>{t("practice.loading")}</p>;
   const card = sessionCards[index];
@@ -100,6 +103,7 @@ export function ReviewSession({ deckId }: { deckId: number }) {
       ) : (
         <Button onClick={() => setRevealed(true)} className="rounded-full px-8">
           {t("review.showAnswer")}
+          <span className="ml-2 opacity-60">{t("review.revealHint")}</span>
         </Button>
       )}
     </div>

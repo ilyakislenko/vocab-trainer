@@ -64,6 +64,17 @@ describe("SkillReviewSession", () => {
     expect(screen.getByText(/Навыков повторено|Skill items reviewed/)).toBeInTheDocument();
   });
 
+  it("reveals the answer with the Space key (keyboard-first)", async () => {
+    mockQueue();
+    renderWithProviders(<SkillReviewSession />);
+
+    // Flip the card from the keyboard instead of clicking "Show answer".
+    expect(await screen.findByText("I need ___ new laptop.")).toBeInTheDocument();
+    await userEvent.keyboard(" ");
+
+    expect(screen.getByText(/First mention of a countable noun/)).toBeInTheDocument();
+  });
+
   it("shows the caught-up state when the queue is empty", async () => {
     mockQueue([]);
     renderWithProviders(<SkillReviewSession />);

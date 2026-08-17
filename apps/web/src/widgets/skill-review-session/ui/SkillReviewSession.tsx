@@ -5,6 +5,7 @@ import { RatingBar } from "@/features/rate-card";
 import { useRecordSkillReview } from "@/features/review-skills";
 import type { CurriculumSkillReview, Rating } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
+import { useRevealShortcut } from "@/shared/lib/use-reveal-shortcut";
 import { Button } from "@/shared/ui/button";
 import { CardContent, Card as UICard } from "@/shared/ui/card";
 
@@ -24,6 +25,8 @@ export function SkillReviewSession() {
       setComplete(queue.data.length === 0);
     }
   }, [queue.data, session]);
+
+  useRevealShortcut(!revealed && !complete, () => setRevealed(true));
 
   if (session === null) return <p>{t("practice.loading")}</p>;
   const item = session[index];
@@ -123,6 +126,7 @@ export function SkillReviewSession() {
       ) : (
         <Button onClick={() => setRevealed(true)} className="rounded-full px-8">
           {t("review.showAnswer")}
+          <span className="ml-2 opacity-60">{t("review.revealHint")}</span>
         </Button>
       )}
     </div>

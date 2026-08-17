@@ -224,6 +224,7 @@ const dict: Translations = {
 
   // Review
   "review.showAnswer": { en: "Show answer", ru: "Показать ответ" },
+  "review.revealHint": { en: "Space", ru: "Пробел" },
   "review.caughtUp": { en: "You're all caught up 🎉", ru: "Всё повторено 🎉" },
   "review.summary": { en: "Session complete!", ru: "Сессия завершена!" },
   "review.reviewed": { en: "Cards reviewed", ru: "Карточек пройдено" },
