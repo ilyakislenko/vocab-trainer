@@ -1,10 +1,22 @@
-import { BarChart3, BookOpen, Globe, MessageSquare, Moon, Pencil, Sun, Upload } from "lucide-react";
+import {
+  BarChart3,
+  BookOpen,
+  Globe,
+  GraduationCap,
+  MessageSquare,
+  Moon,
+  Pencil,
+  Sun,
+  Upload,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import { useDecks } from "@/entities/deck";
 import { DeckPicker } from "@/features/select-deck";
 import { ImportPage } from "@/pages/import";
 import { InterviewPage } from "@/pages/interview";
+import { LearnPage } from "@/pages/learn";
+import { LessonPage } from "@/pages/lesson";
 import { MascotDemoPage } from "@/pages/mascot";
 import { PracticePage } from "@/pages/practice";
 import { ReviewPage } from "@/pages/review";
@@ -14,6 +26,7 @@ import { Providers } from "./providers";
 
 const NAV_ITEMS = [
   { to: "/", icon: BookOpen, label: "nav.review" },
+  { to: "/learn", icon: GraduationCap, label: "nav.learn" },
   { to: "/practice", icon: Pencil, label: "nav.practice" },
   { to: "/interview", icon: MessageSquare, label: "nav.interview" },
   { to: "/import", icon: Upload, label: "nav.import" },
@@ -141,6 +154,8 @@ function AppShell() {
         <main className="flex-1 px-8 py-8">
           <Routes>
             <Route path="/" element={<ReviewPage deckId={deckId} />} />
+            <Route path="/learn" element={<LearnPage />} />
+            <Route path="/learn/:moduleId" element={<LessonPage />} />
             <Route path="/practice" element={<PracticePage deckId={deckId} />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/import" element={<ImportPage deckId={deckId} />} />

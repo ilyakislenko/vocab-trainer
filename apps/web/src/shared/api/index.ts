@@ -1,6 +1,13 @@
 export { apiClient } from "./client";
 export type {
   Card,
+  CurriculumLesson,
+  CurriculumLessonMeta,
+  CurriculumMap,
+  CurriculumModule,
+  CurriculumModuleDetail,
+  CurriculumModuleProgress,
+  CurriculumReference,
   Deck,
   Feedback,
   ImportFormat,

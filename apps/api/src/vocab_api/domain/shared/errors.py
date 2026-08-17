@@ -37,3 +37,23 @@ class CardNotFound(DomainError):
     def __init__(self, card_id: int) -> None:
         super().__init__(f"card {card_id} not found")
         self.card_id = card_id
+
+
+class CurriculumModuleNotFound(DomainError):
+    def __init__(self, module_id: str) -> None:
+        super().__init__(f"module {module_id!r} not found")
+        self.module_id = module_id
+
+
+class CurriculumLessonNotFound(DomainError):
+    def __init__(self, module_id: str) -> None:
+        super().__init__(f"lesson for module {module_id!r} not found")
+        self.module_id = module_id
+
+
+class ContentValidationError(DomainError):
+    """The content bundle failed validation; the app must not serve it."""
+
+    def __init__(self, reason: str) -> None:
+        super().__init__(f"curriculum content invalid: {reason}")
+        self.reason = reason

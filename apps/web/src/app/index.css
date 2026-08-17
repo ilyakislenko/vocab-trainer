@@ -205,3 +205,107 @@
     transform: translateY(-3px);
   }
 }
+
+/* Authored lesson content (rendered markdown) */
+.lesson-markdown {
+  color: var(--foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+.lesson-markdown > :first-child {
+  margin-top: 0;
+}
+.lesson-markdown h1,
+.lesson-markdown h2,
+.lesson-markdown h3,
+.lesson-markdown h4 {
+  margin: 1.75em 0 0.6em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.lesson-markdown h1 {
+  font-size: 1.6em;
+}
+.lesson-markdown h2 {
+  font-size: 1.3em;
+}
+.lesson-markdown h3 {
+  font-size: 1.1em;
+}
+.lesson-markdown p,
+.lesson-markdown ul,
+.lesson-markdown ol,
+.lesson-markdown table,
+.lesson-markdown blockquote,
+.lesson-markdown pre {
+  margin: 1em 0;
+}
+.lesson-markdown ul,
+.lesson-markdown ol {
+  padding-left: 1.5em;
+}
+.lesson-markdown ul {
+  list-style: disc;
+}
+.lesson-markdown ol {
+  list-style: decimal;
+}
+.lesson-markdown li {
+  margin: 0.35em 0;
+}
+.lesson-markdown a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lesson-markdown strong {
+  font-weight: 800;
+}
+.lesson-markdown em {
+  font-style: italic;
+}
+.lesson-markdown del {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.lesson-markdown blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1em;
+  color: var(--muted-foreground);
+}
+.lesson-markdown code {
+  border-radius: 0.4rem;
+  background: var(--muted);
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.lesson-markdown pre {
+  border-radius: 0.75rem;
+  background: var(--muted);
+  padding: 1em;
+  overflow-x: auto;
+}
+.lesson-markdown pre code {
+  background: transparent;
+  padding: 0;
+}
+.lesson-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.lesson-markdown th,
+.lesson-markdown td {
+  border: 1px solid var(--border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+  vertical-align: top;
+}
+.lesson-markdown th {
+  background: var(--muted);
+  font-weight: 800;
+}

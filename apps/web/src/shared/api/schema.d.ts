@@ -243,6 +243,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/curriculum": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Curriculum Map */
+        get: operations["curriculum_map_curriculum_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/curriculum/modules/{module_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Module Detail */
+        get: operations["module_detail_curriculum_modules__module_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/curriculum/lessons/{module_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lesson */
+        get: operations["lesson_curriculum_lessons__module_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/curriculum/lessons/{module_id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mark Lesson Read */
+        post: operations["mark_lesson_read_curriculum_lessons__module_id__read_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -271,6 +339,105 @@ export interface components {
         CreateDeckIn: {
             /** Name */
             name: string;
+        };
+        /** CurriculumLessonMetaOut */
+        CurriculumLessonMetaOut: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Level */
+            level: string;
+            /** Track */
+            track: string;
+            /** Estimated Minutes */
+            estimated_minutes: number;
+            /** Objectives */
+            objectives: string[];
+            /** Skills */
+            skills: string[];
+            /** References */
+            references: components["schemas"]["CurriculumReferenceOut"][];
+        };
+        /** CurriculumLessonOut */
+        CurriculumLessonOut: {
+            /** Markdown */
+            markdown: string;
+            meta: components["schemas"]["CurriculumLessonMetaOut"];
+        };
+        /** CurriculumLevelOut */
+        CurriculumLevelOut: {
+            /** Level */
+            level: string;
+            /** Modules */
+            modules: components["schemas"]["CurriculumModuleOut"][];
+        };
+        /** CurriculumMapOut */
+        CurriculumMapOut: {
+            /** Levels */
+            levels: components["schemas"]["CurriculumLevelOut"][];
+            /** Recommended Module Id */
+            recommended_module_id?: string | null;
+        };
+        /** CurriculumModuleDetailOut */
+        CurriculumModuleDetailOut: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Level */
+            level: string;
+            /** Track */
+            track: string;
+            /** Status */
+            status: string;
+            /** Objectives */
+            objectives: string[];
+            /** References */
+            references: components["schemas"]["CurriculumReferenceOut"][];
+            /** Has Quiz */
+            has_quiz: boolean;
+            /** Estimated Minutes */
+            estimated_minutes: number;
+            /** Quiz Best Score */
+            quiz_best_score?: number | null;
+        };
+        /** CurriculumModuleOut */
+        CurriculumModuleOut: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Level */
+            level: string;
+            /** Track */
+            track: string;
+            /** Availability */
+            availability: string;
+            /** Status */
+            status: string;
+            /** Quiz Best Score */
+            quiz_best_score?: number | null;
+        };
+        /** CurriculumModuleProgressOut */
+        CurriculumModuleProgressOut: {
+            /** Module Id */
+            module_id: string;
+            /** Status */
+            status: string;
+            /** Lesson Read At */
+            lesson_read_at?: string | null;
+            /** Quiz Best Score */
+            quiz_best_score?: number | null;
+            /** Completed At */
+            completed_at?: string | null;
+        };
+        /** CurriculumReferenceOut */
+        CurriculumReferenceOut: {
+            /** Book */
+            book: string;
+            /** Locator */
+            locator: string;
         };
         /** DeckOut */
         DeckOut: {
@@ -952,6 +1119,119 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["InterviewOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    curriculum_map_curriculum_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumMapOut"];
+                };
+            };
+        };
+    };
+    module_detail_curriculum_modules__module_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                module_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumModuleDetailOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    lesson_curriculum_lessons__module_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                module_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumLessonOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mark_lesson_read_curriculum_lessons__module_id__read_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                module_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumModuleProgressOut"];
                 };
             };
             /** @description Validation Error */

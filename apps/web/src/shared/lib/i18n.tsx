@@ -6,6 +6,7 @@ type Translations = Record<string, Record<Locale, string>>;
 
 const dict: Translations = {
   // Navigation
+  "nav.learn": { en: "Learn", ru: "Изучение" },
   "nav.review": { en: "Review", ru: "Повторение" },
   "nav.practice": { en: "Practice", ru: "Практика" },
   "nav.import": { en: "Import", ru: "Импорт" },
@@ -268,6 +269,37 @@ const dict: Translations = {
   "onboarding.step1": { en: "Create a deck", ru: "Создай колоду" },
   "onboarding.step2": { en: "Import words", ru: "Импортируй слова" },
   "onboarding.step3": { en: "Start reviewing", ru: "Начни повторять" },
+
+  // Curriculum / Learn
+  "learn.title": { en: "Curriculum", ru: "Учебный план" },
+  "learn.subtitle": {
+    en: "A guided path from A1 to C2 for active English mastery.",
+    ru: "Пошаговый путь от A1 до C2 для уверенного владения английским.",
+  },
+  "learn.levelA1": { en: "A1 • Beginner", ru: "A1 • Элементарный" },
+  "learn.levelA2": { en: "A2 • Elementary", ru: "A2 • Предпороговый" },
+  "learn.levelB1": { en: "B1 • Intermediate", ru: "B1 • Средний" },
+  "learn.levelB2": { en: "B2 • Upper-Intermediate", ru: "B2 • Выше среднего" },
+  "learn.levelC1": { en: "C1 • Advanced", ru: "C1 • Продвинутый" },
+  "learn.levelC2": { en: "C2 • Mastery", ru: "C2 • В совершенстве" },
+  "learn.trackGrammar": { en: "Grammar", ru: "Грамматика" },
+  "learn.trackVocabulary": { en: "Vocabulary", ru: "Словарный запас" },
+  "learn.trackPhrasalVerbs": { en: "Phrasal Verbs", ru: "Фразовые глаголы" },
+  "learn.trackCollocations": { en: "Collocations", ru: "Коллокации" },
+  "learn.trackIdioms": { en: "Idioms", ru: "Идиомы" },
+  "learn.trackBusiness": { en: "Business", ru: "Бизнес" },
+  "learn.statusNotStarted": { en: "Not started", ru: "Не начато" },
+  "learn.statusInProgress": { en: "In progress", ru: "В процессе" },
+  "learn.statusCompleted": { en: "Completed", ru: "Завершено" },
+  "learn.authoring": { en: "Authoring in progress", ru: "В разработке" },
+  "learn.readLesson": { en: "Read lesson", ru: "Читать урок" },
+  "learn.markRead": { en: "Mark as read", ru: "Отметить как прочитанное" },
+  "learn.markedRead": { en: "Read ✓", ru: "Прочитано ✓" },
+  "learn.backToMap": { en: "← Back to Curriculum", ru: "← Назад к плану" },
+  "learn.objectives": { en: "Objectives", ru: "Цели" },
+  "learn.skills": { en: "Skills", ru: "Навыки" },
+  "learn.references": { en: "References", ru: "Источники" },
+  "learn.estMinutes": { en: "{n} min read", ru: "{n} мин чтения" },
 
   // Misc
   "misc.translation": { en: "Translation…", ru: "Перевод…" },

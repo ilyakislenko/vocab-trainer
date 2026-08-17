@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse
 from vocab_api.application.errors import LlmUnavailable
 from vocab_api.domain.shared.errors import (
     CardNotFound,
+    CurriculumLessonNotFound,
+    CurriculumModuleNotFound,
     DeckNotFound,
     DomainError,
 )
@@ -16,6 +18,14 @@ def install_error_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(CardNotFound)
     async def _card_not_found(_: Request, exc: CardNotFound) -> JSONResponse:
+        return JSONResponse(status_code=404, content={"detail": str(exc)})
+
+    @app.exception_handler(CurriculumModuleNotFound)
+    async def _module_not_found(_: Request, exc: CurriculumModuleNotFound) -> JSONResponse:
+        return JSONResponse(status_code=404, content={"detail": str(exc)})
+
+    @app.exception_handler(CurriculumLessonNotFound)
+    async def _lesson_not_found(_: Request, exc: CurriculumLessonNotFound) -> JSONResponse:
         return JSONResponse(status_code=404, content={"detail": str(exc)})
 
     @app.exception_handler(LlmUnavailable)

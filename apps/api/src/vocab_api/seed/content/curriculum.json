@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "levels": [
+    {
+      "level": "A1",
+      "modules": [
+        { "id": "a1.grammar.to-be", "status": "authoring", "title": "To be (am/is/are)" },
+        { "id": "a1.grammar.present-simple", "status": "authoring", "title": "Present Simple" },
+        { "id": "a1.grammar.plurals-articles", "status": "authoring", "title": "Plurals & articles" },
+        { "id": "a1.grammar.imperatives", "status": "authoring", "title": "Imperatives" },
+        { "id": "a1.vocabulary.daily-routine", "status": "authoring", "title": "Daily routine" }
+      ]
+    },
+    {
+      "level": "A2",
+      "modules": [
+        { "id": "a2.grammar.past-simple", "status": "authoring", "title": "Past Simple" },
+        { "id": "a2.grammar.present-continuous", "status": "authoring", "title": "Present Continuous" },
+        { "id": "a2.grammar.comparatives", "status": "authoring", "title": "Comparatives & superlatives" },
+        { "id": "a2.grammar.modals-can-must", "status": "authoring", "title": "Modal verbs: can, must" },
+        { "id": "a2.vocabulary.work-travel", "status": "authoring", "title": "Work & travel" }
+      ]
+    },
+    {
+      "level": "B1",
+      "modules": [
+        "b1.grammar.articles",
+        "b1.grammar.perfect-aspect",
+        "b1.grammar.conditionals-wish",
+        "b1.grammar.relative-clauses",
+        "b1.grammar.reported-speech",
+        "b1.grammar.modality-deduction",
+        "b1.grammar.dependent-prepositions",
+        "b1.grammar.word-order",
+        "b1.phrasal_verbs.work-business",
+        "b1.phrasal_verbs.communication"
+      ]
+    },
+    {
+      "level": "B2",
+      "modules": [
+        "b2.grammar.passive-voice",
+        "b2.grammar.noun-clauses",
+        "b2.grammar.inversion",
+        "b2.grammar.participle-clauses",
+        "b2.grammar.discourse-markers",
+        "b2.phrasal_verbs.problem-solving",
+        "b2.collocations.academic",
+        "b2.vocabulary.technology"
+      ]
+    },
+    {
+      "level": "C1",
+      "modules": [
+        "c1.grammar.cleft-sentences",
+        "c1.grammar.hedging-register",
+        "c1.grammar.relative-clauses-advanced",
+        "c1.grammar.modality-past",
+        "c1.grammar.reported-speech-advanced",
+        "c1.grammar.inversion-advanced",
+        "c1.collocations.abstract",
+        "c1.idioms.advanced",
+        "c1.business.register"
+      ]
+    },
+    {
+      "level": "C2",
+      "modules": [
+        { "id": "c2.grammar.nominalization", "status": "authoring", "title": "Nominalization" },
+        { "id": "c2.grammar.fronting", "status": "authoring", "title": "Fronting & postponement" },
+        { "id": "c2.grammar.ellipsis", "status": "authoring", "title": "Ellipsis & substitution" },
+        { "id": "c2.vocabulary.nuance", "status": "authoring", "title": "Lexical nuance" }
+      ]
+    }
+  ]
+}

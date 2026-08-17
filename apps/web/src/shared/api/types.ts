@@ -11,3 +11,12 @@ export type Feedback = components["schemas"]["FeedbackOut"];
 export type WordHint = components["schemas"]["WordHintOut"];
 export type InterviewOut = components["schemas"]["InterviewOut"];
 export type InterviewMessage = components["schemas"]["InterviewMessage"];
+
+export type CurriculumMap = components["schemas"]["CurriculumMapOut"];
+export type CurriculumLevel = components["schemas"]["CurriculumLevelOut"];
+export type CurriculumModule = components["schemas"]["CurriculumModuleOut"];
+export type CurriculumModuleDetail = components["schemas"]["CurriculumModuleDetailOut"];
+export type CurriculumLesson = components["schemas"]["CurriculumLessonOut"];
+export type CurriculumLessonMeta = components["schemas"]["CurriculumLessonMetaOut"];
+export type CurriculumModuleProgress = components["schemas"]["CurriculumModuleProgressOut"];
+export type CurriculumReference = components["schemas"]["CurriculumReferenceOut"];

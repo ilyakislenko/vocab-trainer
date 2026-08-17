@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel
@@ -116,3 +117,65 @@ class InterviewOut(BaseModel):
     corrected: str | None = None
     question: str
     question_id: int | None = None
+
+
+class CurriculumModuleOut(BaseModel):
+    id: str
+    title: str
+    level: str
+    track: str
+    availability: str
+    status: str
+    quiz_best_score: float | None = None
+
+
+class CurriculumLevelOut(BaseModel):
+    level: str
+    modules: list[CurriculumModuleOut]
+
+
+class CurriculumMapOut(BaseModel):
+    levels: list[CurriculumLevelOut]
+    recommended_module_id: str | None = None
+
+
+class CurriculumReferenceOut(BaseModel):
+    book: str
+    locator: str
+
+
+class CurriculumModuleDetailOut(BaseModel):
+    id: str
+    title: str
+    level: str
+    track: str
+    status: str
+    objectives: list[str]
+    references: list[CurriculumReferenceOut]
+    has_quiz: bool
+    estimated_minutes: int
+    quiz_best_score: float | None = None
+
+
+class CurriculumLessonMetaOut(BaseModel):
+    id: str
+    title: str
+    level: str
+    track: str
+    estimated_minutes: int
+    objectives: list[str]
+    skills: list[str]
+    references: list[CurriculumReferenceOut]
+
+
+class CurriculumLessonOut(BaseModel):
+    markdown: str
+    meta: CurriculumLessonMetaOut
+
+
+class CurriculumModuleProgressOut(BaseModel):
+    module_id: str
+    status: str
+    lesson_read_at: datetime | None = None
+    quiz_best_score: float | None = None
+    completed_at: datetime | None = None

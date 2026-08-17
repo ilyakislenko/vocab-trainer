@@ -1,4 +1,11 @@
 from vocab_api.application.ports.llm import LlmProvider
+from vocab_api.application.use_cases.curriculum import (
+    GetCurriculumMap,
+    GetLesson,
+    GetModule,
+    GetRecommendedModule,
+    MarkLessonRead,
+)
 from vocab_api.application.use_cases.decks import CreateDeck, ListDeckCards, ListDecks
 from vocab_api.application.use_cases.importing import ImportWords
 from vocab_api.application.use_cases.practice import (
@@ -18,11 +25,16 @@ from vocab_api.config.britlex_seed import (
     load_britlex_sources,
     load_it_sources,
 )
+from vocab_api.config.curriculum_seed import load_curriculum_content
 from vocab_api.config.settings import Settings
 from vocab_api.infrastructure.clock import SystemClock
+from vocab_api.infrastructure.curriculum.file_curriculum import FileCurriculumRepository
 from vocab_api.infrastructure.llm.null_provider import NullProvider
 from vocab_api.infrastructure.llm.openai_compatible_provider import OpenAiCompatibleProvider
 from vocab_api.infrastructure.persistence.card_repo import SqlCardRepository
+from vocab_api.infrastructure.persistence.curriculum_repos import (
+    SqlModuleProgressRepository,
+)
 from vocab_api.infrastructure.persistence.deck_repo import SqlDeckRepository
 from vocab_api.infrastructure.persistence.engine import Database
 from vocab_api.infrastructure.persistence.review_log_repo import SqlReviewLogRepository
@@ -71,6 +83,15 @@ class Container:
         self.conduct_interview = ConductInterview(
             provider, JsonQuestionBank(load_interview_questions())
         )
+
+        curriculum: FileCurriculumRepository = load_curriculum_content()
+        module_progress = SqlModuleProgressRepository(self._db)
+        self.get_curriculum_map = GetCurriculumMap(curriculum, module_progress)
+        self.get_module = GetModule(curriculum, module_progress)
+        self.get_lesson = GetLesson(curriculum, module_progress)
+        self.mark_lesson_read = MarkLessonRead(curriculum, module_progress, clock)
+        self.get_recommended_module = GetRecommendedModule(curriculum, module_progress)
+
         self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
         self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)
 

@@ -2,7 +2,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.pool import StaticPool
 from sqlmodel import SQLModel
 
-from vocab_api.infrastructure.persistence import tables  # noqa: F401  # register metadata
+from vocab_api.infrastructure.persistence import (  # noqa: F401  # register metadata
+    curriculum_tables,
+    tables,
+)
 
 
 class Database:
