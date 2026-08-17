@@ -21,7 +21,7 @@ const PLACEMENT = {
       level: "A2",
       type: "cloze",
       skill: "pl.tenses",
-      prompt: "It ___ rain. (fill in: is going to)",
+      prompt: "It ___ rain. (two words)",
       options: null,
     },
     {
@@ -38,6 +38,38 @@ const PLACEMENT = {
 const GRADE = {
   level: "A2",
   current_module_id: "b1.grammar.articles",
+  results: [
+    {
+      item_id: "pl.a2.1",
+      level: "A2",
+      skill: "pl.tenses",
+      prompt: "Where is Anna? — She ___ lunch at the moment.",
+      given: "1",
+      correct: true,
+      correct_answer: "is having",
+      explanation: "Present continuous for now.",
+    },
+    {
+      item_id: "pl.a2.4",
+      level: "A2",
+      skill: "pl.tenses",
+      prompt: "It ___ rain. (two words)",
+      given: "is going to",
+      correct: true,
+      correct_answer: "is going to",
+      explanation: "Planned future.",
+    },
+    {
+      item_id: "pl.b1.1",
+      level: "B1",
+      skill: "pl.tenses",
+      prompt: "I ___ never been to Japan.",
+      given: "bogus",
+      correct: false,
+      correct_answer: "have",
+      explanation: "Present perfect with ever/never.",
+    },
+  ],
 };
 
 function renderRunner() {
@@ -79,6 +111,12 @@ describe("PlacementRunner", () => {
       expect(screen.getByText(/placement complete|тест завершён/i)).toBeInTheDocument(),
     );
     expect(screen.getByText(/A2/)).toBeInTheDocument();
+    expect(screen.getByText(/how you answered|как ты отвечал/i)).toBeInTheDocument();
+    expect(screen.getByText(/correct 2 of 3|верно 2 из 3/i)).toBeInTheDocument();
+    expect(screen.getByText(/correct: is having|правильно: is having/i)).toBeInTheDocument();
+    expect(screen.getByText(/missed|мимо/i)).toBeInTheDocument();
+    expect(screen.getByText(/present perfect with ever\/never/i)).toBeInTheDocument();
+    expect(screen.getByText(/your answer: bogus|твой ответ: bogus/i)).toBeInTheDocument();
   });
 
   it("disables Next until the current item is answered", async () => {

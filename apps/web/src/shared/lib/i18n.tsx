@@ -401,6 +401,15 @@ const dict: Translations = {
     ru: "С этого уровня начинается твой учебный план — открыть любой модуль можно с карты.",
   },
   "placement.startLearning": { en: "Start learning →", ru: "Начать учиться →" },
+  "placement.reviewTitle": { en: "How you answered", ru: "Как ты отвечал" },
+  "placement.reviewOk": { en: "Correct", ru: "Верно" },
+  "placement.reviewMiss": { en: "Missed", ru: "Мимо" },
+  "placement.reviewYourAnswer": { en: "Your answer: {given}", ru: "Твой ответ: {given}" },
+  "placement.reviewCorrectAnswer": { en: "Correct: {answer}", ru: "Правильно: {answer}" },
+  "placement.reviewScore": {
+    en: "Correct {ok} of {total}",
+    ru: "Верно {ok} из {total}",
+  },
 
   // Today
   "nav.today": { en: "Today", ru: "Сегодня" },

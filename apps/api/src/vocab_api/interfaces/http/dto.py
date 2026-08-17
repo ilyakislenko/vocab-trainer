@@ -282,9 +282,23 @@ class PlacementGradeIn(BaseModel):
     answers: list[PlacementAnswerIn]
 
 
+class PlacementItemResultOut(BaseModel):
+    """One graded diagnostic item for the post-test review (Spec D3)."""
+
+    item_id: str
+    level: str
+    skill: str
+    prompt: str
+    given: str
+    correct: bool
+    correct_answer: str
+    explanation: str
+
+
 class PlacementGradeOut(BaseModel):
     level: str
     current_module_id: str | None
+    results: list[PlacementItemResultOut]
 
 
 class TodayStepOut(BaseModel):

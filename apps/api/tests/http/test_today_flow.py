@@ -1,5 +1,6 @@
 import httpx
 import pytest
+from tests.http._placement_bank import correct_answers, fetch_diagnostic
 
 from vocab_api.config.container import Container
 from vocab_api.config.settings import Settings
@@ -80,18 +81,8 @@ async def test_today_switches_to_take_quiz_after_lesson_read(client: httpx.Async
 
 
 async def test_today_reflects_placement_pointer(client: httpx.AsyncClient):
-    all_correct = {
-        "pl.c1.1": "0",
-        "pl.c1.2": "Seen",
-        "pl.c1.3": "1",
-        "pl.c1.4": "1",
-        "pl.c1.5": "No sooner",
-        "pl.c1.6": "0",
-    }
-    answers = [
-        {"item_id": item_id, "given": given} for item_id, given in all_correct.items()
-    ]
-    grade = await client.post("/placement/grade", json={"answers": answers})
+    items = await fetch_diagnostic(client)
+    grade = await client.post("/placement/grade", json={"answers": correct_answers(items)})
     assert grade.status_code == 200
     assert grade.json()["level"] == "C1"
 

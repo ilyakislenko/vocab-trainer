@@ -1,3 +1,5 @@
+import random
+
 from tests.conftest import FakeLearnerProfileRepository
 
 from vocab_api.application.use_cases.placement import (
@@ -90,10 +92,16 @@ class FakeContent:
         return MAP
 
 
-async def test_get_placement_serves_the_bank():
-    outcome = await GetPlacement(FakeContent()).execute()
+async def test_get_placement_serves_a_sampled_diagnostic():
+    outcome = await GetPlacement(FakeContent(), random.Random(42)).execute()
+    assert len(outcome.items) == 24
     assert outcome.items == PLACEMENT.items
-    assert len(outcome.items) >= 24
+
+
+async def test_get_placement_sampling_is_seed_reproducible():
+    first = await GetPlacement(FakeContent(), random.Random(1)).execute()
+    second = await GetPlacement(FakeContent(), random.Random(1)).execute()
+    assert first.items == second.items
 
 
 async def test_grade_placement_estimates_level_and_seeds_current_module():
@@ -105,6 +113,27 @@ async def test_grade_placement_estimates_level_and_seeds_current_module():
     assert result.current_module_id == "c1.grammar.cleft-sentences"
     assert repo.profile.placement_level is Level.C1
     assert repo.profile.current_module_id == "c1.grammar.cleft-sentences"
+
+
+async def test_grade_placement_returns_per_item_results_for_review():
+    repo = FakeLearnerProfileRepository()
+    answers = [
+        PlacementAnswer(item_id=A2[0].id, given="0"),
+        PlacementAnswer(item_id=A2[1].id, given="1"),
+        PlacementAnswer(item_id="ghost", given="0"),
+    ]
+    result = await GradePlacement(FakeContent(), repo).execute(answers)
+
+    assert result.level is Level.A1
+    assert len(result.results) == 2
+    (ok_item, miss_item) = result.results
+    assert ok_item.item_id == A2[0].id
+    assert ok_item.correct is True
+    assert ok_item.correct_answer == "right"
+    assert ok_item.given == "0"
+    assert miss_item.item_id == A2[1].id
+    assert miss_item.correct is False
+    assert miss_item.correct_answer == "right"
 
 
 async def test_grade_placement_defaults_to_a1_and_falls_back_to_first_available():

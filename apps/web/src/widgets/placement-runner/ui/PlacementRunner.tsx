@@ -182,19 +182,60 @@ function PlacementResult({
 }) {
   const { t } = useI18n();
   const target = result.current_module_id ? `/learn/${result.current_module_id}` : "/learn";
+  const correctCount = result.results.filter((r) => r.correct).length;
   return (
-    <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
-      <span className="text-5xl">🎯</span>
-      <p className="text-2xl font-black tracking-tight">{t("placement.doneTitle")}</p>
-      <div className="flex flex-col items-center gap-2">
-        <span className="text-sm font-extrabold uppercase tracking-widest text-muted-foreground">
-          {t("placement.yourLevel")}
-        </span>
-        <span className="rounded-full bg-tint-lavender px-6 py-2 text-3xl font-black text-secondary-foreground">
-          {result.level}
-        </span>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
+        <span className="text-5xl">🎯</span>
+        <p className="text-2xl font-black tracking-tight">{t("placement.doneTitle")}</p>
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-sm font-extrabold uppercase tracking-widest text-muted-foreground">
+            {t("placement.yourLevel")}
+          </span>
+          <span className="rounded-full bg-tint-lavender px-6 py-2 text-3xl font-black text-secondary-foreground">
+            {result.level}
+          </span>
+        </div>
+        <p className="max-w-sm text-sm text-muted-foreground">{t("placement.doneHint")}</p>
+        <p className="text-sm font-semibold text-muted-foreground">
+          {t("placement.reviewScore")
+            .replace("{ok}", String(correctCount))
+            .replace("{total}", String(result.results.length))}
+        </p>
       </div>
-      <p className="max-w-sm text-sm text-muted-foreground">{t("placement.doneHint")}</p>
+
+      <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-4">
+        <h2 className="px-2 text-sm font-extrabold uppercase tracking-widest text-muted-foreground">
+          {t("placement.reviewTitle")}
+        </h2>
+        <ol className="flex max-h-80 flex-col gap-2 overflow-y-auto pr-1">
+          {result.results.map((r) => (
+            <li
+              key={r.item_id}
+              className="flex flex-col gap-1 rounded-2xl border bg-card p-3 text-left"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-bold text-foreground">{r.prompt}</p>
+                <span
+                  className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-extrabold ${
+                    r.correct ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {r.correct ? t("placement.reviewOk") : t("placement.reviewMiss")}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {t("placement.reviewYourAnswer").replace("{given}", r.given || "—")}
+              </p>
+              <p className="text-xs font-semibold text-emerald-700">
+                {t("placement.reviewCorrectAnswer").replace("{answer}", r.correct_answer)}
+              </p>
+              {!r.correct && <p className="text-xs text-muted-foreground">{r.explanation}</p>}
+            </li>
+          ))}
+        </ol>
+      </div>
+
       <Button onClick={() => onContinue(target)} className="rounded-full px-8">
         {t("placement.startLearning")}
       </Button>

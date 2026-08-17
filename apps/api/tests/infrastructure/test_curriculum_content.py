@@ -115,7 +115,7 @@ def test_bundle_placement_spans_levels_without_answers():
     bundle = ContentBundle.from_files()
     placement = bundle.placement()
     assert placement is not None
-    assert len(placement.items) >= 24
+    assert len(placement.items) >= 48
     by_level: dict[Level, int] = {}
     for item in placement.items:
         assert item.level in {Level.A2, Level.B1, Level.B2, Level.C1}
@@ -131,7 +131,7 @@ def test_bundle_placement_spans_levels_without_answers():
             assert item.options is None
         by_level[item.level] = by_level.get(item.level, 0) + 1
     assert len(by_level) == 4
-    assert all(count >= 6 for count in by_level.values())
+    assert all(count >= 12 for count in by_level.values())
 
 
 def test_bundle_parses_pillar_links_into_modules_and_lessons():

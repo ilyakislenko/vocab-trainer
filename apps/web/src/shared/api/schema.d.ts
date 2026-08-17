@@ -886,6 +886,8 @@ export interface components {
             level: string;
             /** Current Module Id */
             current_module_id: string | null;
+            /** Results */
+            results: components["schemas"]["PlacementItemResultOut"][];
         };
         /**
          * PlacementItemOut
@@ -904,6 +906,28 @@ export interface components {
             prompt: string;
             /** Options */
             options?: string[] | null;
+        };
+        /**
+         * PlacementItemResultOut
+         * @description One graded diagnostic item for the post-test review (Spec D3).
+         */
+        PlacementItemResultOut: {
+            /** Item Id */
+            item_id: string;
+            /** Level */
+            level: string;
+            /** Skill */
+            skill: string;
+            /** Prompt */
+            prompt: string;
+            /** Given */
+            given: string;
+            /** Correct */
+            correct: boolean;
+            /** Correct Answer */
+            correct_answer: string;
+            /** Explanation */
+            explanation: string;
         };
         /** PlacementOut */
         PlacementOut: {

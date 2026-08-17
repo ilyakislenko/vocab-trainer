@@ -19,7 +19,12 @@ from vocab_api.domain.curriculum.lesson import Lesson
 from vocab_api.domain.curriculum.level import Level
 from vocab_api.domain.curriculum.map import LadderEntry, LevelOverview, ModuleAvailability
 from vocab_api.domain.curriculum.module import Module, Reference
-from vocab_api.domain.curriculum.placement import TESTED_LEVELS, Placement, PlacementItem
+from vocab_api.domain.curriculum.placement import (
+    PLACEMENT_ITEMS_PER_LEVEL_MIN,
+    TESTED_LEVELS,
+    Placement,
+    PlacementItem,
+)
 from vocab_api.domain.curriculum.quiz import Quiz, QuizItem, QuizItemType
 from vocab_api.domain.curriculum.track import Track
 from vocab_api.domain.shared.errors import ContentValidationError
@@ -325,9 +330,7 @@ class ContentBundle:
                     continue
                 quiz_raw = self._quiz_texts.get(entry.id)
                 if quiz_raw is None:
-                    raise ContentValidationError(
-                        f"available module {entry.id!r} has no quiz file"
-                    )
+                    raise ContentValidationError(f"available module {entry.id!r} has no quiz file")
                 parsed = json.loads(quiz_raw)
                 if not isinstance(parsed, dict):
                     raise ContentValidationError(f"quiz {entry.id}: must be a JSON object")
@@ -370,9 +373,7 @@ class ContentBundle:
         try:
             item_type = QuizItemType(type_raw)
         except ValueError as exc:
-            raise ContentValidationError(
-                f"{context}: invalid type {type_raw!r}"
-            ) from exc
+            raise ContentValidationError(f"{context}: invalid type {type_raw!r}") from exc
         skill = _require_str(raw, "skill", context)
         if skill not in lesson_skills:
             raise ContentValidationError(
@@ -404,8 +405,10 @@ class ContentBundle:
             )
 
         answers_raw = raw.get("answers")
-        if not isinstance(answers_raw, list) or not answers_raw or not all(
-            isinstance(a, str) and a.strip() for a in answers_raw
+        if (
+            not isinstance(answers_raw, list)
+            or not answers_raw
+            or not all(isinstance(a, str) and a.strip() for a in answers_raw)
         ):
             raise ContentValidationError(
                 f"{context}: {item_type.value} needs non-empty string 'answers'"
@@ -429,13 +432,9 @@ class ContentBundle:
             for entry in section.entries:
                 if entry.availability is ModuleAvailability.AVAILABLE:
                     if entry.id not in self._lessons:
-                        raise ContentValidationError(
-                            f"available module {entry.id!r} has no lesson"
-                        )
+                        raise ContentValidationError(f"available module {entry.id!r} has no lesson")
                     if entry.id not in self._has_quiz:
-                        raise ContentValidationError(
-                            f"available module {entry.id!r} has no quiz"
-                        )
+                        raise ContentValidationError(f"available module {entry.id!r} has no quiz")
                 else:
                     if entry.id in self._lessons or entry.id in self._has_quiz:
                         raise ContentValidationError(
@@ -479,6 +478,7 @@ class ContentBundle:
 
         seen_levels: set[Level] = set()
         seen_ids: set[str] = set()
+        level_counts: dict[Level, int] = {level: 0 for level in TESTED_LEVELS}
         items: list[PlacementItem] = []
         for index, item_raw in enumerate(items_raw):
             context = f"placement item #{index}"
@@ -492,52 +492,58 @@ class ContentBundle:
             try:
                 level = Level(level_raw)
             except ValueError as exc:
-                raise ContentValidationError(
-                    f"{context}: invalid level {level_raw!r}"
-                ) from exc
+                raise ContentValidationError(f"{context}: invalid level {level_raw!r}") from exc
             if level not in TESTED_LEVELS:
                 raise ContentValidationError(
                     f"{context}: placement only tests {[lv.value for lv in TESTED_LEVELS]}"
                 )
             seen_levels.add(level)
+            level_counts[level] += 1
             skill = _require_str(item_raw, "skill", context)
             type_raw = _require_str(item_raw, "type", context)
             try:
                 item_type = QuizItemType(type_raw)
             except ValueError as exc:
-                raise ContentValidationError(
-                    f"{context}: invalid type {type_raw!r}"
-                ) from exc
+                raise ContentValidationError(f"{context}: invalid type {type_raw!r}") from exc
             prompt = _require_str(item_raw, "prompt", context)
             explanation = _require_str(item_raw, "explanation", context)
 
             options: tuple[str, ...] | None = None
             answer_index: int | None = None
             answers: tuple[str, ...] | None = None
+            answer_variants: tuple[str, ...]
             if item_type is QuizItemType.MCQ:
                 options_raw = item_raw.get("options")
                 if not isinstance(options_raw, list) or not all(
                     isinstance(o, str) and o.strip() for o in options_raw
                 ):
-                    raise ContentValidationError(
-                        f"{context}: mcq needs non-empty string 'options'"
-                    )
+                    raise ContentValidationError(f"{context}: mcq needs non-empty string 'options'")
                 raw_index = item_raw.get("answer_index")
                 if not isinstance(raw_index, int) or not 0 <= raw_index < len(options_raw):
-                    raise ContentValidationError(
-                        f"{context}: mcq needs a valid 'answer_index'"
-                    )
+                    raise ContentValidationError(f"{context}: mcq needs a valid 'answer_index'")
                 options = tuple(options_raw)
                 answer_index = raw_index
+                answer_variants = (options_raw[raw_index],)
             else:
                 answers_raw = item_raw.get("answers")
-                if not isinstance(answers_raw, list) or not answers_raw or not all(
-                    isinstance(a, str) and a.strip() for a in answers_raw
+                if (
+                    not isinstance(answers_raw, list)
+                    or not answers_raw
+                    or not all(isinstance(a, str) and a.strip() for a in answers_raw)
                 ):
                     raise ContentValidationError(
                         f"{context}: {item_type.value} needs non-empty string 'answers'"
                     )
                 answers = tuple(answers_raw)
+                answer_variants = answers
+
+            # Guard against prompts that spell out the answer (the historical
+            # leak was long answers embedded in prompts). Variants shorter than
+            # 4 chars are common function words ("a", "an", "to") that naturally
+            # appear in any prompt, so they are not a reliable signal.
+            for variant in answer_variants:
+                if len(variant) >= 4 and variant.lower() in prompt.lower():
+                    raise ContentValidationError(f"{context}: prompt leaks the answer {variant!r}")
 
             items.append(
                 PlacementItem(
@@ -555,8 +561,14 @@ class ContentBundle:
 
         missing = [lv.value for lv in TESTED_LEVELS if lv not in seen_levels]
         if missing:
+            raise ContentValidationError(f"placement.json: missing items for levels {missing}")
+        short = [
+            lv.value for lv in TESTED_LEVELS if level_counts[lv] < PLACEMENT_ITEMS_PER_LEVEL_MIN
+        ]
+        if short:
             raise ContentValidationError(
-                f"placement.json: missing items for levels {missing}"
+                "placement.json: each tested level needs at least "
+                f"{PLACEMENT_ITEMS_PER_LEVEL_MIN} items, got fewer for {short}"
             )
         # Deterministic serving order: A2 → B1 → B2 → C1, then by id.
         order = {level: index for index, level in enumerate(TESTED_LEVELS)}

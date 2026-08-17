@@ -7,6 +7,7 @@ from vocab_api.interfaces.http.dto import (
     PlacementGradeIn,
     PlacementGradeOut,
     PlacementItemOut,
+    PlacementItemResultOut,
     PlacementOut,
 )
 
@@ -41,4 +42,17 @@ async def grade_placement(
     return PlacementGradeOut(
         level=outcome.level.value,
         current_module_id=outcome.current_module_id,
+        results=[
+            PlacementItemResultOut(
+                item_id=r.item_id,
+                level=r.level.value,
+                skill=r.skill,
+                prompt=r.prompt,
+                given=r.given,
+                correct=r.correct,
+                correct_answer=r.correct_answer,
+                explanation=r.explanation,
+            )
+            for r in outcome.results
+        ],
     )

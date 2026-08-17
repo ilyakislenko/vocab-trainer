@@ -1,3 +1,5 @@
+import random
+
 from vocab_api.application.ports.llm import LlmProvider
 from vocab_api.application.use_cases.curriculum import (
     GetCurriculumMap,
@@ -127,7 +129,7 @@ class Container:
         self.record_skill_review = RecordSkillReview(skill_items, scheduler, clock)
         self.get_focus_leeches = GetFocusLeeches(skill_items)
         self.learner_profile = learner_profile
-        self.get_placement = GetPlacement(curriculum)
+        self.get_placement = GetPlacement(curriculum, random.Random())
         self.grade_placement = GradePlacement(curriculum, learner_profile)
         self.build_today_session = BuildTodaySession(
             curriculum,

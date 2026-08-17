@@ -1,5 +1,6 @@
 import httpx
 import pytest
+from tests.http._placement_bank import correct_answers, fetch_diagnostic
 
 from vocab_api.config.container import Container
 from vocab_api.config.settings import Settings
@@ -23,43 +24,17 @@ async def client():
     await container.dispose()
 
 
-ALL_CORRECT = {
-    "pl.a2.1": "1",
-    "pl.a2.2": "2",
-    "pl.a2.3": "0",
-    "pl.a2.4": "is going to",
-    "pl.a2.5": "2",
-    "pl.a2.6": "0",
-    "pl.b1.1": "0",
-    "pl.b1.2": "2",
-    "pl.b1.3": "1",
-    "pl.b1.4": "was",
-    "pl.b1.5": "1",
-    "pl.b1.6": "1",
-    "pl.b2.1": "0",
-    "pl.b2.2": "1",
-    "pl.b2.3": "whose",
-    "pl.b2.4": "1",
-    "pl.b2.5": "2",
-    "pl.b2.6": "0",
-    "pl.c1.1": "0",
-    "pl.c1.2": "Seen",
-    "pl.c1.3": "1",
-    "pl.c1.4": "1",
-    "pl.c1.5": "No sooner",
-    "pl.c1.6": "0",
-}
+# The correct given value for every item in the placement bank lives in
+# `tests/http/_placement_bank.py`. The bank is larger than one diagnostic, so
+# tests fetch the sampled diagnostic and answer whatever was sampled
+# (spec D1: selection randomizes per attempt).
 
 
-def _answers(ids: list[str]) -> list[dict[str, str]]:
-    return [{"item_id": item_id, "given": ALL_CORRECT[item_id]} for item_id in ids]
-
-
-async def test_placement_returns_items_without_answers(client: httpx.AsyncClient):
-    resp = await client.get("/placement")
-    assert resp.status_code == 200
-    items = resp.json()["items"]
-    assert len(items) >= 24
+async def test_placement_returns_a_sampled_diagnostic_without_answers(
+    client: httpx.AsyncClient,
+):
+    items = await fetch_diagnostic(client)
+    assert len(items) == 24
     by_level: dict[str, int] = {}
     for item in items:
         assert item["id"]
@@ -75,51 +50,78 @@ async def test_placement_returns_items_without_answers(client: httpx.AsyncClient
             assert item["options"] is None
         by_level[item["level"]] = by_level.get(item["level"], 0) + 1
     assert len(by_level) == 4
-    assert all(count >= 6 for count in by_level.values())
+    assert all(count == 6 for count in by_level.values())
 
 
 async def test_grade_placement_all_correct_gives_c1(client: httpx.AsyncClient):
-    resp = await client.post("/placement/grade", json={"answers": _answers(list(ALL_CORRECT))})
+    items = await fetch_diagnostic(client)
+    resp = await client.post("/placement/grade", json={"answers": correct_answers(items)})
     assert resp.status_code == 200
     result = resp.json()
     assert result["level"] == "C1"
     assert result["current_module_id"] == "c1.grammar.cleft-sentences"
+    assert all(r["correct"] for r in result["results"])
+    assert len(result["results"]) == len(items)
 
     map_resp = await client.get("/curriculum")
     assert map_resp.json()["placement_level"] == "C1"
 
 
 async def test_grade_placement_defaults_to_a1(client: httpx.AsyncClient):
-    wrong = [{"item_id": item_id, "given": "bogus"} for item_id in ALL_CORRECT]
+    items = await fetch_diagnostic(client)
+    wrong = correct_answers(items, correct=False)
     resp = await client.post("/placement/grade", json={"answers": wrong})
     assert resp.status_code == 200
     result = resp.json()
     assert result["level"] == "A1"
     # Default placement starts at the very first module of the ladder.
     assert result["current_module_id"] == "a1.grammar.to-be"
+    assert all(not r["correct"] for r in result["results"])
 
 
 async def test_grade_placement_returns_highest_passing_level(client: httpx.AsyncClient):
-    passing = [item_id for item_id in ALL_CORRECT if item_id.startswith(("pl.a2.", "pl.b1."))]
-    wrong = [
-        {"item_id": item_id, "given": "bogus"} for item_id in ALL_CORRECT if item_id not in passing
-    ]
-    resp = await client.post(
-        "/placement/grade",
-        json={"answers": _answers(passing) + wrong},
-    )
+    items = await fetch_diagnostic(client)
+    lower = [item for item in items if item["id"].startswith(("pl.a2.", "pl.b1."))]
+    upper = [item for item in items if item["id"].startswith(("pl.b2.", "pl.c1."))]
+    answers = correct_answers(lower) + correct_answers(upper, correct=False)
+    resp = await client.post("/placement/grade", json={"answers": answers})
     assert resp.status_code == 200
     result = resp.json()
     assert result["level"] == "B1"
     assert result["current_module_id"] == "b1.grammar.articles"
 
 
+async def test_grade_placement_returns_per_item_review(client: httpx.AsyncClient):
+    items = await fetch_diagnostic(client)
+    answers = correct_answers(items)
+    answers[0]["given"] = "bogus"
+    resp = await client.post("/placement/grade", json={"answers": answers})
+    assert resp.status_code == 200
+    first = resp.json()["results"][0]
+    assert set(first) == {
+        "item_id",
+        "level",
+        "skill",
+        "prompt",
+        "given",
+        "correct",
+        "correct_answer",
+        "explanation",
+    }
+    assert first["given"] == "bogus"
+    assert first["correct"] is False
+    assert first["correct_answer"]
+    assert first["explanation"]
+
+
 async def test_grade_placement_is_retakeable(client: httpx.AsyncClient):
-    first = await client.post("/placement/grade", json={"answers": _answers(list(ALL_CORRECT))})
+    items = await fetch_diagnostic(client)
+    first = await client.post("/placement/grade", json={"answers": correct_answers(items)})
     assert first.json()["level"] == "C1"
 
-    wrong = [{"item_id": item_id, "given": "bogus"} for item_id in ALL_CORRECT]
-    second = await client.post("/placement/grade", json={"answers": wrong})
+    second = await client.post(
+        "/placement/grade", json={"answers": correct_answers(items, correct=False)}
+    )
     assert second.status_code == 200
     assert second.json()["level"] == "A1"
 
@@ -157,7 +159,8 @@ async def test_retake_placement_preserves_module_progress(client: httpx.AsyncCli
     assert before["status"] == "completed"
 
     # Retaking placement re-points the profile but must never wipe progress (§9).
-    resp = await client.post("/placement/grade", json={"answers": _answers(list(ALL_CORRECT))})
+    items = await fetch_diagnostic(client)
+    resp = await client.post("/placement/grade", json={"answers": correct_answers(items)})
     assert resp.status_code == 200
 
     after_body = (await client.get("/curriculum")).json()
