@@ -39,3 +39,9 @@ class Database:
 
     def session(self) -> AsyncSession:
         return self._session_factory()
+
+    async def dispose(self) -> None:
+        """Close the engine's connection pool. Callers that own a Database
+        (the composition root, tests) should dispose it so aiosqlite
+        connections are closed instead of being garbage-collected."""
+        await self._engine.dispose()

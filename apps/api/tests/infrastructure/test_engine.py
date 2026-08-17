@@ -13,4 +13,5 @@ async def test_init_creates_tables_and_roundtrips_a_row():
     async with db.session() as session:
         result = await session.execute(select(DeckRow))
         decks = result.scalars().all()
+    await db.dispose()
     assert [d.name for d in decks] == ["Travel"]

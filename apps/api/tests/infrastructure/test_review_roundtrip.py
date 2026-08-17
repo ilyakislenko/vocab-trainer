@@ -1,4 +1,7 @@
+from collections.abc import AsyncIterator
 from datetime import UTC, datetime, timedelta
+
+import pytest
 
 from vocab_api.application.ports.clock import Clock
 from vocab_api.application.use_cases.review import RecordReview
@@ -20,18 +23,19 @@ class _StepClock(Clock):
         return self._now
 
 
-async def _db() -> Database:
-    db = Database("sqlite+aiosqlite:///:memory:")
-    await db.init()
-    return db
+@pytest.fixture
+async def db() -> AsyncIterator[Database]:
+    database = Database("sqlite+aiosqlite:///:memory:")
+    await database.init()
+    yield database
+    await database.dispose()
 
 
-async def test_second_review_survives_sqlite_naive_datetime_round_trip():
+async def test_second_review_survives_sqlite_naive_datetime_round_trip(db: Database):
     # Regression for C1: SQLite drops tzinfo, so fsrs_due/fsrs_last_review come back
     # naive from the DB. The second review feeds that naive last_review into py-fsrs
     # alongside a tz-aware `now`, which used to raise TypeError before the mappers
     # re-attached UTC on read.
-    db = await _db()
     cards = SqlCardRepository(db)
     logs = SqlReviewLogRepository(db)
     scheduler = PyFsrsScheduler()

@@ -1,3 +1,6 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 import httpx
 import pytest
 
@@ -15,6 +18,28 @@ from vocab_api.domain.practice.feedback import Feedback, Verdict
 from vocab_api.domain.practice.interview import InterviewEvaluation, InterviewQuestion
 from vocab_api.domain.practice.word_hint import WordHint
 from vocab_api.main import create_app
+
+
+def _fresh_container() -> Container:
+    return Container(
+        Settings(
+            database_url="sqlite+aiosqlite:///:memory:",
+            llm_provider="none",
+            seed_default_deck=False,
+        )
+    )
+
+
+@asynccontextmanager
+async def _app_client(container: Container) -> AsyncIterator[httpx.AsyncClient]:
+    """Init a container, serve it over httpx, and dispose its engine on exit so
+    no aiosqlite connection is leaked. Callers may swap use cases on the
+    container before entering (create_app resolves them per request)."""
+    await container.init()
+    transport = httpx.ASGITransport(app=create_app(container))
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as c:
+        yield c
+    await container.dispose()
 
 
 class RaisingLlm:
@@ -138,17 +163,7 @@ class StubQuestionBank:
 
 @pytest.fixture
 async def client():
-    # llm_provider defaults to "none"
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as c:
+    async with _app_client(_fresh_container()) as c:
         yield c
 
 
@@ -182,20 +197,12 @@ async def test_check_missing_card_404(client: httpx.AsyncClient):
 async def test_check_returns_502_when_llm_provider_unavailable():
     # llm_provider defaults to "none"; swap the check_sentence use case's llm
     # for one that raises LlmUnavailable, reusing the container's own repos/clock.
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     original = container.check_sentence
     container.check_sentence = CheckSentence(
         original._cards, original._attempts, RaisingLlm(), original._clock
     )
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -212,17 +219,9 @@ async def test_check_returns_502_when_llm_provider_unavailable():
 
 
 async def test_topic_returns_cards_matching_llm_words():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.select_topic_words = SelectTopicWords(container.select_topic_words._cards, TopicLlm())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -243,16 +242,8 @@ async def test_topic_returns_cards_matching_llm_words():
 async def test_topic_with_null_provider_returns_empty():
     # Uses the default container (llm_provider="none"): NullProvider yields no
     # topic words, so the endpoint returns an empty list rather than an error.
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    container = _fresh_container()
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -266,17 +257,9 @@ async def test_topic_with_null_provider_returns_empty():
 
 
 async def test_hint_returns_llm_description():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.describe_word = DescribeWord(container.describe_word._cards, TopicLlm())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -290,16 +273,8 @@ async def test_hint_returns_llm_description():
 
 
 async def test_hint_with_null_provider_does_not_error():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    container = _fresh_container()
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -318,17 +293,9 @@ async def test_hint_missing_card_404(client: httpx.AsyncClient):
 
 
 async def test_drill_returns_response_and_question():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.drill_word = DrillWord(container.drill_word._cards, TopicLlm())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -351,16 +318,8 @@ async def test_drill_missing_card_404(client: httpx.AsyncClient):
 
 
 async def test_drill_with_null_provider_does_not_error():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    container = _fresh_container()
+    async with _app_client(container) as client:
         deck = (await client.post("/decks", json={"name": "T"})).json()
         await client.post(
             f"/decks/{deck['id']}/import",
@@ -376,17 +335,9 @@ async def test_drill_with_null_provider_does_not_error():
 
 
 async def test_interview_returns_bank_question():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(TopicLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post("/practice/interview", json={"topic": "React", "messages": []})
     assert resp.status_code == 200
     assert resp.json()["question"] == "What are props?"
@@ -396,17 +347,9 @@ async def test_interview_returns_bank_question():
 
 
 async def test_interview_evaluates_answer_and_asks_next_bank_question():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(TopicLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={
@@ -428,17 +371,9 @@ async def test_interview_evaluates_answer_and_asks_next_bank_question():
 
 
 async def test_interview_keeps_discussing_with_llm_followup():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(FollowUpLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={
@@ -459,17 +394,9 @@ async def test_interview_keeps_discussing_with_llm_followup():
 
 
 async def test_interview_followup_localizes_to_ru():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(FollowUpLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={
@@ -489,17 +416,9 @@ async def test_interview_followup_localizes_to_ru():
 
 
 async def test_interview_advances_to_bank_when_llm_asks():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(AdvancingLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={
@@ -518,17 +437,9 @@ async def test_interview_advances_to_bank_when_llm_asks():
 
 
 async def test_interview_mode_next_returns_bank_question():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(TopicLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={"topic": "React", "mode": "next", "used_question_ids": [1], "messages": []},
@@ -541,17 +452,9 @@ async def test_interview_mode_next_returns_bank_question():
 
 
 async def test_interview_mode_random_returns_bank_question():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(TopicLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={"topic": "React", "mode": "random", "messages": []},
@@ -563,17 +466,9 @@ async def test_interview_mode_random_returns_bank_question():
 
 
 async def test_interview_localizes_to_ru():
-    container = Container(
-        Settings(
-            database_url="sqlite+aiosqlite:///:memory:",
-            llm_provider="none",
-            seed_default_deck=False,
-        )
-    )
-    await container.init()
+    container = _fresh_container()
     container.conduct_interview = ConductInterview(TopicLlm(), StubQuestionBank())
-    transport = httpx.ASGITransport(app=create_app(container))
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+    async with _app_client(container) as client:
         resp = await client.post(
             "/practice/interview",
             json={"topic": "React", "lang": "ru", "messages": []},

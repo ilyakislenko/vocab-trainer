@@ -1,3 +1,4 @@
+from collections.abc import AsyncIterator
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -14,14 +15,15 @@ from vocab_api.infrastructure.persistence.review_log_repo import SqlReviewLogRep
 NOW = datetime(2026, 8, 13, 12, 0, tzinfo=UTC)
 
 
-async def _db() -> Database:
-    db = Database("sqlite+aiosqlite:///:memory:")
-    await db.init()
-    return db
+@pytest.fixture
+async def db() -> AsyncIterator[Database]:
+    database = Database("sqlite+aiosqlite:///:memory:")
+    await database.init()
+    yield database
+    await database.dispose()
 
 
-async def test_add_many_assigns_ids_and_due_filters_and_orders():
-    db = await _db()
+async def test_add_many_assigns_ids_and_due_filters_and_orders(db: Database):
     repo = SqlCardRepository(db)
     future = Card.create(1, "later", "позже", NOW).with_fsrs(FsrsState(due=NOW + timedelta(days=1)))
     due_now = Card.create(1, "now", "сейчас", NOW)
@@ -33,8 +35,7 @@ async def test_add_many_assigns_ids_and_due_filters_and_orders():
     assert await repo.count_due(deck_id=1, now=NOW) == 1
 
 
-async def test_save_persists_updated_fsrs_and_get_missing_raises():
-    db = await _db()
+async def test_save_persists_updated_fsrs_and_get_missing_raises(db: Database):
     repo = SqlCardRepository(db)
     (card,) = await repo.add_many([Card.create(1, "run", "бежать", NOW)])
     assert card.id is not None
@@ -45,8 +46,7 @@ async def test_save_persists_updated_fsrs_and_get_missing_raises():
         await repo.get(999)
 
 
-async def test_review_log_add_and_count():
-    db = await _db()
+async def test_review_log_add_and_count(db: Database):
     cards = SqlCardRepository(db)
     (card,) = await cards.add_many([Card.create(1, "run", "бежать", NOW)])
     assert card.id is not None

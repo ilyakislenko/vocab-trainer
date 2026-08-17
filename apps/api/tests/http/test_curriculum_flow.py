@@ -20,6 +20,7 @@ async def client():
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as c:
         yield c
+    await container.dispose()
 
 
 async def test_curriculum_map_lists_all_levels(client: httpx.AsyncClient):

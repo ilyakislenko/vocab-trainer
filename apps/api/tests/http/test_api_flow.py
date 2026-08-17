@@ -20,6 +20,7 @@ async def client():
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as c:
         yield c
+    await container.dispose()
 
 
 async def test_full_flow_create_import_review_stats(client: httpx.AsyncClient):

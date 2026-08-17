@@ -105,3 +105,6 @@ class Container:
         if self._settings.seed_default_deck:
             await self._britlex_seed.execute(load_britlex_sources())
             await self._it_seed.execute(load_it_sources())
+
+    async def dispose(self) -> None:
+        await self._db.dispose()

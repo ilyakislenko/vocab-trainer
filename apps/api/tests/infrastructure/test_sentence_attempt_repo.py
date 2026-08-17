@@ -1,4 +1,7 @@
+from collections.abc import AsyncIterator
 from datetime import UTC, datetime
+
+import pytest
 
 from vocab_api.domain.practice.feedback import Feedback, Verdict
 from vocab_api.domain.practice.sentence_attempt import SentenceAttempt
@@ -10,14 +13,15 @@ from vocab_api.infrastructure.persistence.sentence_attempt_repo import (
 NOW = datetime(2026, 8, 13, tzinfo=UTC)
 
 
-async def _repo() -> SqlSentenceAttemptRepository:
+@pytest.fixture
+async def repo() -> AsyncIterator[SqlSentenceAttemptRepository]:
     db = Database("sqlite+aiosqlite:///:memory:")
     await db.init()
-    return SqlSentenceAttemptRepository(db)
+    yield SqlSentenceAttemptRepository(db)
+    await db.dispose()
 
 
-async def test_add_assigns_id_and_list_roundtrips_feedback():
-    repo = await _repo()
+async def test_add_assigns_id_and_list_roundtrips_feedback(repo: SqlSentenceAttemptRepository):
     fb = Feedback(
         verdict=Verdict.NEEDS_WORK, feedback="Tense.", corrected="I ran.", example="I run."
     )
