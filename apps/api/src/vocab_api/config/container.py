@@ -1,6 +1,7 @@
 import random
 
 from vocab_api.application.ports.llm import LlmProvider
+from vocab_api.application.ports.pronunciation import PronunciationScorer
 from vocab_api.application.use_cases.curriculum import (
     GetCurriculumMap,
     GetLesson,
@@ -21,6 +22,7 @@ from vocab_api.application.use_cases.practice import (
     TranslateSentence,
 )
 from vocab_api.application.use_cases.progress import GetProgress
+from vocab_api.application.use_cases.pronounce import ScorePronunciation
 from vocab_api.application.use_cases.quiz import GetModuleQuiz, GradeQuiz
 from vocab_api.application.use_cases.review import (
     GetReviewQueue,
@@ -59,6 +61,7 @@ from vocab_api.infrastructure.persistence.review_log_repo import SqlReviewLogRep
 from vocab_api.infrastructure.persistence.sentence_attempt_repo import (
     SqlSentenceAttemptRepository,
 )
+from vocab_api.infrastructure.pronunciation.null_scorer import NullScorer
 from vocab_api.infrastructure.question_bank import JsonQuestionBank, load_interview_questions
 from vocab_api.infrastructure.scheduling.py_fsrs_scheduler import PyFsrsScheduler
 
@@ -143,8 +146,19 @@ class Container:
         )
         self.get_progress = GetProgress(curriculum, module_progress, decks, logs)
 
+        self.score_pronunciation = ScorePronunciation(self._pronunciation_scorer(), NullScorer())
+
         self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
         self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)
+
+    def _pronunciation_scorer(self) -> PronunciationScorer:
+        provider = self._settings.pronunciation_provider
+        if provider == "none":
+            return NullScorer()
+        raise ValueError(
+            f"pronunciation provider {provider!r} is not wired yet; use 'none' "
+            "(the rtx/cloud adapters land with their own steps)"
+        )
 
     async def init(self) -> None:
         await self._db.init()

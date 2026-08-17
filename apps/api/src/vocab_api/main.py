@@ -11,6 +11,7 @@ from vocab_api.interfaces.http import (
     placement_router,
     practice_router,
     progress_router,
+    pronounce_router,
     review_router,
     session_router,
     stats_router,
@@ -42,6 +43,7 @@ def create_app(container: Container | None = None) -> FastAPI:
     app.include_router(session_router.router)
     app.include_router(placement_router.router)
     app.include_router(progress_router.router)
+    app.include_router(pronounce_router.router)
     return app
 
 

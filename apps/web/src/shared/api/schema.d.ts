@@ -481,10 +481,39 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/pronounce/score": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Score Pronunciation */
+        post: operations["score_pronunciation_pronounce_score_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Body_score_pronunciation_pronounce_score_post */
+        Body_score_pronunciation_pronounce_score_post: {
+            /** Audio */
+            audio: string;
+            /** Target */
+            target: string;
+            /**
+             * Accent
+             * @default en-US
+             */
+            accent: string;
+        };
         /** CardOut */
         CardOut: {
             /** Id */
@@ -875,6 +904,18 @@ export interface components {
             /** Total */
             total: number;
         };
+        /** PhonemeScoreOut */
+        PhonemeScoreOut: {
+            /** Phoneme */
+            phoneme: string;
+            /** Score */
+            score: number;
+            /**
+             * Verdict
+             * @enum {string}
+             */
+            verdict: "good" | "fair" | "weak";
+        };
         /** PlacementAnswerIn */
         PlacementAnswerIn: {
             /** Item Id */
@@ -951,6 +992,17 @@ export interface components {
             streak: number;
             /** Has Reviewed */
             has_reviewed: boolean;
+        };
+        /** PronunciationAssessmentOut */
+        PronunciationAssessmentOut: {
+            /** Overall */
+            overall: number;
+            /** Words */
+            words: components["schemas"]["WordScoreOut"][];
+            /** Transcript */
+            transcript: string;
+            /** Scored Phonemes */
+            scored_phonemes: boolean;
         };
         /** ReviewIn */
         ReviewIn: {
@@ -1110,6 +1162,15 @@ export interface components {
             meaning: string;
             /** Example */
             example?: string | null;
+        };
+        /** WordScoreOut */
+        WordScoreOut: {
+            /** Word */
+            word: string;
+            /** Score */
+            score: number;
+            /** Phonemes */
+            phonemes: components["schemas"]["PhonemeScoreOut"][];
         };
         /** WordTranslation */
         WordTranslation: {
@@ -1985,6 +2046,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProgressOut"];
+                };
+            };
+        };
+    };
+    score_pronunciation_pronounce_score_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_score_pronunciation_pronounce_score_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PronunciationAssessmentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

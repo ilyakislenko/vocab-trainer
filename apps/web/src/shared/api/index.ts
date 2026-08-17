@@ -1,4 +1,5 @@
 export { apiClient } from "./client";
+export type { components } from "./schema";
 export type {
   Card,
   CurriculumLesson,
@@ -23,11 +24,13 @@ export type {
   InterviewMessage,
   InterviewOut,
   LevelProgress,
+  PhonemeScore,
   Placement,
   PlacementAnswer,
   PlacementGrade,
   PlacementItem,
   Progress,
+  PronunciationAssessment,
   Rating,
   ReviewSummary,
   RowError,
@@ -36,5 +39,6 @@ export type {
   TodaySession,
   TodayStep,
   WordHint,
+  WordScore,
 } from "./types";
 export { useTranslateSentence } from "./use-translate";

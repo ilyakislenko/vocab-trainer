@@ -103,6 +103,20 @@ const dict: Translations = {
   },
   "pronounce.sentenceMissed": { en: "Missing words:", ru: "Пропущенные слова:" },
   "pronounce.sentenceHeard": { en: "Heard:", ru: "Распознано:" },
+  "pronounce.score": { en: "Record & score", ru: "Запись и оценка" },
+  "pronounce.scoring": { en: "Scoring…", ru: "Оцениваю…" },
+  "pronounce.phonemeOffline": {
+    en: "Phoneme scoring is offline right now — using word match.",
+    ru: "Фонемная оценка сейчас недоступна — используем сопоставление слов.",
+  },
+  "pronounce.overall": { en: "Overall", ru: "Общий результат" },
+  "pronounce.verdict.good": { en: "good", ru: "хорошо" },
+  "pronounce.verdict.fair": { en: "fair", ru: "средне" },
+  "pronounce.verdict.weak": { en: "weak", ru: "слабо" },
+  "pronounce.phonemeHint": {
+    en: "your /{phoneme}/ was weak — keep practising",
+    ru: "звук /{phoneme}/ получился слабо — потренируйся ещё",
+  },
 
   // Feedback
   "feedback.ok": { en: "✓ Looks good!", ru: "✓ Отлично!" },

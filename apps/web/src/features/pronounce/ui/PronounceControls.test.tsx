@@ -14,6 +14,33 @@ vi.mock("@/shared/lib/speech", () => ({
 import { recognizeOnce, speak } from "@/shared/lib/speech";
 import { PronounceControls } from "./PronounceControls";
 
+function stubRecorder() {
+  class FakeRecorder {
+    mimeType = "audio/webm";
+    state: "inactive" | "recording" = "inactive";
+    ondataavailable: ((e: { data: Blob }) => void) | null = null;
+    onstop: (() => void) | null = null;
+    onerror: (() => void) | null = null;
+
+    start() {
+      this.state = "recording";
+      queueMicrotask(() => {
+        this.ondataavailable?.({ data: new Blob(["fake-audio"], { type: "audio/webm" }) });
+        this.onstop?.();
+      });
+    }
+
+    stop() {
+      this.state = "inactive";
+    }
+  }
+  vi.stubGlobal("MediaRecorder", FakeRecorder);
+  Object.defineProperty(navigator, "mediaDevices", {
+    value: { getUserMedia: vi.fn().mockResolvedValue({ getTracks: () => [] }) },
+    configurable: true,
+  });
+}
+
 describe("PronounceControls", () => {
   it("speaks the word", async () => {
     renderWithProviders(<PronounceControls word="run" />);
@@ -112,6 +139,56 @@ describe("PronounceControls", () => {
     );
     await waitFor(() =>
       expect(screen.getByText(/missing words|пропущенные слова/i)).toBeInTheDocument(),
+    );
+  });
+
+  it("renders the phoneme assessment after server scoring", async () => {
+    stubRecorder();
+    server.use(
+      http.post("/api/pronounce/score", () =>
+        HttpResponse.json({
+          overall: 0.92,
+          words: [
+            {
+              word: "hello",
+              score: 0.92,
+              phonemes: [
+                { phoneme: "h", score: 0.95, verdict: "good" },
+                { phoneme: "l", score: 0.4, verdict: "weak" },
+              ],
+            },
+          ],
+          transcript: "hello",
+          scored_phonemes: true,
+        }),
+      ),
+    );
+    renderWithProviders(<PronounceControls word="run" />);
+    await userEvent.click(screen.getByRole("button", { name: /record & score|запись и оценка/i }));
+    await waitFor(() => expect(screen.getByText("92%")).toBeInTheDocument());
+    await userEvent.click(screen.getByRole("button", { name: "hello" }));
+    await waitFor(() => expect(screen.getByText(/слабо — 40%|40%/)).toBeInTheDocument());
+    expect(screen.getByText(/получился слабо|keep practising/i)).toBeInTheDocument();
+  });
+
+  it("shows the offline note when the backend returns word-match only", async () => {
+    stubRecorder();
+    server.use(
+      http.post("/api/pronounce/score", () =>
+        HttpResponse.json({
+          overall: 0,
+          words: [],
+          transcript: "",
+          scored_phonemes: false,
+        }),
+      ),
+    );
+    renderWithProviders(<PronounceControls word="run" />);
+    await userEvent.click(screen.getByRole("button", { name: /record & score|запись и оценка/i }));
+    await waitFor(() =>
+      expect(
+        screen.getByText(/phoneme scoring is offline|фонемная оценка сейчас недоступна/i),
+      ).toBeInTheDocument(),
     );
   });
 });

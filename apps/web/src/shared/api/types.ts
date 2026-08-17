@@ -38,3 +38,6 @@ export type TodaySession = components["schemas"]["TodaySessionOut"];
 export type TodayStep = components["schemas"]["TodayStepOut"];
 export type Progress = components["schemas"]["ProgressOut"];
 export type LevelProgress = components["schemas"]["LevelProgressOut"];
+export type PronunciationAssessment = components["schemas"]["PronunciationAssessmentOut"];
+export type PhonemeScore = components["schemas"]["PhonemeScoreOut"];
+export type WordScore = components["schemas"]["WordScoreOut"];

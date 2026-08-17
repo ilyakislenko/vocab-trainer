@@ -1,11 +1,14 @@
 import { useMemo, useState } from "react";
-import type { Feedback } from "@/shared/api";
+import type { Feedback, PronunciationAssessment } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
+import { Button } from "@/shared/ui/button";
 import { Loader } from "@/shared/ui/loader";
 import { MicButton } from "@/shared/ui/mic-button";
 import { SpeakButton } from "@/shared/ui/speak-button";
 import { useCheckSentence } from "../model/use-check-sentence";
 import { useExample } from "../model/use-example";
+import { useScorePronunciation } from "../model/use-score-pronunciation";
+import { PronounceAssessment } from "./PronounceAssessment";
 
 type Grammar =
   | { state: "idle" }
@@ -50,8 +53,10 @@ export function PronounceControls({
   const [grammar, setGrammar] = useState<Grammar>({ state: "idle" });
   const [sentenceHeard, setSentenceHeard] = useState<string | null>(null);
   const [sentenceMatched, setSentenceMatched] = useState(false);
+  const [assessment, setAssessment] = useState<PronunciationAssessment | null>(null);
   const check = useCheckSentence(cardId ?? null);
   const example = useExample(cardId ?? null);
+  const score = useScorePronunciation();
   const exampleText = example.data?.trim();
 
   const sentenceResult = useMemo(
@@ -97,6 +102,17 @@ export function PronounceControls({
     onResult?.(false);
   };
 
+  const handleScore = async () => {
+    const target = exampleText && cardId != null ? exampleText : word;
+    setAssessment(null);
+    try {
+      const result = await score.mutateAsync(target);
+      setAssessment(result);
+    } catch {
+      setAssessment(null);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
@@ -106,7 +122,12 @@ export function PronounceControls({
           onError={handleTranscriptError}
           label={t("practice.say")}
         />
+        <Button type="button" variant="outline" size="sm" onClick={handleScore}>
+          {score.isPending ? t("pronounce.scoring") : t("pronounce.score")}
+        </Button>
       </div>
+
+      {assessment && <PronounceAssessment assessment={assessment} />}
 
       {heard !== null &&
         (matched ? (

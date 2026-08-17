@@ -338,3 +338,22 @@ class ProgressOut(BaseModel):
     overall_percent: int
     streak: int
     has_reviewed: bool
+
+
+class PhonemeScoreOut(BaseModel):
+    phoneme: str
+    score: float
+    verdict: Literal["good", "fair", "weak"]
+
+
+class WordScoreOut(BaseModel):
+    word: str
+    score: float
+    phonemes: list[PhonemeScoreOut]
+
+
+class PronunciationAssessmentOut(BaseModel):
+    overall: float
+    words: list[WordScoreOut]
+    transcript: str
+    scored_phonemes: bool

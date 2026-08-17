@@ -69,3 +69,19 @@ class ContentValidationError(DomainError):
     def __init__(self, reason: str) -> None:
         super().__init__(f"curriculum content invalid: {reason}")
         self.reason = reason
+
+
+class EmptyAudio(DomainError):
+    def __init__(self) -> None:
+        super().__init__("Audio recording must not be empty.")
+
+
+class EmptyPronunciationText(DomainError):
+    def __init__(self) -> None:
+        super().__init__("Pronunciation target must not be empty.")
+
+
+class UnsupportedAccent(DomainError):
+    def __init__(self, accent: str) -> None:
+        super().__init__(f"Unsupported accent {accent!r}; only en-* accents are supported.")
+        self.accent = accent
