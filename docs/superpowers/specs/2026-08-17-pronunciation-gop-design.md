@@ -105,11 +105,44 @@ A minimal standalone Python service (its own venv/deps: torch, transformers,
 torchaudio, phonemizer) on the rtx box:
 - `POST /gop` (multipart wav + target text) → JSON matching `PronunciationAssessment`.
 - Loads the model once at boot (GPU). Accepts 16 kHz mono wav; the caller converts.
-- No auth beyond LAN binding (owner's local network, per [[feedback_ask_before_changing_network]]);
-  document the bind address, don't hardcode a public one.
-- Health endpoint so `rtx_gop_scorer` can fail fast → fall back.
-This service is deployed/run separately from the main app; the main repo holds a
-thin client only (no torch in `apps/api`).
+- Health endpoint (`GET /healthz`) so `rtx_gop_scorer` can fail fast → fall back.
+The main repo holds a **thin HTTP client only** (no torch in `apps/api`).
+
+### 5.1 Connectivity — how the main app reaches rtx
+`rtx` is the Windows PC on the LAN: **`192.168.1.84`**, hostname `DESKTOP-HP7DKR9`
+([[reference_windows_pc]]). The main API (wherever it runs — e.g. the local server
+`192.168.1.100`, [[reference_local_server]]) calls the service over the LAN:
+- Configure the client with an env var, never hardcode: `VOCAB_PRONUNCIATION_RTX_URL`
+  (e.g. `http://192.168.1.84:8900`). Pick a fixed port for the service (say 8900).
+- The service must **bind to the LAN interface, not just localhost** — bind
+  `0.0.0.0` (or `192.168.1.84`) so the main app can reach it. (Consistent with
+  [[feedback_ask_before_changing_network]] — the owner needs LAN access; do not
+  restrict to 127.0.0.1.)
+- **Windows Firewall:** open inbound TCP on the chosen port for the private/LAN
+  profile, or the request from `192.168.1.100` is dropped. Document the exact rule.
+- Because a static LAN IP can change, allow the hostname form too
+  (`http://DESKTOP-HP7DKR9:8900`) as an alternative URL.
+- LAN-only; do not expose to the internet. No auth beyond the private network for
+  now (revisit if it ever leaves the LAN).
+
+### 5.2 Deploying / running the service on rtx (Windows + GPU)
+- **GPU torch:** install CUDA-enabled PyTorch. Two viable paths on this Windows box:
+  (a) **native Windows** Python + CUDA wheels (simplest for the RTX GPU); or
+  (b) **WSL2 + CUDA** (Linux tooling, needs the WSL CUDA driver). Docker Desktop
+  with GPU passthrough also works but is heavier. Pick one and pin it in the
+  service's README.
+- Run it as a persistent process: a Windows service / Task Scheduler "at logon"
+  task / NSSM wrapper, or inside WSL with a systemd/tmux unit — so it survives
+  reboots and is up when the main app calls.
+- **Access to deploy/operate rtx:** over the LAN via **RDP** (Windows Remote
+  Desktop) or **OpenSSH Server** (enable the optional Windows feature, then
+  `ssh user@192.168.1.84`). Note in the README which one the owner uses.
+
+### 5.3 rtx may be asleep or off — degrade, don't hang
+`rtx` is a desktop; it can sleep or be powered down. The client uses a short
+connect timeout and, on failure, degrades to the cloud/word-level or `NullScorer`
+path (§6) — the app never blocks on an unreachable GPU box. (Optional nicety:
+Wake-on-LAN before scoring; out of scope here.)
 
 ## 6. Adapters & switching
 - `RtxGopScorer(base_url, http)`: POSTs audio to the rtx service; returns full
