@@ -65,7 +65,7 @@
       "type": "cloze",
       "skill": "mod.obligation-prohibition",
       "prompt": "Write one word to complete the rule: Employees ___ bring their laptops; it is required.",
-      "answers": ["must", "must"],
+      "answers": ["must"],
       "explanation": "Required action = obligation, so 'must'."
     },
     {

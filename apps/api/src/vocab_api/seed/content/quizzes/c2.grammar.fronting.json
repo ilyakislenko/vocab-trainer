@@ -20,7 +20,7 @@
       "type": "cloze",
       "skill": "front.negative",
       "prompt": "Write two words: Hardly ___ ___ arrived when the meeting started.",
-      "answers": ["had we", "had we"],
+      "answers": ["had we"],
       "explanation": "'Hardly' fronting inverts: had we."
     },
     {

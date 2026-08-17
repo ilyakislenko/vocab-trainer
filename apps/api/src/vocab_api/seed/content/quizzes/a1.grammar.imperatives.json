@@ -32,7 +32,7 @@
       "type": "cloze",
       "skill": "imp.negative",
       "prompt": "Write two words: ___ ___ late for the interview tomorrow.",
-      "answers": ["Don't be", "Don't be"],
+      "answers": ["Don't be"],
       "explanation": "Negative imperative of 'be' is 'Don't be'."
     },
     {

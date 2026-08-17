@@ -63,7 +63,7 @@
       "type": "cloze",
       "skill": "vocab.adverbs-freq",
       "prompt": "Write two words: He ___ ___ eats meat; he is vegetarian.",
-      "answers": ["never eats", "never eats"],
+      "answers": ["never eats"],
       "explanation": "'Never' goes before the verb: He never eats meat."
     }
   ]

@@ -41,7 +41,7 @@
       "type": "cloze",
       "skill": "pres.negation",
       "prompt": "Write two words: He ___ ___ coffee after dinner. (negative of drink)",
-      "answers": ["doesn't drink", "does not drink", "doesn't drink"],
+      "answers": ["doesn't drink", "does not drink"],
       "explanation": "Third-person negative: doesn't + base verb drink."
     },
     {

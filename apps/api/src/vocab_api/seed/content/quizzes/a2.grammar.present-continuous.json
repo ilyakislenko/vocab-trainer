@@ -37,7 +37,7 @@
       "type": "cloze",
       "skill": "pcont.now",
       "prompt": "Write two words: Be quiet, please. I ___ ___ on the phone.",
-      "answers": ["am talking", "am speaking", "am talking"],
+      "answers": ["am talking", "am speaking"],
       "explanation": "'I' takes 'am' + -ing."
     },
     {
@@ -59,7 +59,7 @@
       "type": "cloze",
       "skill": "pcont.arrangements",
       "prompt": "Write two words: She ___ ___ to Berlin next Monday.",
-      "answers": ["is flying", "is flying"],
+      "answers": ["is flying"],
       "explanation": "Arrangement with a time expression: is flying."
     },
     {
