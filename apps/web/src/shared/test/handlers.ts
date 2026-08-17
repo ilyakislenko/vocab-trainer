@@ -13,6 +13,7 @@ export const handlers = [
   ),
   http.get("/api/decks/:id/cards", () => HttpResponse.json([CARD])),
   http.get("/api/review/queue", () => HttpResponse.json([CARD])),
+  http.get("/api/review/summary", () => HttpResponse.json({ next_due: null, reviewed_today: 0 })),
   http.post("/api/review", async ({ request }) => {
     const body = (await request.json()) as { card_id: number };
     return HttpResponse.json({

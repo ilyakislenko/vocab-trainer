@@ -37,6 +37,17 @@ class SqlReviewLogRepository(ReviewLogRepository):
             result = await session.execute(statement)
             return result.scalar_one()
 
+    async def count_reviews_on(self, deck_id: int, day_start: datetime) -> int:
+        statement = (
+            select(func.count())
+            .select_from(ReviewLogRow)
+            .join(CardRow, CardRow.id == ReviewLogRow.card_id)  # type: ignore[arg-type]
+            .where(CardRow.deck_id == deck_id, ReviewLogRow.reviewed_at >= day_start)
+        )
+        async with self._db.session() as session:
+            result = await session.execute(statement)
+            return result.scalar_one()
+
     async def streak(self, deck_id: int) -> int:
         # Count consecutive days ending today with at least one review.
         today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)

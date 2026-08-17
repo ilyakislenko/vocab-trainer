@@ -310,6 +310,46 @@
         }
       }
     },
+    "/review/summary": {
+      "get": {
+        "tags": ["review"],
+        "summary": "Review Summary",
+        "operationId": "review_summary_review_summary_get",
+        "parameters": [
+          {
+            "name": "deck_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Deck Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewSummaryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/review/skills/queue": {
       "get": {
         "tags": ["review"],
@@ -1138,6 +1178,18 @@
               }
             ],
             "title": "Section"
+          },
+          "due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due"
           }
         },
         "type": "object",
@@ -1605,7 +1657,7 @@
         "type": "object",
         "required": ["id", "type", "skill", "prompt"],
         "title": "CurriculumQuizItemOut",
-        "description": "A quiz item as served to the learner \u2014 answers are never sent."
+        "description": "A quiz item as served to the learner — answers are never sent."
       },
       "CurriculumQuizItemResultOut": {
         "properties": {
@@ -2153,7 +2205,7 @@
         "type": "object",
         "required": ["id", "level", "skill", "type", "prompt"],
         "title": "PlacementItemOut",
-        "description": "A diagnostic item as served to the learner \u2014 answers are never sent."
+        "description": "A diagnostic item as served to the learner — answers are never sent."
       },
       "PlacementOut": {
         "properties": {
@@ -2206,6 +2258,29 @@
         "type": "object",
         "required": ["card_id", "rating"],
         "title": "ReviewIn"
+      },
+      "ReviewSummaryOut": {
+        "properties": {
+          "next_due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Due"
+          },
+          "reviewed_today": {
+            "type": "integer",
+            "title": "Reviewed Today"
+          }
+        },
+        "type": "object",
+        "required": ["next_due", "reviewed_today"],
+        "title": "ReviewSummaryOut"
       },
       "RowErrorOut": {
         "properties": {

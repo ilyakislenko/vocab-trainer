@@ -4,6 +4,10 @@ from datetime import datetime
 from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.shared.errors import EmptyTranslation, EmptyWord
 
+# Cap on brand-new cards (state New) admitted into the daily review plan. Due
+# cards (Learning/Review/Relearning) are never capped; only new-card intake is.
+NEW_CARDS_PER_DAY = 20
+
 
 def _clean_optional(value: str | None) -> str | None:
     if value is None:
@@ -23,6 +27,7 @@ class Card:
     section: str | None = None
     id: int | None = None
     created_at: datetime | None = None
+    introduced_at: datetime | None = None
 
     @staticmethod
     def create(

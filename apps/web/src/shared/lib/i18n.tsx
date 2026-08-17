@@ -233,6 +233,11 @@ const dict: Translations = {
   "review.ratingHard": { en: "Hard", ru: "Сложно" },
   "review.ratingGood": { en: "Good", ru: "Хорошо" },
   "review.ratingEasy": { en: "Easy", ru: "Легко" },
+  "review.left": { en: "left", ru: "осталось" },
+  "review.reviewedToday": { en: "reviewed today", ru: "пройдено сегодня" },
+  "review.returnsTomorrow": { en: "Returns tomorrow", ru: "Вернётся завтра" },
+  "review.returnsIn": { en: "Returns in {n} d.", ru: "Вернётся через {n} дн." },
+  "review.practiceMore": { en: "Practice more", ru: "Повторить ещё" },
 
   // Skill reviews (Phase 2)
   "skill.title": { en: "Skill reviews", ru: "Повторение навыков" },

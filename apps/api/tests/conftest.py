@@ -79,6 +79,7 @@ class FakeCardRepository:
                 notes=card.notes,
                 section=card.section,
                 created_at=card.created_at,
+                introduced_at=card.introduced_at,
             )
             self._items[self._seq] = stored
             saved.append(stored)
@@ -93,13 +94,42 @@ class FakeCardRepository:
         assert card.id is not None
         self._items[card.id] = card
 
-    async def due(self, deck_id: int, now: datetime, limit: int) -> list[Card]:
-        due = [c for c in self._items.values() if c.deck_id == deck_id and c.fsrs.due <= now]
+    async def due(self, deck_id: int, now: datetime) -> list[Card]:
+        due = [
+            c
+            for c in self._items.values()
+            if c.deck_id == deck_id and c.fsrs.state != 0 and c.fsrs.due <= now
+        ]
         due.sort(key=lambda c: c.fsrs.due)
-        return due[:limit]
+        return due
+
+    async def new_cards(self, deck_id: int, limit: int) -> list[Card]:
+        fresh = [c for c in self._items.values() if c.deck_id == deck_id and c.fsrs.state == 0]
+        fresh.sort(key=lambda c: c.id or 0)
+        return fresh[:limit]
 
     async def count_due(self, deck_id: int, now: datetime) -> int:
-        return len([c for c in self._items.values() if c.deck_id == deck_id and c.fsrs.due <= now])
+        return len(
+            [
+                c
+                for c in self._items.values()
+                if c.deck_id == deck_id and c.fsrs.state != 0 and c.fsrs.due <= now
+            ]
+        )
+
+    async def count_new(self, deck_id: int) -> int:
+        return len([c for c in self._items.values() if c.deck_id == deck_id and c.fsrs.state == 0])
+
+    async def count_introduced_today(self, deck_id: int, start_of_day: datetime) -> int:
+        return len(
+            [
+                c
+                for c in self._items.values()
+                if c.deck_id == deck_id
+                and c.introduced_at is not None
+                and c.introduced_at >= start_of_day
+            ]
+        )
 
     async def list_all(
         self, deck_id: int, limit: int, offset: int, section: str | None
@@ -123,6 +153,14 @@ class FakeCardRepository:
                 counts[name] = counts.get(name, 0) + 1
         return counts
 
+    async def soonest_due(self, deck_id: int, now: datetime) -> datetime | None:
+        future = [
+            c.fsrs.due
+            for c in self._items.values()
+            if c.deck_id == deck_id and c.fsrs.due > now
+        ]
+        return min(future) if future else None
+
 
 class FakeReviewLogRepository:
     def __init__(self, cards: FakeCardRepository) -> None:
@@ -139,6 +177,14 @@ class FakeReviewLogRepository:
         for entry in self.entries:
             card = await self._cards.get(entry.card_id)
             if card.deck_id == deck_id:
+                count += 1
+        return count
+
+    async def count_reviews_on(self, deck_id: int, day_start: datetime) -> int:
+        count = 0
+        for entry in self.entries:
+            card = await self._cards.get(entry.card_id)
+            if card.deck_id == deck_id and entry.reviewed_at >= day_start:
                 count += 1
         return count
 

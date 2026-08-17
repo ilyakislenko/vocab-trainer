@@ -107,6 +107,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/review/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Review Summary */
+        get: operations["review_summary_review_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/review/skills/queue": {
         parameters: {
             query?: never;
@@ -480,6 +497,8 @@ export interface components {
             transcription: string | null;
             /** Section */
             section?: string | null;
+            /** Due */
+            due?: string | null;
         };
         /** CheckSentenceIn */
         CheckSentenceIn: {
@@ -910,6 +929,13 @@ export interface components {
              */
             rating: 1 | 2 | 3 | 4;
         };
+        /** ReviewSummaryOut */
+        ReviewSummaryOut: {
+            /** Next Due */
+            next_due: string | null;
+            /** Reviewed Today */
+            reviewed_today: number;
+        };
         /** RowErrorOut */
         RowErrorOut: {
             /** Line */
@@ -1265,6 +1291,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CardOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_summary_review_summary_get: {
+        parameters: {
+            query: {
+                deck_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewSummaryOut"];
                 };
             };
             /** @description Validation Error */

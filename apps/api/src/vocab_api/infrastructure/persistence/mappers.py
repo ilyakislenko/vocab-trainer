@@ -38,6 +38,7 @@ def card_to_row(card: Card) -> CardRow:
         notes=card.notes,
         section=card.section,
         created_at=card.created_at,
+        introduced_at=card.introduced_at,
         fsrs_state=card.fsrs.state,
         fsrs_step=card.fsrs.step,
         fsrs_stability=card.fsrs.stability,
@@ -57,6 +58,7 @@ def card_from_row(row: CardRow) -> Card:
         notes=row.notes,
         section=row.section,
         created_at=_as_utc(row.created_at),
+        introduced_at=_as_utc(row.introduced_at),
         fsrs=FsrsState(
             due=_as_utc(row.fsrs_due),
             state=row.fsrs_state,

@@ -20,6 +20,7 @@ class CardRow(SQLModel, table=True):
     notes: str | None = None
     section: str | None = None
     created_at: datetime | None = None
+    introduced_at: datetime | None = None
     fsrs_state: int = 1
     fsrs_step: int | None = 0
     fsrs_stability: float | None = None

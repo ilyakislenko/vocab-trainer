@@ -21,6 +21,7 @@ from vocab_api.application.ports.repositories import (
     ReviewLogRepository,
 )
 from vocab_api.application.use_cases.curriculum import GetRecommendedModule
+from vocab_api.application.use_cases.review import new_card_allowance
 from vocab_api.domain.curriculum.progress import ModuleStatus
 from vocab_api.domain.curriculum.today import (
     FocusStep,
@@ -86,7 +87,10 @@ class BuildTodaySession:
         for deck in await self._decks.list():
             if deck.id is None:
                 continue
-            vocab_due += await self._cards.count_due(deck.id, now)
+            due = await self._cards.count_due(deck.id, now)
+            new_count = await self._cards.count_new(deck.id)
+            allowance = await new_card_allowance(self._cards, deck.id, now)
+            vocab_due += due + min(allowance, new_count)
         skill_due = await self._skills.count_due(now)
         if vocab_due == 0 and skill_due == 0:
             return None

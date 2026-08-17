@@ -25,14 +25,38 @@ async def db() -> AsyncIterator[Database]:
 
 async def test_add_many_assigns_ids_and_due_filters_and_orders(db: Database):
     repo = SqlCardRepository(db)
-    future = Card.create(1, "later", "позже", NOW).with_fsrs(FsrsState(due=NOW + timedelta(days=1)))
-    due_now = Card.create(1, "now", "сейчас", NOW)
-    saved = await repo.add_many([future, due_now])
+    future = Card.create(1, "later", "позже", NOW).with_fsrs(
+        FsrsState(due=NOW + timedelta(days=1), state=2, stability=1.0)
+    )
+    due_now = Card.create(1, "now", "сейчас", NOW).with_fsrs(
+        FsrsState(due=NOW, state=1, stability=1.0)
+    )
+    fresh = Card.create(1, "fresh", "новое", NOW)
+    saved = await repo.add_many([future, due_now, fresh])
     assert all(c.id is not None for c in saved)
 
-    due = await repo.due(deck_id=1, now=NOW, limit=10)
+    # Brand-new cards are not "due" — they enter the loop via the daily budget.
+    due = await repo.due(deck_id=1, now=NOW)
     assert [c.word for c in due] == ["now"]
     assert await repo.count_due(deck_id=1, now=NOW) == 1
+    assert await repo.count_new(deck_id=1) == 1
+
+
+async def test_new_cards_in_creation_order_and_count_introduced_today(db: Database):
+    repo = SqlCardRepository(db)
+    fresh = Card.create(1, "jump", "прыгать", NOW)
+    introduced = Card(
+        deck_id=1,
+        word="run",
+        translation="бежать",
+        fsrs=FsrsState(due=NOW + timedelta(days=1), state=1, stability=1.0),
+        introduced_at=NOW,
+    )
+    await repo.add_many([introduced, fresh])
+    assert [c.word for c in await repo.new_cards(deck_id=1, limit=10)] == ["jump"]
+    assert await repo.count_new(deck_id=1) == 1
+    assert await repo.count_introduced_today(1, NOW.replace(hour=0)) == 1
+    assert await repo.soonest_due(1, NOW) == NOW + timedelta(days=1)
 
 
 async def test_save_persists_updated_fsrs_and_get_missing_raises(db: Database):

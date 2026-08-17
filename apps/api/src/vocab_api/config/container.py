@@ -20,7 +20,11 @@ from vocab_api.application.use_cases.practice import (
 )
 from vocab_api.application.use_cases.progress import GetProgress
 from vocab_api.application.use_cases.quiz import GetModuleQuiz, GradeQuiz
-from vocab_api.application.use_cases.review import GetReviewQueue, RecordReview
+from vocab_api.application.use_cases.review import (
+    GetReviewQueue,
+    GetReviewSummary,
+    RecordReview,
+)
 from vocab_api.application.use_cases.skills import (
     GetFocusLeeches,
     GetSkillReviewQueue,
@@ -73,6 +77,7 @@ class Container:
         self.import_words = ImportWords(decks, cards, clock)
         self.get_review_queue = GetReviewQueue(cards, clock)
         self.record_review = RecordReview(cards, logs, scheduler, clock)
+        self.get_review_summary = GetReviewSummary(cards, logs, clock)
         self.get_stats = GetStats(cards, logs, clock)
 
         attempts = SqlSentenceAttemptRepository(self._db)

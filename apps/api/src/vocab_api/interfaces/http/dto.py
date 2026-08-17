@@ -27,6 +27,12 @@ class CardOut(BaseModel):
     translation: str
     transcription: str | None
     section: str | None = None
+    due: datetime | None = None
+
+
+class ReviewSummaryOut(BaseModel):
+    next_due: datetime | None
+    reviewed_today: int
 
 
 class RowErrorOut(BaseModel):

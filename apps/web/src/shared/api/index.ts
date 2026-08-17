@@ -29,6 +29,7 @@ export type {
   PlacementItem,
   Progress,
   Rating,
+  ReviewSummary,
   RowError,
   SkillReviewInput,
   Stats,

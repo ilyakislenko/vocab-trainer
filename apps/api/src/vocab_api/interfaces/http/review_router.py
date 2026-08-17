@@ -8,6 +8,7 @@ from vocab_api.interfaces.http.dto import (
     CurriculumSkillItemOut,
     CurriculumSkillReviewOut,
     ReviewIn,
+    ReviewSummaryOut,
     SkillReviewIn,
 )
 
@@ -21,7 +22,7 @@ async def review_queue(
     cards = await c.get_review_queue.execute(deck_id, limit)
     return [
         CardOut(id=card.id, word=card.word, translation=card.translation,
-                transcription=card.transcription, section=card.section)
+                transcription=card.transcription, section=card.section, due=card.fsrs.due)
         for card in cards
     ]
 
@@ -30,7 +31,13 @@ async def review_queue(
 async def record_review(body: ReviewIn, c: Container = Depends(get_container)) -> CardOut:
     card = await c.record_review.execute(body.card_id, Rating(body.rating))
     return CardOut(id=card.id, word=card.word, translation=card.translation,
-                   transcription=card.transcription, section=card.section)
+                   transcription=card.transcription, section=card.section, due=card.fsrs.due)
+
+
+@router.get("/review/summary", response_model=ReviewSummaryOut)
+async def review_summary(deck_id: int, c: Container = Depends(get_container)) -> ReviewSummaryOut:
+    summary = await c.get_review_summary.execute(deck_id)
+    return ReviewSummaryOut(next_due=summary.next_due, reviewed_today=summary.reviewed_today)
 
 
 @router.get("/review/skills/queue", response_model=list[CurriculumSkillReviewOut])
