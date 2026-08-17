@@ -45,6 +45,13 @@ select = ["E", "F", "I", "UP", "B", "ASYNC", "RUF"]
 # concern doesn't apply. This is ruff's documented opt-out for that exact case.
 extend-immutable-calls = ["fastapi.Depends"]
 
+[tool.ruff.lint.per-file-ignores]
+# The interview-bank builder embeds Russian source strings whose Cyrillic letters
+# (е, с, а, о, …) resemble Latin ones. That is intentional text, not a typo, so the
+# ambiguous-character rules (RUF001 string / RUF002 docstring / RUF003 comment) are
+# false positives here.
+"tools/build_interview_bank.py" = ["RUF001", "RUF002", "RUF003"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true

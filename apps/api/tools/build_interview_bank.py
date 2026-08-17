@@ -354,7 +354,11 @@ def read_full_csv() -> list[dict]:
         if current is None or _LEVEL_ORDER.get(level, 0) > _LEVEL_ORDER.get(
             current["level"], 0
         ):
-            best[ru] = {"ru": ru, "level": level, "topics": _SECTION_TOPICS.get(section, ["Frontend"])}
+            best[ru] = {
+                "ru": ru,
+                "level": level,
+                "topics": _SECTION_TOPICS.get(section, ["Frontend"]),
+            }
     result: list[dict] = []
     for data in best.values():
         data["en"] = translate_en(data["ru"])
