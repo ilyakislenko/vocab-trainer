@@ -130,3 +130,38 @@ async def test_grade_placement_is_retakeable(client: httpx.AsyncClient):
 async def test_grade_placement_invalid_body_returns_422(client: httpx.AsyncClient):
     resp = await client.post("/placement/grade", json={"answers": "nope"})
     assert resp.status_code == 422
+
+
+async def test_retake_placement_preserves_module_progress(client: httpx.AsyncClient):
+    # Complete a module first: read its lesson and attempt its quiz (§7 rule).
+    await client.post("/curriculum/lessons/b1.grammar.articles/read")
+    graded = await client.post(
+        "/curriculum/quiz/grade",
+        json={
+            "module_id": "b1.grammar.articles",
+            "answers": [
+                {"item_id": "b1.grammar.articles.q1", "given": "0"},
+                {"item_id": "b1.grammar.articles.q2", "given": "2"},
+            ],
+        },
+    )
+    assert graded.status_code == 200
+
+    def _articles_module(body: dict[str, object]) -> dict[str, object]:
+        levels = body["levels"]
+        assert isinstance(levels, list)
+        b1 = next(s for s in levels if s["level"] == "B1")
+        return next(m for m in b1["modules"] if m["id"] == "b1.grammar.articles")
+
+    before = _articles_module((await client.get("/curriculum")).json())
+    assert before["status"] == "completed"
+
+    # Retaking placement re-points the profile but must never wipe progress (§9).
+    resp = await client.post("/placement/grade", json={"answers": _answers(list(ALL_CORRECT))})
+    assert resp.status_code == 200
+
+    after_body = (await client.get("/curriculum")).json()
+    assert after_body["placement_level"] == "C1"
+    after = _articles_module(after_body)
+    assert after["status"] == "completed"
+    assert after["quiz_best_score"] == before["quiz_best_score"]
