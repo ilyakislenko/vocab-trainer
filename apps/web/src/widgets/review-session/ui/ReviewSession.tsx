@@ -19,7 +19,11 @@ const DAY_MS = 86_400_000;
 
 function duePhrase(t: (key: string) => string, due: string | null | undefined): string | null {
   if (!due) return null;
-  const days = Math.max(0, Math.ceil((new Date(due).getTime() - Date.now()) / DAY_MS));
+  const ms = new Date(due).getTime() - Date.now();
+  // Only a future due yields a meaningful "returns in" hint. A card in the queue
+  // is due now (ms <= 0), so it has no honest hint until it has been rated.
+  if (ms <= 0) return null;
+  const days = Math.ceil(ms / DAY_MS);
   if (days <= 1) return t("review.returnsTomorrow");
   return t("review.returnsIn").replace("{n}", String(days));
 }
@@ -150,12 +154,7 @@ export function ReviewSession({ deckId }: { deckId: number }) {
 
         <CardFace card={card} revealed={revealed} />
         {revealed ? (
-          <>
-            {duePhrase(t, card.due) && (
-              <p className="text-sm text-muted-foreground">{duePhrase(t, card.due)}</p>
-            )}
-            <RatingBar onRate={rate} disabled={record.isPending} />
-          </>
+          <RatingBar onRate={rate} disabled={record.isPending} />
         ) : (
           <Button onClick={() => setRevealed(true)} className="rounded-full px-8">
             {t("review.showAnswer")}
