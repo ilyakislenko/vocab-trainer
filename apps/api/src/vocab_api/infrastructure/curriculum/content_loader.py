@@ -401,8 +401,48 @@ class ContentBundle:
                 options=tuple(options_raw),
                 answer_index=answer_index,
                 answers=None,
+                tokens=None,
                 llm_gradable=False,
             )
+
+        if item_type is QuizItemType.LISTENING:
+            options_raw = raw.get("options")
+            if options_raw is not None:
+                if not isinstance(options_raw, list) or not all(
+                    isinstance(o, str) and o.strip() for o in options_raw
+                ):
+                    raise ContentValidationError(
+                        f"{context}: listening mcq needs non-empty string 'options'"
+                    )
+                answer_index = raw.get("answer_index")
+                if not isinstance(answer_index, int) or not 0 <= answer_index < len(options_raw):
+                    raise ContentValidationError(
+                        f"{context}: listening mcq needs a valid 'answer_index'"
+                    )
+                return QuizItem(
+                    id=item_id,
+                    module_id=module_id,
+                    type=item_type,
+                    skill=skill,
+                    prompt=prompt,
+                    explanation=explanation,
+                    options=tuple(options_raw),
+                    answer_index=answer_index,
+                    answers=None,
+                    tokens=None,
+                    llm_gradable=False,
+                )
+
+        tokens_raw = raw.get("tokens")
+        if item_type is QuizItemType.WORD_ORDER:
+            if (
+                not isinstance(tokens_raw, list)
+                or not tokens_raw
+                or not all(isinstance(t, str) and t.strip() for t in tokens_raw)
+            ):
+                raise ContentValidationError(
+                    f"{context}: word_order needs non-empty string 'tokens'"
+                )
 
         answers_raw = raw.get("answers")
         if (
@@ -414,6 +454,7 @@ class ContentBundle:
                 f"{context}: {item_type.value} needs non-empty string 'answers'"
             )
         llm_gradable = raw.get("llm_gradable")
+        tokens = tuple(tokens_raw) if isinstance(tokens_raw, list) else None
         return QuizItem(
             id=item_id,
             module_id=module_id,
@@ -424,6 +465,7 @@ class ContentBundle:
             options=None,
             answer_index=None,
             answers=tuple(answers_raw),
+            tokens=tokens,
             llm_gradable=llm_gradable is True and item_type is QuizItemType.ERROR_CORRECTION,
         )
 

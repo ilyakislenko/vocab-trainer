@@ -664,6 +664,8 @@ export interface components {
             prompt: string;
             /** Options */
             options?: string[] | null;
+            /** Tokens */
+            tokens?: string[] | null;
         };
         /** CurriculumQuizItemResultOut */
         CurriculumQuizItemResultOut: {
@@ -675,6 +677,11 @@ export interface components {
             correct: boolean;
             /** Explanation */
             explanation: string;
+            /**
+             * Prompt
+             * @default
+             */
+            prompt: string;
             /**
              * Needs Llm
              * @default false

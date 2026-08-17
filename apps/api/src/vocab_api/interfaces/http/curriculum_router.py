@@ -76,8 +76,7 @@ async def module_detail(
         status=progress.status.value,
         objectives=list(module.objectives),
         references=[
-            CurriculumReferenceOut(book=ref.book, locator=ref.locator)
-            for ref in module.references
+            CurriculumReferenceOut(book=ref.book, locator=ref.locator) for ref in module.references
         ],
         has_quiz=c.get_module.has_quiz(module_id),
         estimated_minutes=module.estimated_minutes,
@@ -101,8 +100,7 @@ async def lesson(module_id: str, c: Container = Depends(get_container)) -> Curri
             objectives=list(lesson.objectives),
             skills=list(lesson.skills),
             references=[
-                CurriculumReferenceOut(book=ref[0], locator=ref[1])
-                for ref in lesson.references
+                CurriculumReferenceOut(book=ref[0], locator=ref[1]) for ref in lesson.references
             ],
             vocab=list(lesson.vocab),
             interview_topic=lesson.interview_topic,
@@ -110,9 +108,7 @@ async def lesson(module_id: str, c: Container = Depends(get_container)) -> Curri
     )
 
 
-@router.post(
-    "/lessons/{module_id}/read", response_model=CurriculumModuleProgressOut
-)
+@router.post("/lessons/{module_id}/read", response_model=CurriculumModuleProgressOut)
 async def mark_lesson_read(
     module_id: str, c: Container = Depends(get_container)
 ) -> CurriculumModuleProgressOut:
@@ -127,9 +123,7 @@ async def mark_lesson_read(
 
 
 @router.get("/modules/{module_id}/quiz", response_model=CurriculumQuizOut)
-async def module_quiz(
-    module_id: str, c: Container = Depends(get_container)
-) -> CurriculumQuizOut:
+async def module_quiz(module_id: str, c: Container = Depends(get_container)) -> CurriculumQuizOut:
     quiz, progress = await c.get_module_quiz.execute(module_id)
     return CurriculumQuizOut(
         module_id=quiz.module_id,
@@ -141,6 +135,7 @@ async def module_quiz(
                 skill=item.skill,
                 prompt=item.prompt,
                 options=list(item.options) if item.options is not None else None,
+                tokens=list(item.tokens) if item.tokens is not None else None,
             )
             for item in quiz.items
         ],
@@ -167,6 +162,7 @@ async def grade_quiz(
                 skill=item.skill,
                 correct=item.correct,
                 explanation=item.explanation,
+                prompt=item.prompt,
                 needs_llm=item.needs_llm,
             )
             for item in outcome.items

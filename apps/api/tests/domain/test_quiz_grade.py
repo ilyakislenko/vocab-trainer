@@ -90,3 +90,46 @@ def test_error_correction_hit_does_not_flag_llm():
     result = grade(item, "I go to work by train every day")
     assert result.correct is True
     assert result.needs_llm is False
+
+
+def test_word_order_grades_correct_ordering():
+    item = _item(QuizItemType.WORD_ORDER, answers=("He goes to work by bus",))
+    assert grade(item, "He goes to work by bus").correct is True
+
+
+def test_word_order_marks_wrong_order_incorrect():
+    item = _item(QuizItemType.WORD_ORDER, answers=("He goes to work by bus",))
+    assert grade(item, "By bus he goes to work").correct is False
+
+
+def test_word_order_ignores_extra_whitespace():
+    item = _item(QuizItemType.WORD_ORDER, answers=("He goes to work by bus",))
+    assert grade(item, "He   goes to work by bus").correct is True
+    assert grade(item, " He goes to work by bus ").correct is True
+
+
+def test_word_order_accepts_any_accepted_answer():
+    item = _item(QuizItemType.WORD_ORDER, answers=("He works from home", "He works at home"))
+    assert grade(item, "He works at home").correct is True
+
+
+def test_listening_dictation_is_cloze_style():
+    item = _item(QuizItemType.LISTENING, answers=("by the window",))
+    assert grade(item, "By the window").correct is True
+    assert grade(item, "  by the window  ").correct is True
+    assert grade(item, "near the window").correct is False
+
+
+def test_listening_mcq_grades_selected_index():
+    item = _item(
+        QuizItemType.LISTENING,
+        options=("at the station", "by the window", "in the garden"),
+        answer_index=1,
+    )
+    assert grade(item, "1").correct is True
+    assert grade(item, "0").correct is False
+
+
+def test_listening_mcq_without_answer_index_never_grades_correct():
+    item = _item(QuizItemType.LISTENING, options=("a", "b", "c"))
+    assert grade(item, "1").correct is False

@@ -205,6 +205,7 @@ class CurriculumQuizItemOut(BaseModel):
     skill: str
     prompt: str
     options: list[str] | None = None
+    tokens: list[str] | None = None
 
 
 class CurriculumQuizOut(BaseModel):
@@ -228,6 +229,7 @@ class CurriculumQuizItemResultOut(BaseModel):
     skill: str
     correct: bool
     explanation: str
+    prompt: str = ""
     needs_llm: bool = False
 
 

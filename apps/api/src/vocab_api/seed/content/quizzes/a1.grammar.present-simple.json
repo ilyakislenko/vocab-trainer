@@ -61,6 +61,32 @@
       "options": ["Do", "Does", "Is", "Have"],
       "answer_index": 1,
       "explanation": "'Your brother' = he, so the auxiliary is 'Does'."
+    },
+    {
+      "id": "a1.grammar.present-simple.q8",
+      "type": "word_order",
+      "skill": "pres.he-she-it",
+      "prompt": "Arrange the words into a correct sentence.",
+      "tokens": ["She", "watches", "TV", "every", "evening"],
+      "answers": ["She watches TV every evening"],
+      "explanation": "Word order in a statement: subject + verb (+s) + object + time."
+    },
+    {
+      "id": "a1.grammar.present-simple.q9",
+      "type": "listening",
+      "skill": "pres.he-she-it",
+      "prompt": "He walks to work every morning.",
+      "answers": ["he walks to work every morning"],
+      "explanation": "You heard: He walks to work every morning. The third person adds -s."
+    },
+    {
+      "id": "a1.grammar.present-simple.q10",
+      "type": "listening",
+      "skill": "pres.negation",
+      "prompt": "She doesn't like coffee.",
+      "options": ["She doesn't like coffee.", "She didn't like coffee.", "She doesn't likes coffee."],
+      "answer_index": 0,
+      "explanation": "You heard: She doesn't like coffee. The verb stays in the base form."
     }
   ]
 }

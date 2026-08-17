@@ -34,6 +34,7 @@ class QuizItemResult:
     skill: str
     correct: bool
     explanation: str
+    prompt: str = ""
     needs_llm: bool = False
 
 
@@ -49,9 +50,7 @@ class QuizGradeOutcome:
 class GetModuleQuiz:
     """The quiz for a module; answers are stripped at the HTTP boundary."""
 
-    def __init__(
-        self, content: CurriculumContent, progress: ModuleProgressRepository
-    ) -> None:
+    def __init__(self, content: CurriculumContent, progress: ModuleProgressRepository) -> None:
         self._content = content
         self._progress = progress
 
@@ -82,9 +81,7 @@ class GradeQuiz:
         self._scheduler = scheduler
         self._profile = profile
 
-    async def execute(
-        self, module_id: str, answers: list[tuple[str, str]]
-    ) -> QuizGradeOutcome:
+    async def execute(self, module_id: str, answers: list[tuple[str, str]]) -> QuizGradeOutcome:
         if not self._content.has_quiz(module_id) or not self._content.is_available(module_id):
             raise CurriculumQuizNotFound(module_id)
         quiz = self._content.quiz(module_id)
@@ -110,6 +107,7 @@ class GradeQuiz:
                     skill=item.skill,
                     correct=result.correct,
                     explanation=item.explanation,
+                    prompt=item.prompt,
                     needs_llm=result.needs_llm,
                 )
             )

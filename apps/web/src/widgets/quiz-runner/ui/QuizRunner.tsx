@@ -5,6 +5,7 @@ import { useTakeQuiz } from "@/features/take-quiz";
 import type { CurriculumQuizGrade, CurriculumQuizItem } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
+import { SpeakButton } from "@/shared/ui/speak-button";
 
 type Answers = Record<string, string>;
 
@@ -100,6 +101,12 @@ function QuizItemCard({
   if (item.type === "mcq" && item.options) {
     return <McqItem item={item} number={number} value={value} onSelect={onSelect} />;
   }
+  if (item.type === "word_order") {
+    return <WordOrderItem item={item} number={number} value={value} onSelect={onSelect} />;
+  }
+  if (item.type === "listening") {
+    return <ListeningItem item={item} number={number} value={value} onSelect={onSelect} />;
+  }
   return (
     <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
       <ItemHeader item={item} number={number} />
@@ -126,6 +133,154 @@ function QuizItemCard({
           className="rounded-2xl border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         />
       )}
+    </div>
+  );
+}
+
+function WordOrderItem({
+  item,
+  number,
+  value,
+  onSelect,
+}: {
+  item: CurriculumQuizItem;
+  number: number;
+  value: string;
+  onSelect: (itemId: string, value: string) => void;
+}) {
+  const { t } = useI18n();
+  const tokens = item.tokens ?? [];
+  const placed = value === "" ? [] : value.split(" ");
+  const remaining = tokens.filter((token) => !placed.includes(token));
+
+  const place = (token: string) => {
+    onSelect(item.id, [...placed, token].join(" "));
+  };
+  const unplace = (token: string) => {
+    onSelect(item.id, placed.filter((t) => t !== token).join(" "));
+  };
+
+  return (
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <ItemHeader item={item} number={number} />
+      <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">
+        {t("quiz.type.word_order")}
+      </p>
+      {placed.length > 0 ? (
+        <div className="flex flex-wrap gap-2 rounded-2xl border border-primary/40 bg-tint-lavender p-3">
+          {placed.map((token) => (
+            <button
+              key={token}
+              type="button"
+              onClick={() => unplace(token)}
+              className="rounded-xl bg-background px-3 py-1.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:bg-muted"
+            >
+              {token}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <p className="rounded-2xl border border-dashed border-border bg-background p-3 text-sm text-muted-foreground">
+          {t("quiz.wordOrderHint")}
+        </p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {remaining.map((token) => (
+          <button
+            key={token}
+            type="button"
+            onClick={() => place(token)}
+            className="rounded-xl border border-border bg-background px-3 py-1.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+          >
+            {token}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ListeningItem({
+  item,
+  number,
+  value,
+  onSelect,
+}: {
+  item: CurriculumQuizItem;
+  number: number;
+  value: string;
+  onSelect: (itemId: string, value: string) => void;
+}) {
+  const { t } = useI18n();
+
+  if (item.options) {
+    return (
+      <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-tint-blue px-3 py-1 text-xs font-extrabold text-secondary-foreground">
+            {t("quiz.question").replace("{n}", String(number))}
+          </span>
+          <SpeakButton
+            text={item.prompt}
+            label={t("quiz.listeningPlay")}
+            ariaLabel={t("quiz.listeningPlay")}
+          />
+        </div>
+        <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">
+          {t("quiz.type.listening")}
+        </p>
+        <div className="flex flex-col gap-2">
+          {item.options.map((option, index) => {
+            const selected = value === String(index);
+            return (
+              <button
+                key={option}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => onSelect(item.id, String(index))}
+                className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm transition-colors ${
+                  selected
+                    ? "border-primary bg-tint-lavender text-secondary-foreground"
+                    : "border-border bg-background text-foreground hover:bg-muted"
+                }`}
+              >
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-black text-muted-foreground">
+                  {index + 1}
+                </span>
+                <span>{option}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-tint-blue px-3 py-1 text-xs font-extrabold text-secondary-foreground">
+          {t("quiz.question").replace("{n}", String(number))}
+        </span>
+        <SpeakButton
+          text={item.prompt}
+          label={t("quiz.listeningPlay")}
+          ariaLabel={t("quiz.listeningPlay")}
+        />
+      </div>
+      <label
+        htmlFor={`quiz-listening-${item.id}`}
+        className="text-sm font-black uppercase tracking-wider text-muted-foreground"
+      >
+        {t("quiz.listeningType")}
+      </label>
+      <input
+        id={`quiz-listening-${item.id}`}
+        value={value}
+        onChange={(e) => onSelect(item.id, e.target.value)}
+        className="rounded-2xl border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+        autoComplete="off"
+      />
     </div>
   );
 }
@@ -258,6 +413,7 @@ function QuizResults({ result, onBack }: { result: CurriculumQuizGrade; onBack: 
                 {t("quiz.question").replace("{n}", String(index + 1))}
               </span>
             </div>
+            {item.prompt && <p className="text-sm font-medium text-foreground">{item.prompt}</p>}
             <p className="text-sm text-muted-foreground">
               <span className="font-bold text-foreground">
                 {item.correct ? t("quiz.right") : t("quiz.wrong")}

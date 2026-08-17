@@ -1652,6 +1652,20 @@
               }
             ],
             "title": "Options"
+          },
+          "tokens": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tokens"
           }
         },
         "type": "object",
@@ -1676,6 +1690,11 @@
           "explanation": {
             "type": "string",
             "title": "Explanation"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": ""
           },
           "needs_llm": {
             "type": "boolean",

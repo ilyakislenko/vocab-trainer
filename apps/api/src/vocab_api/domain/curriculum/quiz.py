@@ -21,6 +21,8 @@ class QuizItemType(StrEnum):
     CLOZE = "cloze"
     TRANSFORM = "transform"
     ERROR_CORRECTION = "error_correction"
+    WORD_ORDER = "word_order"
+    LISTENING = "listening"
 
 
 class GradableItem(Protocol):
@@ -53,6 +55,7 @@ class QuizItem:
     options: tuple[str, ...] | None = None
     answer_index: int | None = None
     answers: tuple[str, ...] | None = None
+    tokens: tuple[str, ...] | None = None
     llm_gradable: bool = False
 
 
@@ -117,6 +120,31 @@ def grade(item: GradableItem, given: str) -> GradeResult:
             item_id=item.id,
             skill=item.skill,
             correct=any(norm == _transform_value(a) for a in accepted),
+        )
+
+    if item.type is QuizItemType.WORD_ORDER:
+        # `given` is the learner's space-joined ordering; compare through the
+        # same normalise-and-compare path so stray whitespace around tokens
+        # does not decide the verdict.
+        norm = _transform_value(given)
+        return GradeResult(
+            item_id=item.id,
+            skill=item.skill,
+            correct=any(norm == _transform_value(a) for a in accepted),
+        )
+
+    if item.type is QuizItemType.LISTENING:
+        if item.options is not None:
+            if item.answer_index is None:
+                return GradeResult(item_id=item.id, skill=item.skill, correct=False)
+            correct = given.strip() == str(item.answer_index)
+            return GradeResult(item_id=item.id, skill=item.skill, correct=correct)
+        # Dictation: type what you hear, cloze-style comparison.
+        norm = _cloze_value(given)
+        return GradeResult(
+            item_id=item.id,
+            skill=item.skill,
+            correct=any(norm == _cloze_value(a) for a in accepted),
         )
 
     # error_correction

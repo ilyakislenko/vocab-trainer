@@ -115,4 +115,108 @@ describe("QuizRunner", () => {
     expect(screen.getByText(/Musical instruments/)).toBeInTheDocument();
     expect(screen.getByText(/Модуль завершён|Module completed/)).toBeInTheDocument();
   });
+
+  it("word_order builds the sentence by tapping tokens and submits the ordering", async () => {
+    const quiz = {
+      module_id: "a1.grammar.present-simple",
+      status: "not_started",
+      items: [
+        {
+          id: "q1",
+          type: "word_order",
+          skill: "pres.he-she-it",
+          prompt: "Arrange the words into a correct sentence.",
+          options: null,
+          tokens: ["She", "watches", "TV", "every", "evening"],
+        },
+      ],
+    };
+    let graded: unknown;
+    server.use(
+      http.get("/api/curriculum/modules/:moduleId/quiz", () => HttpResponse.json(quiz)),
+      http.post("/api/curriculum/quiz/grade", async ({ request }) => {
+        graded = await request.json();
+        return HttpResponse.json({
+          module_id: "a1.grammar.present-simple",
+          score: 100,
+          status: "completed",
+          completed: true,
+          next_module_id: null,
+          items: [
+            {
+              item_id: "q1",
+              skill: "pres.he-she-it",
+              correct: true,
+              explanation: "Correct word order.",
+              prompt: "Arrange the words into a correct sentence.",
+              needs_llm: false,
+            },
+          ],
+        });
+      }),
+    );
+    renderQuiz();
+
+    await screen.findByText("Arrange the words into a correct sentence.");
+    for (const token of ["She", "watches", "TV", "every", "evening"]) {
+      await userEvent.click(screen.getByRole("button", { name: token }));
+    }
+
+    await userEvent.click(screen.getByRole("button", { name: /check answers|проверить/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/Score: 100%|Результат: 100%/)).toBeInTheDocument(),
+    );
+
+    const answers = (graded as { answers: { item_id: string; given: string }[] }).answers;
+    expect(answers[0].given).toBe("She watches TV every evening");
+  });
+
+  it("listening hides the prompt until results and plays audio", async () => {
+    const quiz = {
+      module_id: "a1.grammar.present-simple",
+      status: "not_started",
+      items: [
+        {
+          id: "q9",
+          type: "listening",
+          skill: "pres.he-she-it",
+          prompt: "He walks to work every morning.",
+          options: null,
+        },
+      ],
+    };
+    server.use(
+      http.get("/api/curriculum/modules/:moduleId/quiz", () => HttpResponse.json(quiz)),
+      http.post("/api/curriculum/quiz/grade", () =>
+        HttpResponse.json({
+          module_id: "a1.grammar.present-simple",
+          score: 0,
+          status: "completed",
+          completed: true,
+          next_module_id: null,
+          items: [
+            {
+              item_id: "q9",
+              skill: "pres.he-she-it",
+              correct: false,
+              explanation: "You heard: He walks to work every morning.",
+              prompt: "He walks to work every morning.",
+              needs_llm: false,
+            },
+          ],
+        }),
+      ),
+    );
+    renderQuiz();
+
+    await screen.findByRole("button", { name: /play audio|воспроизвести/i });
+    expect(screen.queryByText("He walks to work every morning.")).not.toBeInTheDocument();
+
+    await userEvent.type(screen.getByRole("textbox"), "wrong guess");
+    await userEvent.click(screen.getByRole("button", { name: /check answers|проверить/i }));
+
+    await waitFor(() =>
+      expect(screen.getByText("He walks to work every morning.")).toBeInTheDocument(),
+    );
+  });
 });

@@ -1,7 +1,158 @@
+import json
+
+import pytest
+
 from vocab_api.domain.curriculum.level import Level
 from vocab_api.domain.curriculum.map import ModuleAvailability
+from vocab_api.domain.curriculum.quiz import QuizItemType
 from vocab_api.domain.curriculum.track import Track
+from vocab_api.domain.shared.errors import ContentValidationError
 from vocab_api.infrastructure.curriculum.content_loader import ContentBundle
+
+
+def _make_bundle(quiz_items: list[dict]) -> ContentBundle:
+    """A minimal bundle with one available module and a valid placement bank."""
+    manifest = {"levels": [{"level": "A1", "modules": ["a1.grammar.present-simple"]}]}
+    lesson = (
+        "---\ntitle: Present Simple\nobjectives:\n  - objective\n"
+        "skills:\n  - pres.he-she-it\nestimated_minutes: 15\n---\n# Lesson"
+    )
+    quiz = {"module_id": "a1.grammar.present-simple", "items": quiz_items}
+    placement_items = []
+    for level in ("A2", "B1", "B2", "C1"):
+        for i in range(12):
+            placement_items.append(
+                {
+                    "id": f"{level.lower()}.{i}",
+                    "level": level,
+                    "type": "cloze",
+                    "skill": "placement.skill",
+                    "prompt": f"Prompt {level} {i}",
+                    "answers": ["answer"],
+                    "explanation": "Explanation",
+                }
+            )
+    return ContentBundle(
+        manifest,
+        {"a1.grammar.present-simple": lesson},
+        {"a1.grammar.present-simple": json.dumps(quiz)},
+        json.dumps({"items": placement_items}),
+    )
+
+
+def test_word_order_item_requires_non_empty_tokens():
+    with pytest.raises(ContentValidationError, match="word_order needs non-empty string 'tokens'"):
+        _make_bundle(
+            [
+                {
+                    "id": "q1",
+                    "type": "word_order",
+                    "skill": "pres.he-she-it",
+                    "prompt": "Arrange the words.",
+                    "answers": ["She watches TV"],
+                    "explanation": "Explanation",
+                }
+            ]
+        )
+
+
+def test_word_order_item_requires_answers():
+    with pytest.raises(ContentValidationError, match="word_order needs non-empty string 'answers'"):
+        _make_bundle(
+            [
+                {
+                    "id": "q1",
+                    "type": "word_order",
+                    "skill": "pres.he-she-it",
+                    "prompt": "Arrange the words.",
+                    "tokens": ["She", "watches", "TV"],
+                    "explanation": "Explanation",
+                }
+            ]
+        )
+
+
+def test_word_order_item_loads_with_tokens():
+    bundle = _make_bundle(
+        [
+            {
+                "id": "q1",
+                "type": "word_order",
+                "skill": "pres.he-she-it",
+                "prompt": "Arrange the words.",
+                "tokens": ["She", "watches", "TV", "every", "evening"],
+                "answers": ["She watches TV every evening"],
+                "explanation": "Explanation",
+            }
+        ]
+    )
+    item = bundle.quiz("a1.grammar.present-simple").items[0]
+    assert item.type is QuizItemType.WORD_ORDER
+    assert item.tokens == ("She", "watches", "TV", "every", "evening")
+    assert item.answers == ("She watches TV every evening",)
+    assert item.options is None
+
+
+def test_listening_dictation_requires_answers():
+    with pytest.raises(ContentValidationError, match="listening needs non-empty string 'answers'"):
+        _make_bundle(
+            [
+                {
+                    "id": "q1",
+                    "type": "listening",
+                    "skill": "pres.he-she-it",
+                    "prompt": "She watches TV every evening.",
+                    "explanation": "Explanation",
+                }
+            ]
+        )
+
+
+def test_listening_mcq_requires_answer_index():
+    with pytest.raises(ContentValidationError, match="listening mcq needs a valid 'answer_index'"):
+        _make_bundle(
+            [
+                {
+                    "id": "q1",
+                    "type": "listening",
+                    "skill": "pres.he-she-it",
+                    "prompt": "She watches TV every evening.",
+                    "options": ["She watches TV.", "He watches TV."],
+                    "explanation": "Explanation",
+                }
+            ]
+        )
+
+
+def test_listening_both_sub_modes_load():
+    bundle = _make_bundle(
+        [
+            {
+                "id": "q1",
+                "type": "listening",
+                "skill": "pres.he-she-it",
+                "prompt": "She watches TV every evening.",
+                "answers": ["she watches tv every evening"],
+                "explanation": "Explanation",
+            },
+            {
+                "id": "q2",
+                "type": "listening",
+                "skill": "pres.he-she-it",
+                "prompt": "She watches TV every evening.",
+                "options": ["She watches TV.", "He watches TV."],
+                "answer_index": 0,
+                "explanation": "Explanation",
+            },
+        ]
+    )
+    dictation, choice = bundle.quiz("a1.grammar.present-simple").items
+    assert dictation.type is QuizItemType.LISTENING
+    assert dictation.answers == ("she watches tv every evening",)
+    assert dictation.options is None
+    assert choice.options == ("She watches TV.", "He watches TV.")
+    assert choice.answer_index == 0
+    assert choice.answers is None
 
 
 def test_bundle_loads_all_six_levels_in_order():

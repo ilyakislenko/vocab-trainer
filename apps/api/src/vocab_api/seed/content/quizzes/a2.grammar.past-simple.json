@@ -60,6 +60,15 @@
       "prompt": "Write the past form of 'take': They ___ the train to Madrid.",
       "answers": ["took"],
       "explanation": "'Take' is irregular: take → took."
+    },
+    {
+      "id": "a2.grammar.past-simple.q8",
+      "type": "word_order",
+      "skill": "past.regular",
+      "prompt": "Arrange the words into a correct sentence.",
+      "tokens": ["They", "visited", "their", "grandparents", "last", "summer"],
+      "answers": ["They visited their grandparents last summer"],
+      "explanation": "Past-simple statement: subject + past verb + object + time phrase."
     }
   ]
 }
