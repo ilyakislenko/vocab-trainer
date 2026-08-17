@@ -75,3 +75,29 @@ Over the LAN via RDP, or enable the optional OpenSSH Server Windows feature and
 ```
 python -m pytest tests -q
 ```
+## Deploy with Docker (recommended — keeps the host clean)
+
+Everything (CUDA torch, the wav2vec2 model, espeak-ng) lives in one container, so
+nothing is installed on the Windows host directly. Remove the container and no
+trace is left.
+
+**Prerequisites on the rtx box (one-time):**
+- Docker Desktop with the **WSL2 backend**.
+- A current **NVIDIA driver** with WSL CUDA support + the **NVIDIA Container
+  Toolkit** (for GPU passthrough). Without a GPU you can still run CPU-only.
+
+**Run:**
+```bash
+cd apps/rtx_service
+docker compose up -d --build      # first build pulls the CUDA base + downloads the model
+docker compose logs -f gop        # watch it load the model, then "Application startup complete"
+curl http://localhost:8900/healthz
+```
+- The wav2vec2 model downloads once into the `hf-models` volume and is cached.
+- **Open inbound TCP 8900** for the private/LAN profile in Windows Firewall, or the
+  main API on `192.168.1.100` can't reach `http://192.168.1.84:8900`.
+- **CPU-only (no GPU):** set `RTX_GOP_DEVICE: cpu` and delete the `deploy:` GPU block
+  in `docker-compose.yml`. Slower; fine for a smoke test.
+
+**Point the main API at it:** set `VOCAB_PRONUNCIATION_PROVIDER=rtx` (the rtx URL
+already defaults to `http://192.168.1.84:8900`).

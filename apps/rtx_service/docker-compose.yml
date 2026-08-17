@@ -1,0 +1,30 @@
+# One command to run the GOP service on the rtx box: `docker compose up -d --build`.
+# Nothing installs on the Windows host itself — it all lives in the container.
+services:
+  gop:
+    build: .
+    image: elingo-rtx-gop
+    container_name: elingo-rtx-gop
+    ports:
+      # Published on the host; the main API reaches it at http://192.168.1.84:8900.
+      # Open inbound TCP 8900 for the private/LAN profile in Windows Firewall.
+      - "8900:8900"
+    environment:
+      RTX_GOP_DEVICE: cuda   # set to "cpu" to run without a GPU (slow; for testing)
+      HF_HOME: /models
+    volumes:
+      - hf-models:/models    # cache the wav2vec2 model across restarts
+    # GPU passthrough. Requires Docker Desktop (WSL2 backend) + a current NVIDIA
+    # driver with WSL CUDA + the NVIDIA Container Toolkit. Remove this whole block
+    # to run CPU-only (also set RTX_GOP_DEVICE=cpu above).
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+volumes:
+  hf-models:
