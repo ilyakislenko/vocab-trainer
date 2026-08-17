@@ -142,6 +142,7 @@ class CurriculumLevelOut(BaseModel):
 class CurriculumMapOut(BaseModel):
     levels: list[CurriculumLevelOut]
     recommended_module_id: str | None = None
+    placement_level: str | None = None
 
 
 class CurriculumReferenceOut(BaseModel):
@@ -245,3 +246,32 @@ class CurriculumSkillReviewOut(CurriculumSkillItemOut):
     options: list[str] | None = None
     answers: list[str] = []
     explanation: str
+
+
+class PlacementItemOut(BaseModel):
+    """A diagnostic item as served to the learner — answers are never sent."""
+
+    id: str
+    level: str
+    skill: str
+    type: str
+    prompt: str
+    options: list[str] | None = None
+
+
+class PlacementOut(BaseModel):
+    items: list[PlacementItemOut]
+
+
+class PlacementAnswerIn(BaseModel):
+    item_id: str
+    given: str
+
+
+class PlacementGradeIn(BaseModel):
+    answers: list[PlacementAnswerIn]
+
+
+class PlacementGradeOut(BaseModel):
+    level: str
+    current_module_id: str | None

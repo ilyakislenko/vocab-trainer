@@ -36,6 +36,7 @@ def _module_track(module_id: str) -> str:
 async def curriculum_map(c: Container = Depends(get_container)) -> CurriculumMapOut:
     curriculum = await c.get_curriculum_map.execute()
     recommended = await c.get_recommended_module.execute()
+    profile = await c.learner_profile.get()
     return CurriculumMapOut(
         levels=[
             CurriculumLevelOut(
@@ -56,6 +57,9 @@ async def curriculum_map(c: Container = Depends(get_container)) -> CurriculumMap
             for section in curriculum.levels
         ],
         recommended_module_id=recommended,
+        placement_level=(
+            profile.placement_level.value if profile.placement_level is not None else None
+        ),
     )
 
 

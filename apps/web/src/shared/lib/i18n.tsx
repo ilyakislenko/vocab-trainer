@@ -326,6 +326,34 @@ const dict: Translations = {
   "learn.references": { en: "References", ru: "Источники" },
   "learn.estMinutes": { en: "{n} min read", ru: "{n} мин чтения" },
   "learn.skillReviews": { en: "Skill reviews", ru: "Повторение навыков" },
+  "learn.takePlacement": { en: "Take placement", ru: "Тест уровня" },
+
+  // Placement (Phase 3)
+  "placement.pageTitle": { en: "Placement test", ru: "Тест уровня" },
+  "placement.pageHint": {
+    en: "Answer each question — your level will be estimated at the end.",
+    ru: "Ответь на вопросы — в конце мы определим твой уровень.",
+  },
+  "placement.title": { en: "Placement test", ru: "Тест уровня" },
+  "placement.hint": {
+    en: "Answer honestly — there is no pass or fail, only your starting point.",
+    ru: "Отвечай честно — здесь нет «провала», только твоя стартовая точка.",
+  },
+  "placement.level": { en: "Level {level}", ru: "Уровень {level}" },
+  "placement.type.mcq": { en: "Choose one", ru: "Выбери один вариант" },
+  "placement.type.cloze": { en: "Fill in the gap", ru: "Заполни пропуск" },
+  "placement.type.transform": { en: "Rewrite the sentence", ru: "Перепиши предложение" },
+  "placement.type.error_correction": { en: "Fix the mistake", ru: "Исправь ошибку" },
+  "placement.back": { en: "← Back", ru: "← Назад" },
+  "placement.next": { en: "Next →", ru: "Далее →" },
+  "placement.submit": { en: "Finish", ru: "Завершить" },
+  "placement.doneTitle": { en: "Placement complete", ru: "Тест завершён" },
+  "placement.yourLevel": { en: "Your level", ru: "Твой уровень" },
+  "placement.doneHint": {
+    en: "This is where your curriculum starts — you can always jump to any module from the map.",
+    ru: "С этого уровня начинается твой учебный план — открыть любой модуль можно с карты.",
+  },
+  "placement.startLearning": { en: "Start learning →", ru: "Начать учиться →" },
 
   // Quiz
   "quiz.title": { en: "Quiz", ru: "Тест" },

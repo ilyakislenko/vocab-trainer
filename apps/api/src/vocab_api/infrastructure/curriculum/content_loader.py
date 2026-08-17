@@ -19,6 +19,7 @@ from vocab_api.domain.curriculum.lesson import Lesson
 from vocab_api.domain.curriculum.level import Level
 from vocab_api.domain.curriculum.map import LadderEntry, LevelOverview, ModuleAvailability
 from vocab_api.domain.curriculum.module import Module, Reference
+from vocab_api.domain.curriculum.placement import TESTED_LEVELS, Placement, PlacementItem
 from vocab_api.domain.curriculum.quiz import Quiz, QuizItem, QuizItemType
 from vocab_api.domain.curriculum.track import Track
 from vocab_api.domain.shared.errors import ContentValidationError
@@ -102,15 +103,18 @@ class ContentBundle:
         manifest: dict[str, object],
         lesson_texts: dict[str, str],
         quiz_texts: dict[str, str],
+        placement_text: str | None = None,
     ) -> None:
         self._manifest = manifest
         self._lesson_texts = lesson_texts
         self._quiz_texts = quiz_texts
+        self._placement_text = placement_text
         self._levels: tuple[LevelOverview[LadderEntry], ...] = ()
         self._modules: dict[str, Module] = {}
         self._lessons: dict[str, Lesson] = {}
         self._quizzes: dict[str, Quiz] = {}
         self._has_quiz: set[str] = set()
+        self._placement: Placement | None = None
         self._validate()
 
     @staticmethod
@@ -133,7 +137,8 @@ class ContentBundle:
                 if name.startswith(".") or not name.endswith(".json"):
                     continue
                 quiz_texts[name[: -len(".json")]] = resource.read_text(encoding="utf-8")
-        return ContentBundle(manifest_raw, lesson_texts, quiz_texts)
+        placement_text = _load_text("placement.json")
+        return ContentBundle(manifest_raw, lesson_texts, quiz_texts, placement_text)
 
     def _validate(self) -> None:
         levels_raw = self._manifest.get("levels")
@@ -220,6 +225,7 @@ class ContentBundle:
         self._load_modules()
         self._load_quizzes()
         self._cross_validate()
+        self._load_placement()
 
     def _load_modules(self) -> None:
         for section in self._levels:
@@ -427,3 +433,104 @@ class ContentBundle:
 
     def has_quiz(self, module_id: str) -> bool:
         return module_id in self._has_quiz
+
+    def placement(self) -> Placement | None:
+        return self._placement
+
+    def _load_placement(self) -> None:
+        if self._placement_text is None:
+            raise ContentValidationError("placement.json is missing")
+        raw = json.loads(self._placement_text)
+        if not isinstance(raw, dict):
+            raise ContentValidationError("placement.json must be a JSON object")
+        items_raw = raw.get("items")
+        if not isinstance(items_raw, list) or not items_raw:
+            raise ContentValidationError("placement.json: 'items' must be a non-empty list")
+        if len(items_raw) < 24:
+            raise ContentValidationError("placement.json: expected at least 24 items")
+
+        seen_levels: set[Level] = set()
+        seen_ids: set[str] = set()
+        items: list[PlacementItem] = []
+        for index, item_raw in enumerate(items_raw):
+            context = f"placement item #{index}"
+            if not isinstance(item_raw, dict):
+                raise ContentValidationError(f"{context}: item must be an object")
+            item_id = _require_str(item_raw, "id", context)
+            if item_id in seen_ids:
+                raise ContentValidationError(f"{context}: duplicate item id {item_id!r}")
+            seen_ids.add(item_id)
+            level_raw = _require_str(item_raw, "level", context)
+            try:
+                level = Level(level_raw)
+            except ValueError as exc:
+                raise ContentValidationError(
+                    f"{context}: invalid level {level_raw!r}"
+                ) from exc
+            if level not in TESTED_LEVELS:
+                raise ContentValidationError(
+                    f"{context}: placement only tests {[lv.value for lv in TESTED_LEVELS]}"
+                )
+            seen_levels.add(level)
+            skill = _require_str(item_raw, "skill", context)
+            type_raw = _require_str(item_raw, "type", context)
+            try:
+                item_type = QuizItemType(type_raw)
+            except ValueError as exc:
+                raise ContentValidationError(
+                    f"{context}: invalid type {type_raw!r}"
+                ) from exc
+            prompt = _require_str(item_raw, "prompt", context)
+            explanation = _require_str(item_raw, "explanation", context)
+
+            options: tuple[str, ...] | None = None
+            answer_index: int | None = None
+            answers: tuple[str, ...] | None = None
+            if item_type is QuizItemType.MCQ:
+                options_raw = item_raw.get("options")
+                if not isinstance(options_raw, list) or not all(
+                    isinstance(o, str) and o.strip() for o in options_raw
+                ):
+                    raise ContentValidationError(
+                        f"{context}: mcq needs non-empty string 'options'"
+                    )
+                raw_index = item_raw.get("answer_index")
+                if not isinstance(raw_index, int) or not 0 <= raw_index < len(options_raw):
+                    raise ContentValidationError(
+                        f"{context}: mcq needs a valid 'answer_index'"
+                    )
+                options = tuple(options_raw)
+                answer_index = raw_index
+            else:
+                answers_raw = item_raw.get("answers")
+                if not isinstance(answers_raw, list) or not answers_raw or not all(
+                    isinstance(a, str) and a.strip() for a in answers_raw
+                ):
+                    raise ContentValidationError(
+                        f"{context}: {item_type.value} needs non-empty string 'answers'"
+                    )
+                answers = tuple(answers_raw)
+
+            items.append(
+                PlacementItem(
+                    id=item_id,
+                    level=level,
+                    skill=skill,
+                    type=item_type,
+                    prompt=prompt,
+                    explanation=explanation,
+                    options=options,
+                    answer_index=answer_index,
+                    answers=answers,
+                )
+            )
+
+        missing = [lv.value for lv in TESTED_LEVELS if lv not in seen_levels]
+        if missing:
+            raise ContentValidationError(
+                f"placement.json: missing items for levels {missing}"
+            )
+        # Deterministic serving order: A2 → B1 → B2 → C1, then by id.
+        order = {level: index for index, level in enumerate(TESTED_LEVELS)}
+        items.sort(key=lambda i: (order[i.level], i.id))
+        self._placement = Placement(items=tuple(items))

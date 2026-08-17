@@ -396,6 +396,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/placement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Placement */
+        get: operations["placement_placement_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/placement/grade": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Grade Placement */
+        post: operations["grade_placement_placement_grade_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -463,6 +497,8 @@ export interface components {
             levels: components["schemas"]["CurriculumLevelOut"][];
             /** Recommended Module Id */
             recommended_module_id?: string | null;
+            /** Placement Level */
+            placement_level?: string | null;
         };
         /** CurriculumModuleDetailOut */
         CurriculumModuleDetailOut: {
@@ -755,6 +791,48 @@ export interface components {
             question: string;
             /** Question Id */
             question_id?: number | null;
+        };
+        /** PlacementAnswerIn */
+        PlacementAnswerIn: {
+            /** Item Id */
+            item_id: string;
+            /** Given */
+            given: string;
+        };
+        /** PlacementGradeIn */
+        PlacementGradeIn: {
+            /** Answers */
+            answers: components["schemas"]["PlacementAnswerIn"][];
+        };
+        /** PlacementGradeOut */
+        PlacementGradeOut: {
+            /** Level */
+            level: string;
+            /** Current Module Id */
+            current_module_id: string | null;
+        };
+        /**
+         * PlacementItemOut
+         * @description A diagnostic item as served to the learner — answers are never sent.
+         */
+        PlacementItemOut: {
+            /** Id */
+            id: string;
+            /** Level */
+            level: string;
+            /** Skill */
+            skill: string;
+            /** Type */
+            type: string;
+            /** Prompt */
+            prompt: string;
+            /** Options */
+            options?: string[] | null;
+        };
+        /** PlacementOut */
+        PlacementOut: {
+            /** Items */
+            items: components["schemas"]["PlacementItemOut"][];
         };
         /** ReviewIn */
         ReviewIn: {
@@ -1598,6 +1676,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CurriculumSkillItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    placement_placement_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlacementOut"];
+                };
+            };
+        };
+    };
+    grade_placement_placement_grade_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlacementGradeIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlacementGradeOut"];
                 };
             };
             /** @description Validation Error */

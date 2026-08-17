@@ -8,6 +8,7 @@ from vocab_api.config.settings import Settings
 from vocab_api.interfaces.http import (
     curriculum_router,
     decks_router,
+    placement_router,
     practice_router,
     review_router,
     session_router,
@@ -38,6 +39,7 @@ def create_app(container: Container | None = None) -> FastAPI:
     app.include_router(practice_router.router)
     app.include_router(curriculum_router.router)
     app.include_router(session_router.router)
+    app.include_router(placement_router.router)
     return app
 
 

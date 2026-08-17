@@ -29,3 +29,7 @@ export type CurriculumQuizItemResult = components["schemas"]["CurriculumQuizItem
 export type CurriculumSkillItem = components["schemas"]["CurriculumSkillItemOut"];
 export type CurriculumSkillReview = components["schemas"]["CurriculumSkillReviewOut"];
 export type SkillReviewInput = components["schemas"]["SkillReviewIn"];
+export type Placement = components["schemas"]["PlacementOut"];
+export type PlacementItem = components["schemas"]["PlacementItemOut"];
+export type PlacementGrade = components["schemas"]["PlacementGradeOut"];
+export type PlacementAnswer = components["schemas"]["PlacementAnswerIn"];

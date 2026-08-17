@@ -996,6 +996,64 @@
           }
         }
       }
+    },
+    "/placement": {
+      "get": {
+        "tags": ["placement"],
+        "summary": "Placement",
+        "operationId": "placement_placement_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlacementOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/placement/grade": {
+      "post": {
+        "tags": ["placement"],
+        "summary": "Grade Placement",
+        "operationId": "grade_placement_placement_grade_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlacementGradeIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlacementGradeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1182,6 +1240,17 @@
               }
             ],
             "title": "Recommended Module Id"
+          },
+          "placement_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Placement Level"
           }
         },
         "type": "object",
@@ -1897,6 +1966,113 @@
         "type": "object",
         "required": ["question"],
         "title": "InterviewOut"
+      },
+      "PlacementAnswerIn": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "given": {
+            "type": "string",
+            "title": "Given"
+          }
+        },
+        "type": "object",
+        "required": ["item_id", "given"],
+        "title": "PlacementAnswerIn"
+      },
+      "PlacementGradeIn": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/PlacementAnswerIn"
+            },
+            "type": "array",
+            "title": "Answers"
+          }
+        },
+        "type": "object",
+        "required": ["answers"],
+        "title": "PlacementGradeIn"
+      },
+      "PlacementGradeOut": {
+        "properties": {
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "current_module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Module Id"
+          }
+        },
+        "type": "object",
+        "required": ["level", "current_module_id"],
+        "title": "PlacementGradeOut"
+      },
+      "PlacementItemOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": ["id", "level", "skill", "type", "prompt"],
+        "title": "PlacementItemOut",
+        "description": "A diagnostic item as served to the learner \u2014 answers are never sent."
+      },
+      "PlacementOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PlacementItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": ["items"],
+        "title": "PlacementOut"
       },
       "ReviewIn": {
         "properties": {

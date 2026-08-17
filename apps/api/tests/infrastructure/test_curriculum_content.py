@@ -98,3 +98,26 @@ def test_bundle_quiz_item_skills_are_subset_of_lesson_skills():
                 assert item.skill in lesson_skills, (
                     f"{item.id}: skill {item.skill!r} not in lesson skills"
                 )
+
+
+def test_bundle_placement_spans_levels_without_answers():
+    bundle = ContentBundle.from_files()
+    placement = bundle.placement()
+    assert placement is not None
+    assert len(placement.items) >= 24
+    by_level: dict[Level, int] = {}
+    for item in placement.items:
+        assert item.level in {Level.A2, Level.B1, Level.B2, Level.C1}
+        assert item.prompt
+        assert item.explanation
+        assert item.skill
+        if item.type.value == "mcq":
+            assert item.options
+            assert item.answer_index is not None
+            assert item.answers is None
+        else:
+            assert item.answers
+            assert item.options is None
+        by_level[item.level] = by_level.get(item.level, 0) + 1
+    assert len(by_level) == 4
+    assert all(count >= 6 for count in by_level.values())

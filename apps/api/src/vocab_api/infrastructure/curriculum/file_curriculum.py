@@ -2,6 +2,7 @@ from vocab_api.application.ports.curriculum_content import CurriculumContent
 from vocab_api.domain.curriculum.lesson import Lesson
 from vocab_api.domain.curriculum.map import CurriculumMap, LadderEntry
 from vocab_api.domain.curriculum.module import Module
+from vocab_api.domain.curriculum.placement import Placement
 from vocab_api.domain.curriculum.quiz import Quiz
 from vocab_api.domain.shared.errors import CurriculumModuleNotFound
 from vocab_api.infrastructure.curriculum.content_loader import ContentBundle
@@ -48,3 +49,9 @@ class FileCurriculumRepository(CurriculumContent):
     def is_available(self, module_id: str) -> bool:
         # Phase 1: a module is openable once its lesson AND quiz are authored.
         return self.has_lesson(module_id) and self.has_quiz(module_id)
+
+    def placement(self) -> Placement:
+        placement = self._bundle.placement()
+        if placement is None:
+            raise CurriculumModuleNotFound("placement")
+        return placement

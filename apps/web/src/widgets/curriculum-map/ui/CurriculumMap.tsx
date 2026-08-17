@@ -109,12 +109,20 @@ export function CurriculumMap() {
           <h1 className="text-3xl font-black tracking-tight text-foreground">{t("learn.title")}</h1>
           <p className="text-sm font-medium text-muted-foreground">{t("learn.subtitle")}</p>
         </div>
-        <Link
-          to="/learn/skills"
-          className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
-        >
-          {t("learn.skillReviews")}
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <Link
+            to="/placement"
+            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+          >
+            {t("learn.takePlacement")}
+          </Link>
+          <Link
+            to="/learn/skills"
+            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+          >
+            {t("learn.skillReviews")}
+          </Link>
+        </div>
       </header>
 
       {map.isLoading ? (

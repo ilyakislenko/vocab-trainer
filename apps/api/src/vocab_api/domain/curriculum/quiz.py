@@ -10,6 +10,7 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Protocol
 
 _SENTENCE_END = re.compile(r"[.?!\s]+$")
 _WS = re.compile(r"\s+")
@@ -20,6 +21,25 @@ class QuizItemType(StrEnum):
     CLOZE = "cloze"
     TRANSFORM = "transform"
     ERROR_CORRECTION = "error_correction"
+
+
+class GradableItem(Protocol):
+    """Anything `grade()` can score (QuizItem, PlacementItem)."""
+
+    @property
+    def id(self) -> str: ...
+    @property
+    def skill(self) -> str: ...
+    @property
+    def type(self) -> QuizItemType: ...
+    @property
+    def options(self) -> tuple[str, ...] | None: ...
+    @property
+    def answer_index(self) -> int | None: ...
+    @property
+    def answers(self) -> tuple[str, ...] | None: ...
+    @property
+    def llm_gradable(self) -> bool: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -68,7 +88,7 @@ def _transform_value(text: str) -> str:
     return value
 
 
-def grade(item: QuizItem, given: str) -> GradeResult:
+def grade(item: GradableItem, given: str) -> GradeResult:
     """Grade one answer deterministically.
 
     `given` is always a string: for mcq it is the selected option index as a

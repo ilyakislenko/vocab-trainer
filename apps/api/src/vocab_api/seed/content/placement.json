@@ -1,0 +1,244 @@
+{
+  "items": [
+    {
+      "id": "pl.a2.1",
+      "level": "A2",
+      "type": "mcq",
+      "skill": "pl.tenses.present_continuous",
+      "prompt": "Where is Anna? — She ___ lunch at the moment.",
+      "options": ["has", "is having", "have", "had"],
+      "answer_index": 1,
+      "explanation": "'At the moment' signals a temporary action now, so the present continuous 'is having' fits."
+    },
+    {
+      "id": "pl.a2.2",
+      "level": "A2",
+      "type": "mcq",
+      "skill": "pl.tenses.past_simple",
+      "prompt": "Yesterday we ___ to the beach.",
+      "options": ["go", "goed", "went", "gone"],
+      "answer_index": 2,
+      "explanation": "'Yesterday' is a finished time in the past, so the past simple 'went' is correct."
+    },
+    {
+      "id": "pl.a2.3",
+      "level": "A2",
+      "type": "mcq",
+      "skill": "pl.comparatives",
+      "prompt": "This city is ___ than my hometown.",
+      "options": ["bigger", "more big", "bigest", "as big"],
+      "answer_index": 0,
+      "explanation": "Short adjectives form the comparative with -er: 'bigger'."
+    },
+    {
+      "id": "pl.a2.4",
+      "level": "A2",
+      "type": "cloze",
+      "skill": "pl.tenses.future_going_to",
+      "prompt": "Look at those dark clouds — it ___ rain. (fill in: is going to)",
+      "explanation": "A present sign predicts the future, so 'is going to' is the natural choice.",
+      "answers": ["is going to"]
+    },
+    {
+      "id": "pl.a2.5",
+      "level": "A2",
+      "type": "mcq",
+      "skill": "pl.countable_uncountable",
+      "prompt": "Could I have ___ water, please?",
+      "options": ["an", "a few", "some", "many"],
+      "answer_index": 2,
+      "explanation": "'Water' is uncountable; 'some' is used in offers and requests."
+    },
+    {
+      "id": "pl.a2.6",
+      "level": "A2",
+      "type": "mcq",
+      "skill": "pl.prepositions.place",
+      "prompt": "There is a pharmacy ___ the corner of the street.",
+      "options": ["on", "at", "in", "under"],
+      "answer_index": 0,
+      "explanation": "'On the corner' is the standard phrase for a position at the intersection of streets."
+    },
+    {
+      "id": "pl.b1.1",
+      "level": "B1",
+      "type": "mcq",
+      "skill": "pl.tenses.present_perfect",
+      "prompt": "I ___ never been to Japan, but I hope to go one day.",
+      "options": ["have", "am", "was", "did"],
+      "answer_index": 0,
+      "explanation": "'Never' with a lifetime experience takes the present perfect: 'have never been'."
+    },
+    {
+      "id": "pl.b1.2",
+      "level": "B1",
+      "type": "mcq",
+      "skill": "pl.conditionals.type2",
+      "prompt": "If I ___ rich, I would travel around the world.",
+      "options": ["was", "am", "were", "will be"],
+      "answer_index": 2,
+      "explanation": "The second conditional (hypothetical) uses 'if + past' — 'were' for all persons."
+    },
+    {
+      "id": "pl.b1.3",
+      "level": "B1",
+      "type": "mcq",
+      "skill": "pl.modals.obligation",
+      "prompt": "You ___ smoke in the building — it is not allowed.",
+      "options": ["don't have to", "mustn't", "needn't", "couldn't"],
+      "answer_index": 1,
+      "explanation": "'Mustn't' expresses prohibition: it is not allowed."
+    },
+    {
+      "id": "pl.b1.4",
+      "level": "B1",
+      "type": "cloze",
+      "skill": "pl.reported_speech",
+      "prompt": "She said, 'I am tired.' → She said that she ___ tired. (fill in: was)",
+      "explanation": "Backshift takes the present 'am' to the past 'was' in reported speech.",
+      "answers": ["was"]
+    },
+    {
+      "id": "pl.b1.5",
+      "level": "B1",
+      "type": "mcq",
+      "skill": "pl.phrasal_verbs",
+      "prompt": "I will look ___ the meaning of this word in the dictionary.",
+      "options": ["after", "up", "into", "for"],
+      "answer_index": 1,
+      "explanation": "'Look up' means to find information, e.g. in a dictionary."
+    },
+    {
+      "id": "pl.b1.6",
+      "level": "B1",
+      "type": "mcq",
+      "skill": "pl.modals.ability",
+      "prompt": "When I was five, I ___ swim across the pool.",
+      "options": ["can", "could", "may", "must"],
+      "answer_index": 1,
+      "explanation": "Past ability is expressed with 'could'."
+    },
+    {
+      "id": "pl.b2.1",
+      "level": "B2",
+      "type": "mcq",
+      "skill": "pl.voice.passive",
+      "prompt": "The new policy ___ by the board last Monday.",
+      "options": ["was approved", "approved", "is approving", "has approved"],
+      "answer_index": 0,
+      "explanation": "The subject receives the action in a finished past situation, so the past passive 'was approved'."
+    },
+    {
+      "id": "pl.b2.2",
+      "level": "B2",
+      "type": "mcq",
+      "skill": "pl.conditionals.type3",
+      "prompt": "If you had told me earlier, I ___ the meeting.",
+      "options": ["would reschedule", "would have rescheduled", "will reschedule", "rescheduled"],
+      "answer_index": 1,
+      "explanation": "The third conditional about a past unreal situation uses 'would have + past participle'."
+    },
+    {
+      "id": "pl.b2.3",
+      "level": "B2",
+      "type": "cloze",
+      "skill": "pl.relative_clauses",
+      "prompt": "The man ___ car was stolen called the police. (fill in: whose)",
+      "explanation": "'Whose' expresses possession for people and things in relative clauses.",
+      "answers": ["whose"]
+    },
+    {
+      "id": "pl.b2.4",
+      "level": "B2",
+      "type": "mcq",
+      "skill": "pl.future.perfect",
+      "prompt": "By this time next year, we ___ the project for ten years.",
+      "options": ["will work", "will have worked", "have worked", "would work"],
+      "answer_index": 1,
+      "explanation": "'By this time next year' marks completion before a future point — the future perfect."
+    },
+    {
+      "id": "pl.b2.5",
+      "level": "B2",
+      "type": "mcq",
+      "skill": "pl.modals.past_deduction",
+      "prompt": "The lights are on, so they ___ home already.",
+      "options": ["must be", "can't be", "must have got", "should get"],
+      "answer_index": 2,
+      "explanation": "A confident deduction about a past event uses 'must have + past participle'."
+    },
+    {
+      "id": "pl.b2.6",
+      "level": "B2",
+      "type": "mcq",
+      "skill": "pl.discourse_markers",
+      "prompt": "The plan is risky. ___, the potential reward is enormous.",
+      "options": ["However", "Moreover", "Therefore", "Besides"],
+      "answer_index": 0,
+      "explanation": "'However' introduces a contrast between the risk and the reward."
+    },
+    {
+      "id": "pl.c1.1",
+      "level": "C1",
+      "type": "mcq",
+      "skill": "pl.cleft_sentences",
+      "prompt": "___ was the lack of funding that stopped the project.",
+      "options": ["It", "This", "That", "There"],
+      "answer_index": 0,
+      "explanation": "The it-cleft 'It was X that…' focuses on a specific element of the sentence."
+    },
+    {
+      "id": "pl.c1.2",
+      "level": "C1",
+      "type": "cloze",
+      "skill": "pl.participle_clauses",
+      "prompt": "___ from the top of the hill, the town looked tiny. (fill in: Seen)",
+      "explanation": "The past participle 'Seen' introduces a passive participial clause with a shared subject.",
+      "answers": ["Seen", "seen"]
+    },
+    {
+      "id": "pl.c1.3",
+      "level": "C1",
+      "type": "mcq",
+      "skill": "pl.modality.past",
+      "prompt": "You ___ told me about the delay earlier — I wasted a whole afternoon.",
+      "options": ["needn't have", "shouldn't have", "might have", "can't have"],
+      "answer_index": 1,
+      "explanation": "'Shouldn't have done' expresses criticism about a past action."
+    },
+    {
+      "id": "pl.c1.4",
+      "level": "C1",
+      "type": "mcq",
+      "skill": "pl.hedging",
+      "prompt": "Which sentence sounds most cautious and professional?",
+      "options": [
+        "The data proves the theory wrong.",
+        "The data appears to challenge the theory.",
+        "The data destroyed the theory.",
+        "The data is definitely wrong."
+      ],
+      "answer_index": 1,
+      "explanation": "'Appears to challenge' hedges the claim, which is the cautious, register-appropriate choice."
+    },
+    {
+      "id": "pl.c1.5",
+      "level": "C1",
+      "type": "cloze",
+      "skill": "pl.inversion",
+      "prompt": "___ had we left the house when it started to pour. (fill in: No sooner)",
+      "explanation": "Negative adverbials like 'no sooner' trigger inversion of subject and auxiliary.",
+      "answers": ["No sooner", "no sooner"]
+    },
+    {
+      "id": "pl.c1.6",
+      "level": "C1",
+      "type": "mcq",
+      "skill": "pl.collocations",
+      "prompt": "The team reached a ___ consensus after hours of negotiation.",
+      "options": ["broad", "wide", "large", "thick"],
+      "answer_index": 0,
+      "explanation": "'Broad consensus' is the natural, established collocation."
+    }
+  ]
+}

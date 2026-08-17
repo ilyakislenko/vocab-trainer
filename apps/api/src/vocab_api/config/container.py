@@ -8,6 +8,7 @@ from vocab_api.application.use_cases.curriculum import (
 )
 from vocab_api.application.use_cases.decks import CreateDeck, ListDeckCards, ListDecks
 from vocab_api.application.use_cases.importing import ImportWords
+from vocab_api.application.use_cases.placement import GetPlacement, GradePlacement
 from vocab_api.application.use_cases.practice import (
     CheckSentence,
     ConductInterview,
@@ -39,6 +40,7 @@ from vocab_api.infrastructure.llm.null_provider import NullProvider
 from vocab_api.infrastructure.llm.openai_compatible_provider import OpenAiCompatibleProvider
 from vocab_api.infrastructure.persistence.card_repo import SqlCardRepository
 from vocab_api.infrastructure.persistence.curriculum_repos import (
+    SqlLearnerProfileRepository,
     SqlModuleProgressRepository,
     SqlQuizAttemptRepository,
     SqlSkillItemRepository,
@@ -96,6 +98,7 @@ class Container:
         module_progress = SqlModuleProgressRepository(self._db)
         quiz_attempts = SqlQuizAttemptRepository(self._db)
         skill_items = SqlSkillItemRepository(self._db)
+        learner_profile = SqlLearnerProfileRepository(self._db)
         self.get_curriculum_map = GetCurriculumMap(curriculum, module_progress)
         self.get_module = GetModule(curriculum, module_progress)
         self.get_lesson = GetLesson(curriculum, module_progress)
@@ -108,6 +111,9 @@ class Container:
         self.get_skill_review_queue = GetSkillReviewQueue(skill_items, curriculum, clock)
         self.record_skill_review = RecordSkillReview(skill_items, scheduler, clock)
         self.get_focus_leeches = GetFocusLeeches(skill_items)
+        self.learner_profile = learner_profile
+        self.get_placement = GetPlacement(curriculum)
+        self.grade_placement = GradePlacement(curriculum, learner_profile)
 
         self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
         self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)
