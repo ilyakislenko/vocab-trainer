@@ -29,9 +29,7 @@
     },
     "/decks": {
       "get": {
-        "tags": [
-          "decks"
-        ],
+        "tags": ["decks"],
         "summary": "List Decks",
         "operationId": "list_decks_decks_get",
         "responses": {
@@ -52,9 +50,7 @@
         }
       },
       "post": {
-        "tags": [
-          "decks"
-        ],
+        "tags": ["decks"],
         "summary": "Create Deck",
         "operationId": "create_deck_decks_post",
         "requestBody": {
@@ -93,9 +89,7 @@
     },
     "/decks/{deck_id}/cards": {
       "get": {
-        "tags": [
-          "decks"
-        ],
+        "tags": ["decks"],
         "summary": "List Deck Cards",
         "operationId": "list_deck_cards_decks__deck_id__cards_get",
         "parameters": [
@@ -175,9 +169,7 @@
     },
     "/decks/{deck_id}/import": {
       "post": {
-        "tags": [
-          "decks"
-        ],
+        "tags": ["decks"],
         "summary": "Import Words",
         "operationId": "import_words_decks__deck_id__import_post",
         "parameters": [
@@ -227,9 +219,7 @@
     },
     "/review/queue": {
       "get": {
-        "tags": [
-          "review"
-        ],
+        "tags": ["review"],
         "summary": "Review Queue",
         "operationId": "review_queue_review_queue_get",
         "parameters": [
@@ -283,9 +273,7 @@
     },
     "/review": {
       "post": {
-        "tags": [
-          "review"
-        ],
+        "tags": ["review"],
         "summary": "Record Review",
         "operationId": "record_review_review_post",
         "requestBody": {
@@ -324,9 +312,7 @@
     },
     "/review/summary": {
       "get": {
-        "tags": [
-          "review"
-        ],
+        "tags": ["review"],
         "summary": "Review Summary",
         "operationId": "review_summary_review_summary_get",
         "parameters": [
@@ -366,9 +352,7 @@
     },
     "/review/skills/queue": {
       "get": {
-        "tags": [
-          "review"
-        ],
+        "tags": ["review"],
         "summary": "Skill Review Queue",
         "operationId": "skill_review_queue_review_skills_queue_get",
         "parameters": [
@@ -413,9 +397,7 @@
     },
     "/review/skills": {
       "post": {
-        "tags": [
-          "review"
-        ],
+        "tags": ["review"],
         "summary": "Record Skill Review",
         "operationId": "record_skill_review_review_skills_post",
         "requestBody": {
@@ -454,9 +436,7 @@
     },
     "/stats": {
       "get": {
-        "tags": [
-          "stats"
-        ],
+        "tags": ["stats"],
         "summary": "Stats",
         "operationId": "stats_stats_get",
         "parameters": [
@@ -496,9 +476,7 @@
     },
     "/practice/check": {
       "post": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Check Sentence",
         "operationId": "check_sentence_practice_check_post",
         "requestBody": {
@@ -537,9 +515,7 @@
     },
     "/practice/example": {
       "get": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Practice Example",
         "operationId": "practice_example_practice_example_get",
         "parameters": [
@@ -579,9 +555,7 @@
     },
     "/practice/topic": {
       "get": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Practice Topic",
         "operationId": "practice_topic_practice_topic_get",
         "parameters": [
@@ -644,9 +618,7 @@
     },
     "/practice/hint": {
       "get": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Practice Hint",
         "operationId": "practice_hint_practice_hint_get",
         "parameters": [
@@ -686,9 +658,7 @@
     },
     "/practice/drill": {
       "post": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Practice Drill",
         "operationId": "practice_drill_practice_drill_post",
         "requestBody": {
@@ -727,9 +697,7 @@
     },
     "/practice/translate": {
       "get": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Practice Translate",
         "operationId": "practice_translate_practice_translate_get",
         "parameters": [
@@ -769,9 +737,7 @@
     },
     "/practice/interview": {
       "post": {
-        "tags": [
-          "practice"
-        ],
+        "tags": ["practice"],
         "summary": "Practice Interview",
         "operationId": "practice_interview_practice_interview_post",
         "requestBody": {
@@ -810,9 +776,7 @@
     },
     "/curriculum": {
       "get": {
-        "tags": [
-          "curriculum"
-        ],
+        "tags": ["curriculum"],
         "summary": "Curriculum Map",
         "operationId": "curriculum_map_curriculum_get",
         "responses": {
@@ -831,9 +795,7 @@
     },
     "/curriculum/modules/{module_id}": {
       "get": {
-        "tags": [
-          "curriculum"
-        ],
+        "tags": ["curriculum"],
         "summary": "Module Detail",
         "operationId": "module_detail_curriculum_modules__module_id__get",
         "parameters": [
@@ -873,9 +835,7 @@
     },
     "/curriculum/lessons/{module_id}": {
       "get": {
-        "tags": [
-          "curriculum"
-        ],
+        "tags": ["curriculum"],
         "summary": "Lesson",
         "operationId": "lesson_curriculum_lessons__module_id__get",
         "parameters": [
@@ -915,9 +875,7 @@
     },
     "/curriculum/lessons/{module_id}/read": {
       "post": {
-        "tags": [
-          "curriculum"
-        ],
+        "tags": ["curriculum"],
         "summary": "Mark Lesson Read",
         "operationId": "mark_lesson_read_curriculum_lessons__module_id__read_post",
         "parameters": [
@@ -957,9 +915,7 @@
     },
     "/curriculum/modules/{module_id}/quiz": {
       "get": {
-        "tags": [
-          "curriculum"
-        ],
+        "tags": ["curriculum"],
         "summary": "Module Quiz",
         "operationId": "module_quiz_curriculum_modules__module_id__quiz_get",
         "parameters": [
@@ -999,9 +955,7 @@
     },
     "/curriculum/quiz/grade": {
       "post": {
-        "tags": [
-          "curriculum"
-        ],
+        "tags": ["curriculum"],
         "summary": "Grade Quiz",
         "operationId": "grade_quiz_curriculum_quiz_grade_post",
         "requestBody": {
@@ -1040,9 +994,7 @@
     },
     "/session/today": {
       "get": {
-        "tags": [
-          "session"
-        ],
+        "tags": ["session"],
         "summary": "Today",
         "operationId": "today_session_today_get",
         "responses": {
@@ -1061,9 +1013,7 @@
     },
     "/session/focus": {
       "get": {
-        "tags": [
-          "session"
-        ],
+        "tags": ["session"],
         "summary": "Focus",
         "operationId": "focus_session_focus_get",
         "parameters": [
@@ -1108,9 +1058,7 @@
     },
     "/placement": {
       "get": {
-        "tags": [
-          "placement"
-        ],
+        "tags": ["placement"],
         "summary": "Placement",
         "operationId": "placement_placement_get",
         "responses": {
@@ -1129,9 +1077,7 @@
     },
     "/placement/grade": {
       "post": {
-        "tags": [
-          "placement"
-        ],
+        "tags": ["placement"],
         "summary": "Grade Placement",
         "operationId": "grade_placement_placement_grade_post",
         "requestBody": {
@@ -1170,9 +1116,7 @@
     },
     "/progress": {
       "get": {
-        "tags": [
-          "progress"
-        ],
+        "tags": ["progress"],
         "summary": "Progress",
         "operationId": "progress_progress_get",
         "responses": {
@@ -1191,9 +1135,7 @@
     },
     "/pronounce/score": {
       "post": {
-        "tags": [
-          "pronounce"
-        ],
+        "tags": ["pronounce"],
         "summary": "Score Pronunciation",
         "operationId": "score_pronunciation_pronounce_score_post",
         "requestBody": {
@@ -1251,10 +1193,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "audio",
-          "target"
-        ],
+        "required": ["audio", "target"],
         "title": "Body_score_pronunciation_pronounce_score_post"
       },
       "CardOut": {
@@ -1314,12 +1253,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "word",
-          "translation",
-          "transcription"
-        ],
+        "required": ["id", "word", "translation", "transcription"],
         "title": "CardOut"
       },
       "CheckSentenceIn": {
@@ -1334,10 +1268,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "card_id",
-          "sentence"
-        ],
+        "required": ["card_id", "sentence"],
         "title": "CheckSentenceIn"
       },
       "CreateDeckIn": {
@@ -1348,9 +1279,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "title": "CreateDeckIn"
       },
       "CurriculumLessonMetaOut": {
@@ -1440,10 +1369,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "markdown",
-          "meta"
-        ],
+        "required": ["markdown", "meta"],
         "title": "CurriculumLessonOut"
       },
       "CurriculumLevelOut": {
@@ -1461,10 +1387,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "level",
-          "modules"
-        ],
+        "required": ["level", "modules"],
         "title": "CurriculumLevelOut"
       },
       "CurriculumMapOut": {
@@ -1500,9 +1423,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "levels"
-        ],
+        "required": ["levels"],
         "title": "CurriculumMapOut"
       },
       "CurriculumModuleDetailOut": {
@@ -1633,14 +1554,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "level",
-          "track",
-          "availability",
-          "status"
-        ],
+        "required": ["id", "title", "level", "track", "availability", "status"],
         "title": "CurriculumModuleOut"
       },
       "CurriculumModuleProgressOut": {
@@ -1690,10 +1604,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "module_id",
-          "status"
-        ],
+        "required": ["module_id", "status"],
         "title": "CurriculumModuleProgressOut"
       },
       "CurriculumQuizAnswerIn": {
@@ -1708,10 +1619,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "item_id",
-          "given"
-        ],
+        "required": ["item_id", "given"],
         "title": "CurriculumQuizAnswerIn"
       },
       "CurriculumQuizGradeIn": {
@@ -1729,10 +1637,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "module_id",
-          "answers"
-        ],
+        "required": ["module_id", "answers"],
         "title": "CurriculumQuizGradeIn"
       },
       "CurriculumQuizGradeOut": {
@@ -1773,13 +1678,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "module_id",
-          "score",
-          "status",
-          "completed",
-          "items"
-        ],
+        "required": ["module_id", "score", "status", "completed", "items"],
         "title": "CurriculumQuizGradeOut"
       },
       "CurriculumQuizItemOut": {
@@ -1830,12 +1729,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "type",
-          "skill",
-          "prompt"
-        ],
+        "required": ["id", "type", "skill", "prompt"],
         "title": "CurriculumQuizItemOut",
         "description": "A quiz item as served to the learner — answers are never sent."
       },
@@ -1869,12 +1763,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "item_id",
-          "skill",
-          "correct",
-          "explanation"
-        ],
+        "required": ["item_id", "skill", "correct", "explanation"],
         "title": "CurriculumQuizItemResultOut"
       },
       "CurriculumQuizOut": {
@@ -1896,11 +1785,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "module_id",
-          "status",
-          "items"
-        ],
+        "required": ["module_id", "status", "items"],
         "title": "CurriculumQuizOut"
       },
       "CurriculumReferenceOut": {
@@ -1915,10 +1800,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "book",
-          "locator"
-        ],
+        "required": ["book", "locator"],
         "title": "CurriculumReferenceOut"
       },
       "CurriculumSkillItemOut": {
@@ -1945,13 +1827,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "skill",
-          "module_id",
-          "source_item_id",
-          "is_leech"
-        ],
+        "required": ["id", "skill", "module_id", "source_item_id", "is_leech"],
         "title": "CurriculumSkillItemOut"
       },
       "CurriculumSkillReviewOut": {
@@ -2037,10 +1913,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
+        "required": ["id", "name"],
         "title": "DeckOut"
       },
       "DrillIn": {
@@ -2055,10 +1928,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "card_id",
-          "message"
-        ],
+        "required": ["card_id", "message"],
         "title": "DrillIn"
       },
       "DrillOut": {
@@ -2080,9 +1950,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "response"
-        ],
+        "required": ["response"],
         "title": "DrillOut"
       },
       "ExampleOut": {
@@ -2093,9 +1961,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "example"
-        ],
+        "required": ["example"],
         "title": "ExampleOut"
       },
       "FeedbackOut": {
@@ -2131,12 +1997,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "verdict",
-          "feedback",
-          "corrected",
-          "example"
-        ],
+        "required": ["verdict", "feedback", "corrected", "example"],
         "title": "FeedbackOut"
       },
       "HTTPValidationError": {
@@ -2160,10 +2021,7 @@
           },
           "format": {
             "type": "string",
-            "enum": [
-              "csv",
-              "markdown"
-            ],
+            "enum": ["csv", "markdown"],
             "title": "Format"
           },
           "dry_run": {
@@ -2173,10 +2031,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "raw",
-          "format"
-        ],
+        "required": ["raw", "format"],
         "title": "ImportIn"
       },
       "ImportOut": {
@@ -2201,11 +2056,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "committed",
-          "imported",
-          "errors"
-        ],
+        "required": ["committed", "imported", "errors"],
         "title": "ImportOut"
       },
       "InterviewIn": {
@@ -2216,30 +2067,19 @@
           },
           "lang": {
             "type": "string",
-            "enum": [
-              "ru",
-              "en"
-            ],
+            "enum": ["ru", "en"],
             "title": "Lang",
             "default": "en"
           },
           "difficulty": {
             "type": "string",
-            "enum": [
-              "junior",
-              "middle",
-              "senior"
-            ],
+            "enum": ["junior", "middle", "senior"],
             "title": "Difficulty",
             "default": "middle"
           },
           "mode": {
             "type": "string",
-            "enum": [
-              "auto",
-              "next",
-              "random"
-            ],
+            "enum": ["auto", "next", "random"],
             "title": "Mode",
             "default": "auto"
           },
@@ -2261,19 +2101,14 @@
           }
         },
         "type": "object",
-        "required": [
-          "topic"
-        ],
+        "required": ["topic"],
         "title": "InterviewIn"
       },
       "InterviewMessage": {
         "properties": {
           "role": {
             "type": "string",
-            "enum": [
-              "user",
-              "interviewer"
-            ],
+            "enum": ["user", "interviewer"],
             "title": "Role"
           },
           "content": {
@@ -2282,10 +2117,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "role",
-          "content"
-        ],
+        "required": ["role", "content"],
         "title": "InterviewMessage"
       },
       "InterviewOut": {
@@ -2339,9 +2171,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "question"
-        ],
+        "required": ["question"],
         "title": "InterviewOut"
       },
       "LevelProgressOut": {
@@ -2360,11 +2190,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "level",
-          "completed",
-          "total"
-        ],
+        "required": ["level", "completed", "total"],
         "title": "LevelProgressOut"
       },
       "PhonemeScoreOut": {
@@ -2379,20 +2205,12 @@
           },
           "verdict": {
             "type": "string",
-            "enum": [
-              "good",
-              "fair",
-              "weak"
-            ],
+            "enum": ["good", "fair", "weak"],
             "title": "Verdict"
           }
         },
         "type": "object",
-        "required": [
-          "phoneme",
-          "score",
-          "verdict"
-        ],
+        "required": ["phoneme", "score", "verdict"],
         "title": "PhonemeScoreOut"
       },
       "PlacementAnswerIn": {
@@ -2407,10 +2225,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "item_id",
-          "given"
-        ],
+        "required": ["item_id", "given"],
         "title": "PlacementAnswerIn"
       },
       "PlacementGradeIn": {
@@ -2424,9 +2239,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "answers"
-        ],
+        "required": ["answers"],
         "title": "PlacementGradeIn"
       },
       "PlacementGradeOut": {
@@ -2455,11 +2268,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "level",
-          "current_module_id",
-          "results"
-        ],
+        "required": ["level", "current_module_id", "results"],
         "title": "PlacementGradeOut"
       },
       "PlacementItemOut": {
@@ -2500,13 +2309,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "level",
-          "skill",
-          "type",
-          "prompt"
-        ],
+        "required": ["id", "level", "skill", "type", "prompt"],
         "title": "PlacementItemOut",
         "description": "A diagnostic item as served to the learner — answers are never sent."
       },
@@ -2570,9 +2373,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "items"
-        ],
+        "required": ["items"],
         "title": "PlacementOut"
       },
       "ProgressOut": {
@@ -2598,12 +2399,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "levels",
-          "overall_percent",
-          "streak",
-          "has_reviewed"
-        ],
+        "required": ["levels", "overall_percent", "streak", "has_reviewed"],
         "title": "ProgressOut"
       },
       "PronunciationAssessmentOut": {
@@ -2629,12 +2425,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "overall",
-          "words",
-          "transcript",
-          "scored_phonemes"
-        ],
+        "required": ["overall", "words", "transcript", "scored_phonemes"],
         "title": "PronunciationAssessmentOut"
       },
       "ReviewIn": {
@@ -2645,20 +2436,12 @@
           },
           "rating": {
             "type": "integer",
-            "enum": [
-              1,
-              2,
-              3,
-              4
-            ],
+            "enum": [1, 2, 3, 4],
             "title": "Rating"
           }
         },
         "type": "object",
-        "required": [
-          "card_id",
-          "rating"
-        ],
+        "required": ["card_id", "rating"],
         "title": "ReviewIn"
       },
       "ReviewSummaryOut": {
@@ -2681,10 +2464,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "next_due",
-          "reviewed_today"
-        ],
+        "required": ["next_due", "reviewed_today"],
         "title": "ReviewSummaryOut"
       },
       "RowErrorOut": {
@@ -2699,10 +2479,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "line",
-          "reason"
-        ],
+        "required": ["line", "reason"],
         "title": "RowErrorOut"
       },
       "SentenceTranslation": {
@@ -2721,9 +2498,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "full"
-        ],
+        "required": ["full"],
         "title": "SentenceTranslation"
       },
       "SkillReviewIn": {
@@ -2734,20 +2509,12 @@
           },
           "rating": {
             "type": "integer",
-            "enum": [
-              1,
-              2,
-              3,
-              4
-            ],
+            "enum": [1, 2, 3, 4],
             "title": "Rating"
           }
         },
         "type": "object",
-        "required": [
-          "skill_item_id",
-          "rating"
-        ],
+        "required": ["skill_item_id", "rating"],
         "title": "SkillReviewIn"
       },
       "StatsOut": {
@@ -2805,10 +2572,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "due_today",
-          "total_reviews"
-        ],
+        "required": ["due_today", "total_reviews"],
         "title": "StatsOut"
       },
       "TodaySessionOut": {
@@ -2822,9 +2586,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "steps"
-        ],
+        "required": ["steps"],
         "title": "TodaySessionOut"
       },
       "TodayStepOut": {
@@ -2949,9 +2711,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "kind"
-        ],
+        "required": ["kind"],
         "title": "TodayStepOut",
         "description": "One step of the daily plan. `kind` discriminates; the front-end renders\neach kind from the fields it carries and deep-links to the existing screen\nthat performs the work."
       },
@@ -2988,19 +2748,12 @@
           }
         },
         "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
+        "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       },
       "Verdict": {
         "type": "string",
-        "enum": [
-          "ok",
-          "needs_work"
-        ],
+        "enum": ["ok", "needs_work"],
         "title": "Verdict"
       },
       "WordHintOut": {
@@ -3022,9 +2775,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "meaning"
-        ],
+        "required": ["meaning"],
         "title": "WordHintOut"
       },
       "WordScoreOut": {
@@ -3046,11 +2797,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "word",
-          "score",
-          "phonemes"
-        ],
+        "required": ["word", "score", "phonemes"],
         "title": "WordScoreOut"
       },
       "WordTranslation": {
@@ -3065,10 +2812,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "word",
-          "translation"
-        ],
+        "required": ["word", "translation"],
         "title": "WordTranslation"
       }
     }
