@@ -1,0 +1,65 @@
+{
+  "module_id": "a2.grammar.comparatives",
+  "items": [
+    {
+      "id": "a2.grammar.comparatives.q1",
+      "type": "mcq",
+      "skill": "comp.er-than",
+      "prompt": "Choose the correct comparative: This laptop is ___ than mine.",
+      "options": ["cheaper", "cheapest", "more cheap", "cheap"],
+      "answer_index": 0,
+      "explanation": "Short adjective + -er, then 'than': cheaper than."
+    },
+    {
+      "id": "a2.grammar.comparatives.q2",
+      "type": "cloze",
+      "skill": "comp.er-than",
+      "prompt": "Write the comparative of 'big': Their office is ___ than ours.",
+      "answers": ["bigger"],
+      "explanation": "'Big' doubles the final consonant: bigger."
+    },
+    {
+      "id": "a2.grammar.comparatives.q3",
+      "type": "mcq",
+      "skill": "comp.more-most",
+      "prompt": "Choose the correct superlative: This is ___ hotel in the city.",
+      "options": ["the most expensive", "the more expensive", "the expensivest", "more expensive"],
+      "answer_index": 0,
+      "explanation": "Long adjectives form the superlative with 'the most'."
+    },
+    {
+      "id": "a2.grammar.comparatives.q4",
+      "type": "cloze",
+      "skill": "comp.more-most",
+      "prompt": "Write two words: This is ___ ___ reliable model we sell.",
+      "answers": ["the most"],
+      "explanation": "Long adjective 'reliable' forms the superlative with 'the most'."
+    },
+    {
+      "id": "a2.grammar.comparatives.q5",
+      "type": "mcq",
+      "skill": "comp.more-most",
+      "prompt": "Choose the correct irregular superlative: This is ___ decision I have made.",
+      "options": ["the best", "the goodest", "the better", "the most good"],
+      "answer_index": 0,
+      "explanation": "'Good' is irregular: the best."
+    },
+    {
+      "id": "a2.grammar.comparatives.q6",
+      "type": "mcq",
+      "skill": "comp.as-as",
+      "prompt": "Choose the correct comparison: This phone is ___ fast as yours.",
+      "options": ["as", "than", "like", "more"],
+      "answer_index": 0,
+      "explanation": "Equality uses as + adjective + as."
+    },
+    {
+      "id": "a2.grammar.comparatives.q7",
+      "type": "cloze",
+      "skill": "comp.as-as",
+      "prompt": "Write two words: This coffee is ___ ___ strong as the one I had yesterday. (negative comparison)",
+      "answers": ["not as", "not so"],
+      "explanation": "Inequality uses not as ... as."
+    }
+  ]
+}

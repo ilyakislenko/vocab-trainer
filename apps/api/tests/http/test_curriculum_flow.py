@@ -36,7 +36,7 @@ async def test_curriculum_map_lists_all_levels(client: httpx.AsyncClient):
     assert module["track"] == "grammar"
     assert module["availability"] == "available"
     assert module["status"] == "not_started"
-    assert body["recommended_module_id"] == "b1.grammar.articles"
+    assert body["recommended_module_id"] == "a1.grammar.to-be"
 
 
 async def test_curriculum_map_marks_lesson_read(client: httpx.AsyncClient):
@@ -149,7 +149,7 @@ async def test_grade_quiz_grades_deterministically_and_completes(client: httpx.A
     assert result["status"] == "completed"
     assert result["completed"] is True
     assert result["score"] == pytest.approx(5 / 6 * 100)
-    assert result["next_module_id"] == "b1.grammar.perfect-aspect"
+    assert result["next_module_id"] == "a1.grammar.to-be"
     by_id = {item["item_id"]: item for item in result["items"]}
     assert len(result["items"]) == 6
     assert by_id["b1.grammar.articles.q1"]["correct"] is True

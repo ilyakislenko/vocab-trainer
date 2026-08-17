@@ -1,0 +1,66 @@
+{
+  "module_id": "c2.vocabulary.nuance",
+  "items": [
+    {
+      "id": "c2.vocabulary.nuance.q1",
+      "type": "mcq",
+      "skill": "nuance.connotation",
+      "prompt": "Which word has a negative connotation for a very thin person?",
+      "options": ["skinny", "slim", "lean", "slender"],
+      "answer_index": 0,
+      "explanation": "'Skinny' carries a critical tone; slim, lean, slender are neutral or positive."
+    },
+    {
+      "id": "c2.vocabulary.nuance.q2",
+      "type": "mcq",
+      "skill": "nuance.connotation",
+      "prompt": "Choose the word with a negative slant for a confident person.",
+      "options": ["aggressive", "assertive", "confident", "self-assured"],
+      "answer_index": 0,
+      "explanation": "'Aggressive' implies hostile confidence."
+    },
+    {
+      "id": "c2.vocabulary.nuance.q3",
+      "type": "cloze",
+      "skill": "nuance.precision",
+      "prompt": "Write one word: She politely ___ the invitation to the dinner.",
+      "answers": ["declined"],
+      "explanation": "'Decline' is the polite way to refuse."
+    },
+    {
+      "id": "c2.vocabulary.nuance.q4",
+      "type": "mcq",
+      "skill": "nuance.precision",
+      "prompt": "Which word suggests the economy almost stopped moving?",
+      "options": ["stalled", "slowed", "paused briefly", "grew"],
+      "answer_index": 0,
+      "explanation": "'Stall' suggests progress comes almost to a halt."
+    },
+    {
+      "id": "c2.vocabulary.nuance.q5",
+      "type": "mcq",
+      "skill": "nuance.register",
+      "prompt": "Which word belongs in a formal contract?",
+      "options": ["purchase", "buy", "get", "grab"],
+      "answer_index": 0,
+      "explanation": "'Purchase' is the formal register; the others are neutral or casual."
+    },
+    {
+      "id": "c2.vocabulary.nuance.q6",
+      "type": "cloze",
+      "skill": "nuance.register",
+      "prompt": "Write one word: The ceremony will ___ at ten o'clock sharp. (formal for 'start')",
+      "answers": ["commence"],
+      "explanation": "'Commence' is the formal alternative to 'start'."
+    },
+    {
+      "id": "c2.vocabulary.nuance.q7",
+      "type": "mcq",
+      "skill": "nuance.connotation",
+      "prompt": "Choose the correct collocation.",
+      "options": ["heavy traffic", "strong traffic", "powerful traffic", "solid traffic"],
+      "answer_index": 0,
+      "explanation": "'Heavy' is the fixed collocate of traffic."
+    }
+  ]
+}

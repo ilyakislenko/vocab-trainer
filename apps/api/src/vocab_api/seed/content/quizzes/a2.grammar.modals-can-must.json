@@ -1,0 +1,81 @@
+{
+  "module_id": "a2.grammar.modals-can-must",
+  "items": [
+    {
+      "id": "a2.grammar.modals-can-must.q1",
+      "type": "mcq",
+      "skill": "mod.can",
+      "prompt": "Choose the correct sentence for ability.",
+      "options": [
+        "She can swim very well.",
+        "She cans swim very well.",
+        "She can to swim very well.",
+        "She can swimming very well."
+      ],
+      "answer_index": 0,
+      "explanation": "'Can' is invariable and takes the base verb: She can swim."
+    },
+    {
+      "id": "a2.grammar.modals-can-must.q2",
+      "type": "mcq",
+      "skill": "mod.can",
+      "prompt": "Choose the correct question for permission.",
+      "options": ["Can I use your phone?", "I can use your phone?", "Do I can use your phone?", "Can I to use your phone?"],
+      "answer_index": 0,
+      "explanation": "Permission questions put 'can' before the subject."
+    },
+    {
+      "id": "a2.grammar.modals-can-must.q3",
+      "type": "cloze",
+      "skill": "mod.can",
+      "prompt": "Write two words: He ___ ___ run fast, but he cannot swim.",
+      "answers": ["can run"],
+      "explanation": "Ability: can + base verb run."
+    },
+    {
+      "id": "a2.grammar.modals-can-must.q4",
+      "type": "mcq",
+      "skill": "mod.must",
+      "prompt": "Choose the correct sentence for obligation.",
+      "options": [
+        "You must wear a seatbelt.",
+        "You must to wear a seatbelt.",
+        "You must wearing a seatbelt.",
+        "You musts wear a seatbelt."
+      ],
+      "answer_index": 0,
+      "explanation": "'Must' takes the base verb without 'to'."
+    },
+    {
+      "id": "a2.grammar.modals-can-must.q5",
+      "type": "mcq",
+      "skill": "mod.obligation-prohibition",
+      "prompt": "Choose the correct meaning: You mustn't park here.",
+      "options": [
+        "It is forbidden to park here.",
+        "It is possible to park here.",
+        "It is not necessary to park here.",
+        "You are able to park here."
+      ],
+      "answer_index": 0,
+      "explanation": "'Mustn't' expresses prohibition — something is not allowed."
+    },
+    {
+      "id": "a2.grammar.modals-can-must.q6",
+      "type": "cloze",
+      "skill": "mod.obligation-prohibition",
+      "prompt": "Write one word to complete the rule: Employees ___ bring their laptops; it is required.",
+      "answers": ["must", "must"],
+      "explanation": "Required action = obligation, so 'must'."
+    },
+    {
+      "id": "a2.grammar.modals-can-must.q7",
+      "type": "mcq",
+      "skill": "mod.obligation-prohibition",
+      "prompt": "Choose the correct prohibition: You ___ enter the laboratory without gloves.",
+      "options": ["mustn't", "can't only", "don't must", "must"],
+      "answer_index": 0,
+      "explanation": "Forbidden actions use mustn't + base verb."
+    }
+  ]
+}

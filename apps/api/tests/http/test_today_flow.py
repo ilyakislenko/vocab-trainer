@@ -43,8 +43,8 @@ async def test_today_plans_review_and_read_lesson(client: httpx.AsyncClient):
     assert [step["kind"] for step in steps] == ["review", "read_lesson"]
     assert steps[0]["vocab_due"] == 2
     assert steps[0]["skill_due"] == 0
-    assert steps[1]["module_id"] == "b1.grammar.articles"
-    assert steps[1]["level"] == "B1"
+    assert steps[1]["module_id"] == "a1.grammar.to-be"
+    assert steps[1]["level"] == "A1"
     assert steps[1]["track"] == "grammar"
 
 
@@ -66,14 +66,14 @@ async def test_today_include_produce_after_first_review(client: httpx.AsyncClien
 
 async def test_today_switches_to_take_quiz_after_lesson_read(client: httpx.AsyncClient):
     await _seed_deck(client, "run,rʌn,бежать")
-    mark = await client.post("/curriculum/lessons/b1.grammar.articles/read")
+    mark = await client.post("/curriculum/lessons/a1.grammar.to-be/read")
     assert mark.status_code == 200
 
     steps = (await client.get("/session/today")).json()["steps"]
     kinds = [step["kind"] for step in steps]
     assert "read_lesson" not in kinds
     quiz = next(s for s in steps if s["kind"] == "take_quiz")
-    assert quiz["module_id"] == "b1.grammar.articles"
+    assert quiz["module_id"] == "a1.grammar.to-be"
     assert quiz["items"] >= 1
     assert steps[0]["kind"] == "review"
     assert steps[0]["vocab_due"] == 1

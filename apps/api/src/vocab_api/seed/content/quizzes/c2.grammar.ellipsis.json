@@ -1,0 +1,76 @@
+{
+  "module_id": "c2.grammar.ellipsis",
+  "items": [
+    {
+      "id": "c2.grammar.ellipsis.q1",
+      "type": "mcq",
+      "skill": "ellips.auxiliary",
+      "prompt": "Choose the natural reply: Can you drive? — ___",
+      "options": ["I can.", "I can drive can.", "I can driving.", "I am able to drive can."],
+      "answer_index": 0,
+      "explanation": "The verb phrase collapses to the auxiliary: I can."
+    },
+    {
+      "id": "c2.grammar.ellipsis.q2",
+      "type": "cloze",
+      "skill": "ellips.substitution",
+      "prompt": "Write one word: Will they finish on time? — I hope ___.",
+      "answers": ["so"],
+      "explanation": "'I hope so' substitutes the whole clause with 'so'."
+    },
+    {
+      "id": "c2.grammar.ellipsis.q3",
+      "type": "mcq",
+      "skill": "ellips.auxiliary",
+      "prompt": "Choose the correct completion: She plays guitar, and her brother ___ too.",
+      "options": ["does", "plays", "does play", "is"],
+      "answer_index": 0,
+      "explanation": "'Does' substitutes the repeated verb phrase."
+    },
+    {
+      "id": "c2.grammar.ellipsis.q4",
+      "type": "cloze",
+      "skill": "ellips.noun-phrase",
+      "prompt": "Write one word: I need a charger. Do you have ___?",
+      "answers": ["one"],
+      "explanation": "'One' substitutes 'a charger'."
+    },
+    {
+      "id": "c2.grammar.ellipsis.q5",
+      "type": "mcq",
+      "skill": "ellips.noun-phrase",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "The flat at the top is bigger than the one at the bottom.",
+        "The flat at the top is bigger than the one at the bottom one.",
+        "The flat at the top is bigger than the one at the bottom flat.",
+        "The flat at the top is bigger than it at the bottom."
+      ],
+      "answer_index": 0,
+      "explanation": "'The one' substitutes 'the flat' in the comparison."
+    },
+    {
+      "id": "c2.grammar.ellipsis.q6",
+      "type": "mcq",
+      "skill": "ellips.substitution",
+      "prompt": "Choose the correct reply: Who fixed the printer? — ___",
+      "options": ["I did.", "I fixed.", "Me fixed.", "I have."],
+      "answer_index": 0,
+      "explanation": "Short answer with substitution: I did."
+    },
+    {
+      "id": "c2.grammar.ellipsis.q7",
+      "type": "mcq",
+      "skill": "ellips.auxiliary",
+      "prompt": "In which situation is ellipsis most natural?",
+      "options": [
+        "In a casual spoken exchange.",
+        "In a formal written report.",
+        "In a legal contract.",
+        "In an academic thesis abstract."
+      ],
+      "answer_index": 0,
+      "explanation": "Speech allows aggressive ellipsis; formal writing avoids it."
+    }
+  ]
+}

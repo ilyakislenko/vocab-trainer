@@ -52,6 +52,17 @@ def test_bundle_authoring_modules_have_no_lesson_or_quiz():
                 assert not bundle.has_quiz(entry.id)
 
 
+def test_bundle_has_zero_authoring_modules_left():
+    bundle = ContentBundle.from_files()
+    remaining = [
+        entry.id
+        for section in bundle.levels()
+        for entry in section.entries
+        if entry.availability is ModuleAvailability.AUTHORING
+    ]
+    assert remaining == [], f"content not fully authored: {remaining}"
+
+
 def test_bundle_every_available_module_lists_an_objective_and_skill():
     bundle = ContentBundle.from_files()
     for section in bundle.levels():

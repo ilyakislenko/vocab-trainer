@@ -1,0 +1,70 @@
+{
+  "module_id": "a1.vocabulary.daily-routine",
+  "items": [
+    {
+      "id": "a1.vocabulary.daily-routine.q1",
+      "type": "mcq",
+      "skill": "vocab.routine",
+      "prompt": "Choose the correct verb: I ___ at seven and have breakfast.",
+      "options": ["wake up", "get home", "go to bed", "finish"],
+      "answer_index": 0,
+      "explanation": "'Wake up' starts the day; breakfast comes after."
+    },
+    {
+      "id": "a1.vocabulary.daily-routine.q2",
+      "type": "mcq",
+      "skill": "vocab.routine",
+      "prompt": "Choose the correct verb: She ___ to school on foot.",
+      "options": ["goes", "go", "going", "is go"],
+      "answer_index": 0,
+      "explanation": "Third person of 'go' is 'goes': She goes to school."
+    },
+    {
+      "id": "a1.vocabulary.daily-routine.q3",
+      "type": "cloze",
+      "skill": "vocab.routine",
+      "prompt": "Write two words: I ___ ___ at eleven because I am tired.",
+      "answers": ["go to bed", "go to sleep"],
+      "explanation": "'Go to bed' describes ending the day."
+    },
+    {
+      "id": "a1.vocabulary.daily-routine.q4",
+      "type": "mcq",
+      "skill": "vocab.time-phrases",
+      "prompt": "Choose the correct preposition: I have lunch ___ one o'clock.",
+      "options": ["at", "in", "on", "—"],
+      "answer_index": 0,
+      "explanation": "Clock times take 'at': at one o'clock."
+    },
+    {
+      "id": "a1.vocabulary.daily-routine.q5",
+      "type": "cloze",
+      "skill": "vocab.time-phrases",
+      "prompt": "Write one word: We watch a film ___ the evening.",
+      "answers": ["in"],
+      "explanation": "Parts of the day take 'in': in the evening."
+    },
+    {
+      "id": "a1.vocabulary.daily-routine.q6",
+      "type": "mcq",
+      "skill": "vocab.adverbs-freq",
+      "prompt": "Choose the correct position: ___",
+      "options": [
+        "I always drink tea in the morning.",
+        "I drink always tea in the morning.",
+        "Always I drink tea in the morning.",
+        "I drink tea in the morning always."
+      ],
+      "answer_index": 0,
+      "explanation": "Frequency adverbs go before the main verb."
+    },
+    {
+      "id": "a1.vocabulary.daily-routine.q7",
+      "type": "cloze",
+      "skill": "vocab.adverbs-freq",
+      "prompt": "Write two words: He ___ ___ eats meat; he is vegetarian.",
+      "answers": ["never eats", "never eats"],
+      "explanation": "'Never' goes before the verb: He never eats meat."
+    }
+  ]
+}

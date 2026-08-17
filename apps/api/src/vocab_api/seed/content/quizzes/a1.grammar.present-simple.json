@@ -1,0 +1,66 @@
+{
+  "module_id": "a1.grammar.present-simple",
+  "items": [
+    {
+      "id": "a1.grammar.present-simple.q1",
+      "type": "mcq",
+      "skill": "pres.he-she-it",
+      "prompt": "Choose the correct form: My mother ___ in a hospital.",
+      "options": ["work", "works", "working", "is work"],
+      "answer_index": 1,
+      "explanation": "With he/she/it the present simple verb adds -s: works."
+    },
+    {
+      "id": "a1.grammar.present-simple.q2",
+      "type": "mcq",
+      "skill": "pres.he-she-it",
+      "prompt": "Choose the correct form: He ___ the news every evening.",
+      "options": ["watch", "watches", "watching", "is watch"],
+      "answer_index": 1,
+      "explanation": "Verbs ending in -ch add -es in the third person: watches."
+    },
+    {
+      "id": "a1.grammar.present-simple.q3",
+      "type": "cloze",
+      "skill": "pres.he-she-it",
+      "prompt": "Write the verb form: Anna ___ (go) to the gym twice a week.",
+      "answers": ["goes"],
+      "explanation": "Third person of 'go' is 'goes'."
+    },
+    {
+      "id": "a1.grammar.present-simple.q4",
+      "type": "mcq",
+      "skill": "pres.negation",
+      "prompt": "Choose the correct negative: We ___ live in the city centre.",
+      "options": ["don't", "doesn't", "not", "isn't"],
+      "answer_index": 0,
+      "explanation": "'We' plural takes 'don't' and the base verb."
+    },
+    {
+      "id": "a1.grammar.present-simple.q5",
+      "type": "cloze",
+      "skill": "pres.negation",
+      "prompt": "Write two words: He ___ ___ coffee after dinner. (negative of drink)",
+      "answers": ["doesn't drink", "does not drink", "doesn't drink"],
+      "explanation": "Third-person negative: doesn't + base verb drink."
+    },
+    {
+      "id": "a1.grammar.present-simple.q6",
+      "type": "mcq",
+      "skill": "pres.questions",
+      "prompt": "Choose the correct question: ___ your parents speak French?",
+      "options": ["Do", "Does", "Is", "Are"],
+      "answer_index": 0,
+      "explanation": "'Your parents' = they, so the auxiliary is 'Do'."
+    },
+    {
+      "id": "a1.grammar.present-simple.q7",
+      "type": "mcq",
+      "skill": "pres.questions",
+      "prompt": "Choose the correct question: ___ your brother drive a car?",
+      "options": ["Do", "Does", "Is", "Have"],
+      "answer_index": 1,
+      "explanation": "'Your brother' = he, so the auxiliary is 'Does'."
+    }
+  ]
+}

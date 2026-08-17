@@ -1,0 +1,66 @@
+{
+  "module_id": "a1.grammar.to-be",
+  "items": [
+    {
+      "id": "a1.grammar.to-be.q1",
+      "type": "mcq",
+      "skill": "be.am-is-are",
+      "prompt": "Choose the correct form: I ___ a student at this university.",
+      "options": ["am", "is", "are", "be"],
+      "answer_index": 0,
+      "explanation": "The subject 'I' always takes 'am' in the present simple."
+    },
+    {
+      "id": "a1.grammar.to-be.q2",
+      "type": "mcq",
+      "skill": "be.am-is-are",
+      "prompt": "Choose the correct form: My brother ___ a chef in a small restaurant.",
+      "options": ["am", "is", "are", "be"],
+      "answer_index": 1,
+      "explanation": "'My brother' is he — a singular third-person subject, so 'is'."
+    },
+    {
+      "id": "a1.grammar.to-be.q3",
+      "type": "mcq",
+      "skill": "be.am-is-are",
+      "prompt": "Choose the correct form: The children ___ in the garden.",
+      "options": ["am", "is", "are", "be"],
+      "answer_index": 2,
+      "explanation": "'The children' = they — plural, so 'are'."
+    },
+    {
+      "id": "a1.grammar.to-be.q4",
+      "type": "cloze",
+      "skill": "be.negation",
+      "prompt": "Write one word to make a negative sentence: She ___ at home; she is at work.",
+      "answers": ["isn't", "is not", "isnt"],
+      "explanation": "Negative with she takes 'isn't' (is not)."
+    },
+    {
+      "id": "a1.grammar.to-be.q5",
+      "type": "mcq",
+      "skill": "be.questions",
+      "prompt": "Which question is correct?",
+      "options": ["Is she your colleague?", "She is your colleague?", "She your colleague is?", "Is your colleague she?"],
+      "answer_index": 0,
+      "explanation": "In yes/no questions the verb 'be' moves before the subject."
+    },
+    {
+      "id": "a1.grammar.to-be.q6",
+      "type": "cloze",
+      "skill": "be.questions",
+      "prompt": "Complete the question with one word: ___ you ready for the meeting?",
+      "answers": ["Are"],
+      "explanation": "Question form of 'be' with 'you' is 'Are'."
+    },
+    {
+      "id": "a1.grammar.to-be.q7",
+      "type": "mcq",
+      "skill": "be.negation",
+      "prompt": "Choose the correct negative: They ___ from Paris; they are from Lyon.",
+      "options": ["am not", "isn't", "aren't", "not"],
+      "answer_index": 2,
+      "explanation": "'They' plural takes 'aren't' (are not)."
+    }
+  ]
+}

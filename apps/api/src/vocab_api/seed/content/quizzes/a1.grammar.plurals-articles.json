@@ -1,0 +1,71 @@
+{
+  "module_id": "a1.grammar.plurals-articles",
+  "items": [
+    {
+      "id": "a1.grammar.plurals-articles.q1",
+      "type": "mcq",
+      "skill": "plur.s-ies",
+      "prompt": "Choose the correct plural: three ___",
+      "options": ["boxes", "boxs", "box", "boxies"],
+      "answer_index": 0,
+      "explanation": "Nouns ending in -x add -es: box → boxes."
+    },
+    {
+      "id": "a1.grammar.plurals-articles.q2",
+      "type": "mcq",
+      "skill": "plur.s-ies",
+      "prompt": "Choose the correct plural: two ___",
+      "options": ["citys", "cities", "cityes", "city"],
+      "answer_index": 1,
+      "explanation": "Consonant + y changes to -ies: city → cities."
+    },
+    {
+      "id": "a1.grammar.plurals-articles.q3",
+      "type": "cloze",
+      "skill": "plur.s-ies",
+      "prompt": "Write the plural of 'child': three ___",
+      "answers": ["children"],
+      "explanation": "'Child' is irregular: child → children."
+    },
+    {
+      "id": "a1.grammar.plurals-articles.q4",
+      "type": "mcq",
+      "skill": "art.a-an",
+      "prompt": "Choose the correct article: ___ umbrella is on the shelf.",
+      "options": ["A", "An", "The", "—"],
+      "answer_index": 1,
+      "explanation": "'Umbrella' starts with a vowel sound, so 'an'."
+    },
+    {
+      "id": "a1.grammar.plurals-articles.q5",
+      "type": "cloze",
+      "skill": "art.a-an",
+      "prompt": "Write one word: She works at ___ university.",
+      "answers": ["a"],
+      "explanation": "'University' begins with a 'yu' consonant sound, so 'a'."
+    },
+    {
+      "id": "a1.grammar.plurals-articles.q6",
+      "type": "mcq",
+      "skill": "art.first-mention",
+      "prompt": "Choose the correct articles: I saw ___ dog. ___ dog was black.",
+      "options": ["a … The", "the … A", "a … A", "the … The"],
+      "answer_index": 0,
+      "explanation": "First mention takes a/an; the second reference takes 'the'."
+    },
+    {
+      "id": "a1.grammar.plurals-articles.q7",
+      "type": "mcq",
+      "skill": "art.first-mention",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "We have a dog and the dog is friendly.",
+        "We have the dog and a dog is friendly.",
+        "We have the dog and the dog is friendly.",
+        "We have a dog and a dog is friendly."
+      ],
+      "answer_index": 0,
+      "explanation": "A first mention (a dog), then a known reference (the dog)."
+    }
+  ]
+}

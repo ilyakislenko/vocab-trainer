@@ -1,0 +1,75 @@
+{
+  "module_id": "a2.grammar.present-continuous",
+  "items": [
+    {
+      "id": "a2.grammar.present-continuous.q1",
+      "type": "mcq",
+      "skill": "pcont.form",
+      "prompt": "Choose the correct form: They ___ a new office right now.",
+      "options": ["are building", "is building", "build", "builds"],
+      "answer_index": 0,
+      "explanation": "'They' plural takes 'are' + -ing: are building."
+    },
+    {
+      "id": "a2.grammar.present-continuous.q2",
+      "type": "cloze",
+      "skill": "pcont.form",
+      "prompt": "Write the verb in the correct form: She ___ (make) a cake at the moment.",
+      "answers": ["is making", "is makeing"],
+      "explanation": "Drop the final -e before -ing: make → making."
+    },
+    {
+      "id": "a2.grammar.present-continuous.q3",
+      "type": "mcq",
+      "skill": "pcont.now",
+      "prompt": "Choose the correct sentence for an action happening now.",
+      "options": [
+        "The phone is ringing now.",
+        "The phone rings now.",
+        "The phone ring now.",
+        "The phone is ring now."
+      ],
+      "answer_index": 0,
+      "explanation": "In-progress actions use be + -ing."
+    },
+    {
+      "id": "a2.grammar.present-continuous.q4",
+      "type": "cloze",
+      "skill": "pcont.now",
+      "prompt": "Write two words: Be quiet, please. I ___ ___ on the phone.",
+      "answers": ["am talking", "am speaking", "am talking"],
+      "explanation": "'I' takes 'am' + -ing."
+    },
+    {
+      "id": "a2.grammar.present-continuous.q5",
+      "type": "mcq",
+      "skill": "pcont.arrangements",
+      "prompt": "Choose the correct sentence for a fixed plan.",
+      "options": [
+        "We are meeting the client on Friday.",
+        "We meet the client on Friday always.",
+        "We meeting the client on Friday.",
+        "We are meet the client on Friday."
+      ],
+      "answer_index": 0,
+      "explanation": "Fixed future arrangements use the present continuous."
+    },
+    {
+      "id": "a2.grammar.present-continuous.q6",
+      "type": "cloze",
+      "skill": "pcont.arrangements",
+      "prompt": "Write two words: She ___ ___ to Berlin next Monday.",
+      "answers": ["is flying", "is flying"],
+      "explanation": "Arrangement with a time expression: is flying."
+    },
+    {
+      "id": "a2.grammar.present-continuous.q7",
+      "type": "mcq",
+      "skill": "pcont.now",
+      "prompt": "Choose the correct negative: He ___ at home today; he is on a trip.",
+      "options": ["isn't working", "doesn't work", "not working", "isn't work"],
+      "answer_index": 0,
+      "explanation": "Negative of the present continuous: isn't + -ing."
+    }
+  ]
+}

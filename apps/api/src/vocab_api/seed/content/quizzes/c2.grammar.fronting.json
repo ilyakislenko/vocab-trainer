@@ -1,0 +1,86 @@
+{
+  "module_id": "c2.grammar.fronting",
+  "items": [
+    {
+      "id": "c2.grammar.fronting.q1",
+      "type": "mcq",
+      "skill": "front.negative",
+      "prompt": "Choose the correct sentence with negative adverbial fronting.",
+      "options": [
+        "Never have I seen such a mess.",
+        "Never I have seen such a mess.",
+        "Never I seen such a mess have.",
+        "Never have seen I such a mess."
+      ],
+      "answer_index": 0,
+      "explanation": "Negative fronting inverts subject and auxiliary: Never have I seen …"
+    },
+    {
+      "id": "c2.grammar.fronting.q2",
+      "type": "cloze",
+      "skill": "front.negative",
+      "prompt": "Write two words: Hardly ___ ___ arrived when the meeting started.",
+      "answers": ["had we", "had we"],
+      "explanation": "'Hardly' fronting inverts: had we."
+    },
+    {
+      "id": "c2.grammar.fronting.q3",
+      "type": "mcq",
+      "skill": "front.negative",
+      "prompt": "Choose the correct completion: Not only ___ the deadline, but they also hid the delay.",
+      "options": ["did they miss", "they missed", "they did miss", "did missed they"],
+      "answer_index": 0,
+      "explanation": "'Not only' fronting inverts: did they miss."
+    },
+    {
+      "id": "c2.grammar.fronting.q4",
+      "type": "mcq",
+      "skill": "front.object",
+      "prompt": "Which sentence uses fronting of the object?",
+      "options": [
+        "His promises I don't believe.",
+        "I don't believe his promises.",
+        "I don't believe them.",
+        "Believing his promises is hard for me."
+      ],
+      "answer_index": 0,
+      "explanation": "The object 'his promises' is moved to the front for emphasis."
+    },
+    {
+      "id": "c2.grammar.fronting.q5",
+      "type": "mcq",
+      "skill": "front.postponement",
+      "prompt": "Which sentence postpones the heavy subject?",
+      "options": [
+        "It is hard to justify the cost.",
+        "To justify the cost is hard.",
+        "The cost to justify is hard.",
+        "Justifying the cost is what is hard."
+      ],
+      "answer_index": 0,
+      "explanation": "The 'it' + postponed infinitive keeps the opening light."
+    },
+    {
+      "id": "c2.grammar.fronting.q6",
+      "type": "cloze",
+      "skill": "front.negative",
+      "prompt": "Write one word: Seldom ___ the server go down during peak hours.",
+      "answers": ["does"],
+      "explanation": "'Seldom' fronting inverts with the auxiliary 'does'."
+    },
+    {
+      "id": "c2.grammar.fronting.q7",
+      "type": "mcq",
+      "skill": "front.postponement",
+      "prompt": "Why do skilled writers postpone long subjects?",
+      "options": [
+        "To keep the opening of the sentence light and readable.",
+        "To make the sentence as long as possible.",
+        "To avoid using a verb at the start.",
+        "To hide the main idea from the reader."
+      ],
+      "answer_index": 0,
+      "explanation": "Postponement moves heavy material to the end for readability."
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "module_id": "a2.grammar.past-simple",
+  "items": [
+    {
+      "id": "a2.grammar.past-simple.q1",
+      "type": "mcq",
+      "skill": "past.regular",
+      "prompt": "Choose the correct past form: We ___ late yesterday.",
+      "options": ["worked", "work", "working", "have worked"],
+      "answer_index": 0,
+      "explanation": "Regular verb 'work' takes -ed: worked."
+    },
+    {
+      "id": "a2.grammar.past-simple.q2",
+      "type": "cloze",
+      "skill": "past.regular",
+      "prompt": "Write the past form of 'study': She ___ medicine at university.",
+      "answers": ["studied"],
+      "explanation": "Consonant + y changes to -ied: studied."
+    },
+    {
+      "id": "a2.grammar.past-simple.q3",
+      "type": "mcq",
+      "skill": "past.irregular",
+      "prompt": "Choose the correct past form: I ___ to the market on Sunday.",
+      "options": ["went", "goed", "gone", "go"],
+      "answer_index": 0,
+      "explanation": "'Go' is irregular: go → went."
+    },
+    {
+      "id": "a2.grammar.past-simple.q4",
+      "type": "cloze",
+      "skill": "past.irregular",
+      "prompt": "Write the past form of 'buy': He ___ a new laptop last month.",
+      "answers": ["bought"],
+      "explanation": "'Buy' is irregular: buy → bought."
+    },
+    {
+      "id": "a2.grammar.past-simple.q5",
+      "type": "mcq",
+      "skill": "past.questions",
+      "prompt": "Choose the correct question: ___ you see the news yesterday?",
+      "options": ["Did", "Do", "Have", "Were"],
+      "answer_index": 0,
+      "explanation": "Past questions use 'did' + base verb."
+    },
+    {
+      "id": "a2.grammar.past-simple.q6",
+      "type": "mcq",
+      "skill": "past.questions",
+      "prompt": "Choose the correct negative: She ___ come to the party.",
+      "options": ["didn't", "doesn't", "don't", "isn't"],
+      "answer_index": 0,
+      "explanation": "Past negative: didn't + base verb."
+    },
+    {
+      "id": "a2.grammar.past-simple.q7",
+      "type": "cloze",
+      "skill": "past.irregular",
+      "prompt": "Write the past form of 'take': They ___ the train to Madrid.",
+      "answers": ["took"],
+      "explanation": "'Take' is irregular: take → took."
+    }
+  ]
+}

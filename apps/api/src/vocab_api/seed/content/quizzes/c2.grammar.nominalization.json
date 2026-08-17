@@ -1,0 +1,85 @@
+{
+  "module_id": "c2.grammar.nominalization",
+  "items": [
+    {
+      "id": "c2.grammar.nominalization.q1",
+      "type": "mcq",
+      "skill": "nom.verb-to-noun",
+      "prompt": "Choose the nominalization of 'We implemented the policy.'",
+      "options": [
+        "The implementation of the policy …",
+        "The implementing of the policy …",
+        "The policy we implemented …",
+        "We are implementing the policy …"
+      ],
+      "answer_index": 0,
+      "explanation": "'Implement' → 'implementation'; the clause becomes a noun phrase."
+    },
+    {
+      "id": "c2.grammar.nominalization.q2",
+      "type": "cloze",
+      "skill": "nom.verb-to-noun",
+      "prompt": "Write the noun form of 'to decide': Their ___ to expand surprised everyone.",
+      "answers": ["decision"],
+      "explanation": "'Decide' → 'decision'."
+    },
+    {
+      "id": "c2.grammar.nominalization.q3",
+      "type": "cloze",
+      "skill": "nom.verb-to-noun",
+      "prompt": "Write the noun form of 'to fail': The system's ___ caused a long outage.",
+      "answers": ["failure"],
+      "explanation": "'Fail' → 'failure'."
+    },
+    {
+      "id": "c2.grammar.nominalization.q4",
+      "type": "mcq",
+      "skill": "nom.complexity",
+      "prompt": "Choose the sentence that uses a denser nominal group.",
+      "options": [
+        "The rapid implementation of the revised policy is expected.",
+        "They quickly put the revised policy into effect, which people expect.",
+        "The policy was revised, and they implemented it quickly.",
+        "It is expected that the revised policy will be put into effect soon."
+      ],
+      "answer_index": 0,
+      "explanation": "Nominalization compresses events into one noun phrase."
+    },
+    {
+      "id": "c2.grammar.nominalization.q5",
+      "type": "mcq",
+      "skill": "nom.clarity",
+      "prompt": "Which sentence is clearer and stronger?",
+      "options": [
+        "We investigated the facts.",
+        "The undertaking of the investigation was conducted with the aim of the establishment of the facts.",
+        "An investigation was undertaken by us in order that the facts might be established.",
+        "Facts establishment was the aim of the investigation that was undertaken."
+      ],
+      "answer_index": 0,
+      "explanation": "Deliberate verbs beat needless nominal chains for clarity."
+    },
+    {
+      "id": "c2.grammar.nominalization.q6",
+      "type": "mcq",
+      "skill": "nom.clarity",
+      "prompt": "When does nominalization usually help a sentence?",
+      "options": [
+        "In formal reports that need a neutral, dense register.",
+        "In every sentence of casual speech.",
+        "Whenever the verb is short.",
+        "Never — it always makes prose worse."
+      ],
+      "answer_index": 0,
+      "explanation": "Nominalization suits formal, impersonal register — not all writing."
+    },
+    {
+      "id": "c2.grammar.nominalization.q7",
+      "type": "cloze",
+      "skill": "nom.verb-to-noun",
+      "prompt": "Write the noun form of 'to refuse': Their ___ to negotiate ended the talks.",
+      "answers": ["refusal"],
+      "explanation": "'Refuse' → 'refusal'."
+    }
+  ]
+}

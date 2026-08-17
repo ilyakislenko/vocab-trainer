@@ -4,21 +4,21 @@
     {
       "level": "A1",
       "modules": [
-        { "id": "a1.grammar.to-be", "status": "authoring", "title": "To be (am/is/are)" },
-        { "id": "a1.grammar.present-simple", "status": "authoring", "title": "Present Simple" },
-        { "id": "a1.grammar.plurals-articles", "status": "authoring", "title": "Plurals & articles" },
-        { "id": "a1.grammar.imperatives", "status": "authoring", "title": "Imperatives" },
-        { "id": "a1.vocabulary.daily-routine", "status": "authoring", "title": "Daily routine" }
+        "a1.grammar.to-be",
+        "a1.grammar.present-simple",
+        "a1.grammar.plurals-articles",
+        "a1.grammar.imperatives",
+        "a1.vocabulary.daily-routine"
       ]
     },
     {
       "level": "A2",
       "modules": [
-        { "id": "a2.grammar.past-simple", "status": "authoring", "title": "Past Simple" },
-        { "id": "a2.grammar.present-continuous", "status": "authoring", "title": "Present Continuous" },
-        { "id": "a2.grammar.comparatives", "status": "authoring", "title": "Comparatives & superlatives" },
-        { "id": "a2.grammar.modals-can-must", "status": "authoring", "title": "Modal verbs: can, must" },
-        { "id": "a2.vocabulary.work-travel", "status": "authoring", "title": "Work & travel" }
+        "a2.grammar.past-simple",
+        "a2.grammar.present-continuous",
+        "a2.grammar.comparatives",
+        "a2.grammar.modals-can-must",
+        "a2.vocabulary.work-travel"
       ]
     },
     {
@@ -66,10 +66,10 @@
     {
       "level": "C2",
       "modules": [
-        { "id": "c2.grammar.nominalization", "status": "authoring", "title": "Nominalization" },
-        { "id": "c2.grammar.fronting", "status": "authoring", "title": "Fronting & postponement" },
-        { "id": "c2.grammar.ellipsis", "status": "authoring", "title": "Ellipsis & substitution" },
-        { "id": "c2.vocabulary.nuance", "status": "authoring", "title": "Lexical nuance" }
+        "c2.grammar.nominalization",
+        "c2.grammar.fronting",
+        "c2.grammar.ellipsis",
+        "c2.vocabulary.nuance"
       ]
     }
   ]

@@ -1,0 +1,71 @@
+{
+  "module_id": "a2.vocabulary.work-travel",
+  "items": [
+    {
+      "id": "a2.vocabulary.work-travel.q1",
+      "type": "mcq",
+      "skill": "vocab.jobs",
+      "prompt": "Choose the job: She works in a hospital and cares for patients. She is a ___.",
+      "options": ["nurse", "mechanic", "accountant", "salesperson"],
+      "answer_index": 0,
+      "explanation": "A nurse cares for patients in a hospital."
+    },
+    {
+      "id": "a2.vocabulary.work-travel.q2",
+      "type": "mcq",
+      "skill": "vocab.jobs",
+      "prompt": "Choose the job: He fixes cars and machines. He is a ___.",
+      "options": ["mechanic", "receptionist", "engineer", "nurse"],
+      "answer_index": 0,
+      "explanation": "A mechanic repairs cars and machines."
+    },
+    {
+      "id": "a2.vocabulary.work-travel.q3",
+      "type": "cloze",
+      "skill": "vocab.work",
+      "prompt": "Write one word: I do not work on Mondays; Monday is my day ___.",
+      "answers": ["off"],
+      "explanation": "'A day off' is a day you do not work."
+    },
+    {
+      "id": "a2.vocabulary.work-travel.q4",
+      "type": "mcq",
+      "skill": "vocab.work",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "She works as a receptionist.",
+        "She works like a receptionist.",
+        "She works as receptionist.",
+        "She work as a receptionist."
+      ],
+      "answer_index": 0,
+      "explanation": "Job role uses 'work as a/an + job'."
+    },
+    {
+      "id": "a2.vocabulary.work-travel.q5",
+      "type": "mcq",
+      "skill": "vocab.travel",
+      "prompt": "Choose the correct word: You show your ___ to get on the plane.",
+      "options": ["boarding pass", "luggage", "platform", "flight"],
+      "answer_index": 0,
+      "explanation": "The boarding pass lets you onto the plane."
+    },
+    {
+      "id": "a2.vocabulary.work-travel.q6",
+      "type": "cloze",
+      "skill": "vocab.travel",
+      "prompt": "Write one word: The train to London leaves from ___ three.",
+      "answers": ["platform"],
+      "explanation": "The place where a train stops is the platform."
+    },
+    {
+      "id": "a2.vocabulary.work-travel.q7",
+      "type": "mcq",
+      "skill": "vocab.travel",
+      "prompt": "Choose the correct word: I need a ___ ticket because I am coming back tomorrow.",
+      "options": ["return", "single", "open", "second"],
+      "answer_index": 0,
+      "explanation": "A return ticket covers the trip there and back."
+    }
+  ]
+}

@@ -95,8 +95,8 @@ async def test_grade_placement_defaults_to_a1(client: httpx.AsyncClient):
     assert resp.status_code == 200
     result = resp.json()
     assert result["level"] == "A1"
-    # A1/A2 have no authored modules yet -> the first available anywhere.
-    assert result["current_module_id"] == "b1.grammar.articles"
+    # Default placement starts at the very first module of the ladder.
+    assert result["current_module_id"] == "a1.grammar.to-be"
 
 
 async def test_grade_placement_returns_highest_passing_level(client: httpx.AsyncClient):

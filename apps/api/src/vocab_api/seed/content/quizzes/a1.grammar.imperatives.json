@@ -1,0 +1,62 @@
+{
+  "module_id": "a1.grammar.imperatives",
+  "items": [
+    {
+      "id": "a1.grammar.imperatives.q1",
+      "type": "mcq",
+      "skill": "imp.direct",
+      "prompt": "Choose the correct imperative: ___ the window, it's hot in here.",
+      "options": ["Open", "To open", "Opening", "Opens"],
+      "answer_index": 0,
+      "explanation": "The imperative is just the base verb: Open the window."
+    },
+    {
+      "id": "a1.grammar.imperatives.q2",
+      "type": "cloze",
+      "skill": "imp.direct",
+      "prompt": "Write one word to give an instruction: ___ me your phone number.",
+      "answers": ["Give", "Tell"],
+      "explanation": "Imperative uses the base verb: Give me your phone number."
+    },
+    {
+      "id": "a1.grammar.imperatives.q3",
+      "type": "mcq",
+      "skill": "imp.negative",
+      "prompt": "Choose the correct negative imperative: ___ this door.",
+      "options": ["Don't open", "No open", "Not open", "Open not"],
+      "answer_index": 0,
+      "explanation": "Negative imperatives use don't + base verb."
+    },
+    {
+      "id": "a1.grammar.imperatives.q4",
+      "type": "cloze",
+      "skill": "imp.negative",
+      "prompt": "Write two words: ___ ___ late for the interview tomorrow.",
+      "answers": ["Don't be", "Don't be"],
+      "explanation": "Negative imperative of 'be' is 'Don't be'."
+    },
+    {
+      "id": "a1.grammar.imperatives.q5",
+      "type": "mcq",
+      "skill": "imp.polite",
+      "prompt": "Choose the most polite instruction.",
+      "options": [
+        "Please wait here.",
+        "Wait here now.",
+        "You wait here.",
+        "Waiting here."
+      ],
+      "answer_index": 0,
+      "explanation": "'Please' softens the imperative into a polite request."
+    },
+    {
+      "id": "a1.grammar.imperatives.q6",
+      "type": "mcq",
+      "skill": "imp.direct",
+      "prompt": "Choose the correct imperative: ___ quiet during the exam.",
+      "options": ["Be", "To be", "Being", "Is"],
+      "answer_index": 0,
+      "explanation": "The imperative of 'be' keeps the base form: Be quiet."
+    }
+  ]
+}
