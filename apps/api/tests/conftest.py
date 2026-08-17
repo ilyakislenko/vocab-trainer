@@ -25,7 +25,9 @@ class FixedClock:
 
 class StubScheduler:
     """Deterministic scheduler: a rating advances due by rating days and lands
-    the item in the Review state, preserving lapses."""
+    the item in the Review state. Like the real py-fsrs adapter it does not own
+    the lapse count (leaves it at the default), so use cases must carry lapses
+    across a review themselves."""
 
     def review(self, state: FsrsState, rating: Rating, now: datetime) -> FsrsState:
         return FsrsState(
@@ -33,7 +35,6 @@ class StubScheduler:
             state=2,
             stability=1.0,
             last_review=now,
-            lapses=state.lapses,
         )
 
 

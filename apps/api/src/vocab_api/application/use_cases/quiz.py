@@ -8,7 +8,7 @@ skills (Phase 2) and, once the lesson is read, completes the module (no score
 threshold).
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime
 
 from vocab_api.application.ports.clock import Clock
@@ -150,9 +150,11 @@ class GradeQuiz:
                         )
                     )
             elif existing is not None:
+                # The scheduler does not own the lapse count (see
+                # RecordSkillReview); carry it across so a correct answer never
+                # erases accumulated weak-spot history (§8.4).
+                scheduled = self._scheduler.review(existing.fsrs, Rating.GOOD, now)
                 await self._skill_items.save(
-                    existing.with_fsrs(
-                        self._scheduler.review(existing.fsrs, Rating.GOOD, now)
-                    )
+                    existing.with_fsrs(replace(scheduled, lapses=existing.fsrs.lapses))
                 )
             handled.add(result.skill)

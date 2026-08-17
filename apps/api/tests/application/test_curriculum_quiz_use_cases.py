@@ -9,6 +9,7 @@ from tests.conftest import (
 )
 
 from vocab_api.application.use_cases.quiz import GetModuleQuiz, GradeQuiz
+from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.curriculum.level import Level
 from vocab_api.domain.curriculum.map import (
     CurriculumMap,
@@ -18,6 +19,7 @@ from vocab_api.domain.curriculum.map import (
 )
 from vocab_api.domain.curriculum.progress import ModuleProgress, ModuleStatus
 from vocab_api.domain.curriculum.quiz import Quiz, QuizItem, QuizItemType
+from vocab_api.domain.curriculum.skill_item import LEECH_LAPSES, SkillItem
 from vocab_api.domain.curriculum.track import Track
 from vocab_api.domain.shared.errors import CurriculumQuizNotFound
 
@@ -210,6 +212,33 @@ async def test_grade_quiz_one_skill_item_per_skill_and_correct_answers_advance_i
     assert await skills.by_skill("art.indefinite") is not None
     assert (await skills.by_skill("art.indefinite")).id == created.id
     assert (await skills.by_skill("art.indefinite")).fsrs.due > before
+
+
+async def test_grade_quiz_correct_answer_preserves_lapse_count():
+    # A correct answer records a Good review but must not erase the skill's
+    # accumulated lapses (its leech/weak-spot history) — mirrors the invariant
+    # that RecordSkillReview upholds via the real, lapse-agnostic scheduler.
+    content = FakeContent()
+    skills = FakeSkillItemRepository()
+    leech = await skills.add(
+        SkillItem(
+            skill="art.indefinite",
+            module_id="b1.grammar.articles",
+            source_item_id="q1",
+            fsrs=FsrsState(due=FIXED_NOW, state=2, stability=1.0, lapses=LEECH_LAPSES),
+        )
+    )
+    use_case = GradeQuiz(
+        content, FakeProgress(), FakeAttempts(), FixedClock(), skills, StubScheduler()
+    )
+
+    await use_case.execute("b1.grammar.articles", [("q1", "1")])
+
+    updated = await skills.by_skill("art.indefinite")
+    assert updated is not None
+    assert updated.id == leech.id
+    assert updated.fsrs.lapses == LEECH_LAPSES
+    assert updated.is_leech is True
 
 
 async def test_grade_quiz_completes_module_once_lesson_read():
