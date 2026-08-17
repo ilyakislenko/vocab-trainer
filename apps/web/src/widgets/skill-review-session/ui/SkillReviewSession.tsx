@@ -28,7 +28,7 @@ export function SkillReviewSession() {
 
   useRevealShortcut(!revealed && !complete, () => setRevealed(true));
 
-  if (session === null) return <p>{t("practice.loading")}</p>;
+  if (session === null) return <p>{t("common.loading")}</p>;
   const item = session[index];
 
   if (!item || complete) {

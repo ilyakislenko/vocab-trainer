@@ -1,4 +1,5 @@
 import { useStats } from "@/entities/stats";
+import { formatCount } from "@/shared/lib/format";
 import { useI18n } from "@/shared/lib/i18n";
 import { Card, CardContent } from "@/shared/ui/card";
 
@@ -27,30 +28,31 @@ function Tile({
 }
 
 export function StatsPanel({ deckId }: { deckId: number }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const stats = useStats(deckId);
-  if (!stats.data) return <p>{t("practice.loading")}</p>;
+  if (!stats.data) return <p>{t("common.loading")}</p>;
 
   const maxActivity = Math.max(...stats.data.activity.map((a) => Number(a.count)), 1);
+  const count = (n: number) => formatCount(n, locale);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-3">
         <Tile
           label={t("stats.dueToday")}
-          value={stats.data.due_today}
+          value={count(stats.data.due_today)}
           icon="📅"
           tint="bg-tint-lavender"
         />
         <Tile
           label={t("stats.totalReviews")}
-          value={stats.data.total_reviews}
+          value={count(stats.data.total_reviews)}
           icon="📊"
           tint="bg-tint-blue"
         />
         <Tile
           label={t("stats.streak")}
-          value={`${stats.data.streak}🔥`}
+          value={`${count(stats.data.streak)}🔥`}
           icon=""
           tint="bg-tint-peach"
         />
@@ -63,16 +65,16 @@ export function StatsPanel({ deckId }: { deckId: number }) {
         </p>
         <div className="flex flex-wrap gap-2 text-sm">
           <span className="rounded-full bg-tint-lavender px-3 py-1 font-extrabold text-secondary-foreground">
-            🆕 {t("stats.new")}: <b>{stats.data.fsrs_new}</b>
+            🆕 {t("stats.new")}: <b>{count(stats.data.fsrs_new)}</b>
           </span>
           <span className="rounded-full bg-tint-blue px-3 py-1 font-extrabold text-secondary-foreground">
-            📖 {t("stats.learning")}: <b>{stats.data.fsrs_learning}</b>
+            📖 {t("stats.learning")}: <b>{count(stats.data.fsrs_learning)}</b>
           </span>
           <span className="rounded-full bg-tint-lavender px-3 py-1 font-extrabold text-secondary-foreground">
-            ✅ {t("stats.review")}: <b>{stats.data.fsrs_review}</b>
+            ✅ {t("stats.review")}: <b>{count(stats.data.fsrs_review)}</b>
           </span>
           <span className="rounded-full bg-tint-peach px-3 py-1 font-extrabold text-secondary-foreground">
-            🔄 {t("stats.relearning")}: <b>{stats.data.fsrs_relearning}</b>
+            🔄 {t("stats.relearning")}: <b>{count(stats.data.fsrs_relearning)}</b>
           </span>
         </div>
       </div>

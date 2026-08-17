@@ -63,7 +63,7 @@ export function PracticeSession({
     setDrillOpen(false);
   }, [currentCardId]);
 
-  if (isLoading && snapshot === null) return <p>{t("practice.loading")}</p>;
+  if (isLoading && snapshot === null) return <p>{t("common.loading")}</p>;
 
   const done = snapshot !== null && snapshot.length > 0 && index >= snapshot.length;
   if (done && snapshot !== null) {

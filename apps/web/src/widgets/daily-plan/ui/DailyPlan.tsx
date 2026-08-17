@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useTodaySession } from "@/entities/session";
 import type { TodayStep } from "@/shared/api";
+import { formatCount } from "@/shared/lib/format";
 import { useI18n } from "@/shared/lib/i18n";
 
 function StepCard({ children }: { children: ReactNode }) {
@@ -11,7 +12,7 @@ function StepCard({ children }: { children: ReactNode }) {
 }
 
 function ReviewCard({ step }: { step: TodayStep }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   return (
     <StepCard>
       <h3 className="text-lg font-black tracking-tight text-foreground">
@@ -20,12 +21,12 @@ function ReviewCard({ step }: { step: TodayStep }) {
       <div className="flex flex-wrap gap-2 text-sm font-extrabold text-muted-foreground">
         {step.vocab_due > 0 && (
           <Link to="/" className="rounded-full bg-primary/10 px-3 py-1 text-primary">
-            {t("today.review.vocab")} · {step.vocab_due}
+            {t("today.review.vocab")} · {formatCount(step.vocab_due, locale)}
           </Link>
         )}
         {step.skill_due > 0 && (
           <Link to="/learn/skills" className="rounded-full bg-primary/10 px-3 py-1 text-primary">
-            {t("today.review.skills")} · {step.skill_due}
+            {t("today.review.skills")} · {formatCount(step.skill_due, locale)}
           </Link>
         )}
       </div>
@@ -34,7 +35,7 @@ function ReviewCard({ step }: { step: TodayStep }) {
 }
 
 function LearnCard({ step }: { step: TodayStep }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const isLesson = step.kind === "read_lesson";
   const to = isLesson ? `/learn/${step.module_id}` : `/learn/${step.module_id}/quiz`;
   return (
@@ -47,7 +48,7 @@ function LearnCard({ step }: { step: TodayStep }) {
       </Link>
       {step.items !== null && step.items !== undefined && step.items > 0 && (
         <p className="text-sm font-extrabold text-muted-foreground">
-          {t("today.learn.items")} · {step.items}
+          {t("today.learn.items")} · {formatCount(step.items, locale)}
         </p>
       )}
     </StepCard>
@@ -107,7 +108,7 @@ function ProduceCard({ step }: { step: TodayStep }) {
 }
 
 function FocusCard({ step }: { step: TodayStep }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const leeches = step.leeches ?? [];
   if (leeches.length === 0) return null;
   return (
@@ -117,7 +118,7 @@ function FocusCard({ step }: { step: TodayStep }) {
           {t("today.focus.title")}
         </h3>
         <span className="rounded-full bg-destructive/10 px-3 py-1 text-sm font-extrabold text-destructive">
-          {leeches.length} {t("today.focus.leeches")}
+          {formatCount(leeches.length, locale)} {t("today.focus.leeches")}
         </span>
       </div>
       <ul className="flex flex-wrap gap-2">

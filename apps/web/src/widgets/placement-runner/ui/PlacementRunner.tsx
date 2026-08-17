@@ -19,7 +19,7 @@ export function PlacementRunner() {
   const [result, setResult] = useState<PlacementGrade | null>(null);
 
   if (placement.isLoading) {
-    return <p className="text-sm font-semibold text-muted-foreground">{t("practice.loading")}</p>;
+    return <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>;
   }
   if (placement.error || !placement.data) {
     return (
@@ -112,7 +112,7 @@ export function PlacementRunner() {
             disabled={grade.isPending || answeredCount === 0}
             className="rounded-full"
           >
-            {grade.isPending ? t("practice.loading") : t("placement.submit")}
+            {grade.isPending ? t("common.loading") : t("placement.submit")}
           </Button>
         ) : (
           <Button type="button" onClick={goNext} disabled={!answered} className="rounded-full">

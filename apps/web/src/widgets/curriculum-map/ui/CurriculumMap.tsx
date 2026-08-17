@@ -126,7 +126,7 @@ export function CurriculumMap() {
       </header>
 
       {map.isLoading ? (
-        <p className="text-sm font-semibold text-muted-foreground">{t("practice.loading")}</p>
+        <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>
       ) : map.error ? (
         <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
           {t("misc.error")}

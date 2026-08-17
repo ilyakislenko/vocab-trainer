@@ -38,7 +38,7 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
         >
           {t("learn.backToMap")}
         </Link>
-        <p className="text-sm font-semibold text-muted-foreground">{t("practice.loading")}</p>
+        <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>
       </div>
     );
   }
@@ -119,7 +119,7 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
             disabled={markRead.isPending}
             className="w-fit rounded-full"
           >
-            {markRead.isPending ? t("practice.loading") : t("learn.markRead")}
+            {markRead.isPending ? t("common.loading") : t("learn.markRead")}
           </Button>
           <Button onClick={handleStartQuiz} variant="outline" className="w-fit rounded-full">
             {t("learn.startQuiz")}

@@ -6,6 +6,7 @@ import { useDecks } from "@/entities/deck";
 import { useProgress } from "@/entities/progress";
 import { statsKeys } from "@/entities/stats";
 import { apiClient, type Stats } from "@/shared/api";
+import { formatCount } from "@/shared/lib/format";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -19,7 +20,7 @@ async function fetchStats(deckId: number): Promise<Stats> {
 }
 
 export function ProfilePage({ deckId }: { deckId: number | null }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const progress = useProgress();
   const map = useCurriculumMap();
   const decks = useDecks();
@@ -112,11 +113,15 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
 
       <section className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1 rounded-3xl border border-border bg-card p-6">
-          <span className="text-2xl font-black tabular-nums">{totals.streak}</span>
+          <span className="text-2xl font-black tabular-nums">
+            {formatCount(totals.streak, locale)}
+          </span>
           <span className="text-sm font-bold text-muted-foreground">{t("profile.streak")}</span>
         </div>
         <div className="flex flex-col gap-1 rounded-3xl border border-border bg-card p-6">
-          <span className="text-2xl font-black tabular-nums">{totals.reviews}</span>
+          <span className="text-2xl font-black tabular-nums">
+            {formatCount(totals.reviews, locale)}
+          </span>
           <span className="text-sm font-bold text-muted-foreground">
             {t("profile.totalReviews")}
           </span>
@@ -133,7 +138,7 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
               key={row.label}
               className="rounded-full bg-tint-blue px-4 py-2 text-sm font-extrabold"
             >
-              {t(row.label)}: {row.value}
+              {t(row.label)}: {formatCount(row.value, locale)}
             </span>
           ))}
         </div>
@@ -159,7 +164,7 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
                   />
                 </div>
                 <span className="text-xs text-muted-foreground tabular-nums">
-                  {levelRow.completed}/{levelRow.total}
+                  {formatCount(levelRow.completed, locale)}/{formatCount(levelRow.total, locale)}
                 </span>
               </div>
             );

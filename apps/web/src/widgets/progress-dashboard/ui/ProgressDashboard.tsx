@@ -1,5 +1,6 @@
 import { Flame } from "lucide-react";
 import { useProgress } from "@/entities/progress";
+import { formatCount } from "@/shared/lib/format";
 import { useI18n } from "@/shared/lib/i18n";
 
 const LEVEL_LABEL_KEYS: Record<string, string> = {
@@ -12,7 +13,7 @@ const LEVEL_LABEL_KEYS: Record<string, string> = {
 };
 
 export function ProgressDashboard() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const report = useProgress();
 
   if (report.isLoading) {
@@ -37,7 +38,7 @@ export function ProgressDashboard() {
           {streak > 0 && (
             <span className="flex items-center gap-1 rounded-full bg-orange-100 px-3 py-1 text-sm font-extrabold text-orange-700">
               <Flame size={14} />
-              {streak} {t("progress.streak")}
+              {formatCount(streak, locale)} {t("progress.streak")}
             </span>
           )}
           <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary">
@@ -56,7 +57,8 @@ export function ProgressDashboard() {
                   {t(LEVEL_LABEL_KEYS[level.level] ?? level.level)}
                 </span>
                 <span className="font-extrabold text-muted-foreground">
-                  {level.completed}/{level.total} · {percent}%
+                  {formatCount(level.completed, locale)}/{formatCount(level.total, locale)} ·{" "}
+                  {percent}%
                 </span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-muted">

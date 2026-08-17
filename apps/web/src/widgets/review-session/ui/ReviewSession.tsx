@@ -51,7 +51,7 @@ export function ReviewSession({ deckId }: { deckId: number }) {
   if (plan === null) {
     return (
       <div className="flex flex-col gap-4">
-        <p>{t("practice.loading")}</p>
+        <p>{t("common.loading")}</p>
       </div>
     );
   }

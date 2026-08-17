@@ -16,6 +16,9 @@ const dict: Translations = {
   "nav.dark": { en: "Dark", ru: "Тёмная" },
   "nav.light": { en: "Light", ru: "Светлая" },
 
+  // Common
+  "common.loading": { en: "Loading…", ru: "Загрузка…" },
+
   // Header
   "header.title": { en: "Vocab Trainer", ru: "Vocab Trainer" },
   "header.newDeck": { en: "New deck…", ru: "Новая колода…" },

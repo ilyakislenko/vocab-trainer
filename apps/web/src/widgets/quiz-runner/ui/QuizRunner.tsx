@@ -17,7 +17,7 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
   const [result, setResult] = useState<CurriculumQuizGrade | null>(null);
 
   if (quiz.isLoading) {
-    return <p className="text-sm font-semibold text-muted-foreground">{t("practice.loading")}</p>;
+    return <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>;
   }
   if (quiz.error || !quiz.data) {
     return (
@@ -79,7 +79,7 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
         disabled={grade.isPending || answerCount === 0}
         className="w-fit rounded-full"
       >
-        {grade.isPending ? t("practice.loading") : t("quiz.submit")}
+        {grade.isPending ? t("common.loading") : t("quiz.submit")}
       </Button>
     </form>
   );
