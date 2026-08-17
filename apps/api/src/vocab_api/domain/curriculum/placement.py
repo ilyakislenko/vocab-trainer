@@ -83,6 +83,24 @@ def correct_answer(item: PlacementItem) -> str:
     return ""
 
 
+def given_answer(item: PlacementItem, given: str) -> str:
+    """The learner's answer as display text for the post-test review.
+
+    For mcq, ``given`` is the selected option index as a string; resolve it to
+    the option text so the review shows readable words, not a bare index (it is
+    then symmetric with ``correct_answer``). Cloze/transform answers are already
+    text and pass through; an unanswered or malformed value passes through too.
+    """
+    if item.type is QuizItemType.MCQ and item.options is not None:
+        try:
+            index = int(given)
+        except ValueError:
+            return given
+        if 0 <= index < len(item.options):
+            return item.options[index]
+    return given
+
+
 def estimate_level(items: tuple[PlacementItem, ...], results: tuple[GradeResult, ...]) -> Level:
     """Highest level such that that level and every lower tested level each pass.
 

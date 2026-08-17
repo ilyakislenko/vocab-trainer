@@ -130,9 +130,12 @@ async def test_grade_placement_returns_per_item_results_for_review():
     assert ok_item.item_id == A2[0].id
     assert ok_item.correct is True
     assert ok_item.correct_answer == "right"
-    assert ok_item.given == "0"
+    # mcq `given` is resolved from the selected index to the option text so the
+    # post-test review reads as words, not a bare number.
+    assert ok_item.given == "right"
     assert miss_item.item_id == A2[1].id
     assert miss_item.correct is False
+    assert miss_item.given == "wrong"
     assert miss_item.correct_answer == "right"
 
 

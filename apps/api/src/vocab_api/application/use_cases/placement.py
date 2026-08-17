@@ -18,6 +18,7 @@ from vocab_api.domain.curriculum.placement import (
     Placement,
     correct_answer,
     estimate_level,
+    given_answer,
     sample_diagnostic,
 )
 from vocab_api.domain.curriculum.progress import LearnerProfile
@@ -89,7 +90,7 @@ class GradePlacement:
                     level=item.level,
                     skill=item.skill,
                     prompt=item.prompt,
-                    given=answer.given,
+                    given=given_answer(item, answer.given),
                     correct=outcome.correct,
                     correct_answer=correct_answer(item),
                     explanation=item.explanation,
