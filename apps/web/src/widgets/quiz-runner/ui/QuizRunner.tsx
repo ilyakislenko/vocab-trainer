@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuiz } from "@/entities/quiz";
 import { useTakeQuiz } from "@/features/take-quiz";
@@ -30,7 +30,8 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
   const setAnswer = (itemId: string, value: string) =>
     setAnswers((prev) => ({ ...prev, [itemId]: value }));
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     const payload = quiz.data.items
       .filter((item) => answers[item.id] !== undefined && answers[item.id] !== "")
       .map((item) => ({ item_id: item.id, given: answers[item.id] }));
@@ -47,7 +48,7 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
   ).length;
 
   return (
-    <div className="flex flex-col gap-6">
+    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
       <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-2xl font-black tracking-tight text-foreground">{t("quiz.title")}</h1>
@@ -74,13 +75,13 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
       </ol>
 
       <Button
-        onClick={handleSubmit}
+        type="submit"
         disabled={grade.isPending || answerCount === 0}
         className="w-fit rounded-full"
       >
         {grade.isPending ? t("practice.loading") : t("quiz.submit")}
       </Button>
-    </div>
+    </form>
   );
 }
 
