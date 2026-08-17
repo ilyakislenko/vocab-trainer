@@ -15,4 +15,5 @@ class Settings(BaseSettings):
     pronunciation_provider: Literal["rtx", "cloud", "none"] = "none"
     pronunciation_rtx_url: str = "http://192.168.1.84:8900"
     pronunciation_cloud_url: str = "http://localhost:8000"
-    pronunciation_timeout: float = 15.0  # seconds; short so rtx sleep/unreachable degrades fast
+    pronunciation_timeout: float = 15.0  # seconds; generous so a cloud STT round-trip completes
+    pronunciation_connect_timeout: float = 2.0  # seconds; rtx can sleep — fail fast, don't hang

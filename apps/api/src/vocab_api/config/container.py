@@ -61,7 +61,9 @@ from vocab_api.infrastructure.persistence.review_log_repo import SqlReviewLogRep
 from vocab_api.infrastructure.persistence.sentence_attempt_repo import (
     SqlSentenceAttemptRepository,
 )
+from vocab_api.infrastructure.pronunciation.cloud_stt_scorer import CloudSttScorer
 from vocab_api.infrastructure.pronunciation.null_scorer import NullScorer
+from vocab_api.infrastructure.pronunciation.rtx_gop_scorer import RtxGopScorer
 from vocab_api.infrastructure.question_bank import JsonQuestionBank, load_interview_questions
 from vocab_api.infrastructure.scheduling.py_fsrs_scheduler import PyFsrsScheduler
 
@@ -155,10 +157,18 @@ class Container:
         provider = self._settings.pronunciation_provider
         if provider == "none":
             return NullScorer()
-        raise ValueError(
-            f"pronunciation provider {provider!r} is not wired yet; use 'none' "
-            "(the rtx/cloud adapters land with their own steps)"
-        )
+        if provider == "cloud":
+            return CloudSttScorer(
+                self._settings.pronunciation_cloud_url,
+                self._settings.pronunciation_timeout,
+            )
+        if provider == "rtx":
+            return RtxGopScorer(
+                self._settings.pronunciation_rtx_url,
+                self._settings.pronunciation_timeout,
+                connect_timeout=self._settings.pronunciation_connect_timeout,
+            )
+        raise ValueError(f"pronunciation provider {provider!r} is not wired")
 
     async def init(self) -> None:
         await self._db.init()
