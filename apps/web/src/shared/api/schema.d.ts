@@ -379,6 +379,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/session/today": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Today */
+        get: operations["today_session_today_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/session/focus": {
         parameters: {
             query?: never;
@@ -909,6 +926,50 @@ export interface components {
             activity: {
                 [key: string]: number | string;
             }[];
+        };
+        /** TodaySessionOut */
+        TodaySessionOut: {
+            /** Steps */
+            steps: components["schemas"]["TodayStepOut"][];
+        };
+        /**
+         * TodayStepOut
+         * @description One step of the daily plan. `kind` discriminates; the front-end renders
+         *     each kind from the fields it carries and deep-links to the existing screen
+         *     that performs the work.
+         */
+        TodayStepOut: {
+            /** Kind */
+            kind: string;
+            /**
+             * Vocab Due
+             * @default 0
+             */
+            vocab_due: number;
+            /**
+             * Skill Due
+             * @default 0
+             */
+            skill_due: number;
+            /** Module Id */
+            module_id?: string | null;
+            /** Title */
+            title?: string | null;
+            /** Level */
+            level?: string | null;
+            /** Track */
+            track?: string | null;
+            /** Items */
+            items?: number | null;
+            /** Word */
+            word?: string | null;
+            /** Card Id */
+            card_id?: number | null;
+            /**
+             * Leeches
+             * @default []
+             */
+            leeches: components["schemas"]["CurriculumSkillItemOut"][];
         };
         /** ValidationError */
         ValidationError: {
@@ -1654,6 +1715,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    today_session_today_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TodaySessionOut"];
                 };
             };
         };

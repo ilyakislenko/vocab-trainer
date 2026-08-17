@@ -79,3 +79,15 @@ class SqlReviewLogRepository(ReviewLogRepository):
         async with self._db.session() as session:
             result = await session.execute(stmt)
             return [{"date": str(r[0]), "count": int(r[1])} for r in result.all()]
+
+    async def most_recent(self, limit: int) -> list[int]:
+        # Newest reviews first, across all decks (the Today session wants the
+        # most recently touched card regardless of which deck it lives in).
+        stmt = (
+            select(ReviewLogRow.card_id)
+            .order_by(ReviewLogRow.reviewed_at.desc())  # type: ignore[attr-defined]  # sqlmodel class attr is typed datetime
+            .limit(limit)
+        )
+        async with self._db.session() as session:
+            result = await session.execute(stmt)
+            return list(result.scalars().all())

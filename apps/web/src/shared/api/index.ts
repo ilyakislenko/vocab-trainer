@@ -30,6 +30,8 @@ export type {
   RowError,
   SkillReviewInput,
   Stats,
+  TodaySession,
+  TodayStep,
   WordHint,
 } from "./types";
 export { useTranslateSentence } from "./use-translate";

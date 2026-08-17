@@ -275,3 +275,25 @@ class PlacementGradeIn(BaseModel):
 class PlacementGradeOut(BaseModel):
     level: str
     current_module_id: str | None
+
+
+class TodayStepOut(BaseModel):
+    """One step of the daily plan. `kind` discriminates; the front-end renders
+    each kind from the fields it carries and deep-links to the existing screen
+    that performs the work."""
+
+    kind: str
+    vocab_due: int = 0
+    skill_due: int = 0
+    module_id: str | None = None
+    title: str | None = None
+    level: str | None = None
+    track: str | None = None
+    items: int | None = None
+    word: str | None = None
+    card_id: int | None = None
+    leeches: list[CurriculumSkillItemOut] = []
+
+
+class TodaySessionOut(BaseModel):
+    steps: list[TodayStepOut]

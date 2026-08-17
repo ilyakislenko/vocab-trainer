@@ -1,4 +1,5 @@
-from vocab_api.application.ports.curriculum_repos import LearnerProfileRepository
+from tests.conftest import FakeLearnerProfileRepository
+
 from vocab_api.application.use_cases.placement import (
     GetPlacement,
     GradePlacement,
@@ -87,19 +88,6 @@ class FakeContent:
 
     def map(self) -> CurriculumMap[LadderEntry]:
         return MAP
-
-
-class FakeLearnerProfileRepository(LearnerProfileRepository):
-    def __init__(self) -> None:
-        self.profile = LearnerProfile()
-        self.saves = 0
-
-    async def get(self) -> LearnerProfile:
-        return self.profile
-
-    async def save(self, profile: LearnerProfile) -> None:
-        self.profile = profile
-        self.saves += 1
 
 
 async def test_get_placement_serves_the_bank():

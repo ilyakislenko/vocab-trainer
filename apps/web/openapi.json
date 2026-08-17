@@ -952,6 +952,25 @@
         }
       }
     },
+    "/session/today": {
+      "get": {
+        "tags": ["session"],
+        "summary": "Today",
+        "operationId": "today_session_today_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodaySessionOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/session/focus": {
       "get": {
         "tags": ["session"],
@@ -1529,7 +1548,7 @@
         "type": "object",
         "required": ["id", "type", "skill", "prompt"],
         "title": "CurriculumQuizItemOut",
-        "description": "A quiz item as served to the learner \u2014 answers are never sent."
+        "description": "A quiz item as served to the learner — answers are never sent."
       },
       "CurriculumQuizItemResultOut": {
         "properties": {
@@ -2058,7 +2077,7 @@
         "type": "object",
         "required": ["id", "level", "skill", "type", "prompt"],
         "title": "PlacementItemOut",
-        "description": "A diagnostic item as served to the learner \u2014 answers are never sent."
+        "description": "A diagnostic item as served to the learner — answers are never sent."
       },
       "PlacementOut": {
         "properties": {
@@ -2197,6 +2216,127 @@
         "type": "object",
         "required": ["due_today", "total_reviews"],
         "title": "StatsOut"
+      },
+      "TodaySessionOut": {
+        "properties": {
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/TodayStepOut"
+            },
+            "type": "array",
+            "title": "Steps"
+          }
+        },
+        "type": "object",
+        "required": ["steps"],
+        "title": "TodaySessionOut"
+      },
+      "TodayStepOut": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "vocab_due": {
+            "type": "integer",
+            "title": "Vocab Due",
+            "default": 0
+          },
+          "skill_due": {
+            "type": "integer",
+            "title": "Skill Due",
+            "default": 0
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "track": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Track"
+          },
+          "items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Items"
+          },
+          "word": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Word"
+          },
+          "card_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Card Id"
+          },
+          "leeches": {
+            "items": {
+              "$ref": "#/components/schemas/CurriculumSkillItemOut"
+            },
+            "type": "array",
+            "title": "Leeches",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["kind"],
+        "title": "TodayStepOut",
+        "description": "One step of the daily plan. `kind` discriminates; the front-end renders\neach kind from the fields it carries and deep-links to the existing screen\nthat performs the work."
       },
       "ValidationError": {
         "properties": {

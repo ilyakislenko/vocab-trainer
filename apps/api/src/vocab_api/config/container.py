@@ -26,6 +26,7 @@ from vocab_api.application.use_cases.skills import (
     RecordSkillReview,
 )
 from vocab_api.application.use_cases.stats import GetStats
+from vocab_api.application.use_cases.today import BuildTodaySession
 from vocab_api.config.britlex_seed import (
     BritlexSeeder,
     ItInterviewSeeder,
@@ -103,10 +104,18 @@ class Container:
         self.get_module = GetModule(curriculum, module_progress)
         self.get_lesson = GetLesson(curriculum, module_progress)
         self.mark_lesson_read = MarkLessonRead(curriculum, module_progress, clock)
-        self.get_recommended_module = GetRecommendedModule(curriculum, module_progress)
+        self.get_recommended_module = GetRecommendedModule(
+            curriculum, module_progress, learner_profile
+        )
         self.get_module_quiz = GetModuleQuiz(curriculum, module_progress)
         self.grade_quiz = GradeQuiz(
-            curriculum, module_progress, quiz_attempts, clock, skill_items, scheduler
+            curriculum,
+            module_progress,
+            quiz_attempts,
+            clock,
+            skill_items,
+            scheduler,
+            learner_profile,
         )
         self.get_skill_review_queue = GetSkillReviewQueue(skill_items, curriculum, clock)
         self.record_skill_review = RecordSkillReview(skill_items, scheduler, clock)
@@ -114,6 +123,16 @@ class Container:
         self.learner_profile = learner_profile
         self.get_placement = GetPlacement(curriculum)
         self.grade_placement = GradePlacement(curriculum, learner_profile)
+        self.build_today_session = BuildTodaySession(
+            curriculum,
+            module_progress,
+            decks,
+            cards,
+            logs,
+            skill_items,
+            self.get_recommended_module,
+            clock,
+        )
 
         self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
         self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)

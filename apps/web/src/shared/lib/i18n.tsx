@@ -355,6 +355,35 @@ const dict: Translations = {
   },
   "placement.startLearning": { en: "Start learning →", ru: "Начать учиться →" },
 
+  // Today
+  "nav.today": { en: "Today", ru: "Сегодня" },
+  "today.pageTitle": { en: "Today", ru: "Сегодня" },
+  "today.pageHint": {
+    en: "Your plan for the day, from warm-up to output.",
+    ru: "Твой план на день: от разминки до разговорной практики.",
+  },
+  "today.loading": { en: "Building your plan…", ru: "Собираем план…" },
+  "today.error": {
+    en: "Failed to load today's plan.",
+    ru: "Не удалось загрузить план на сегодня.",
+  },
+  "today.empty": {
+    en: "All caught up — nothing due today.",
+    ru: "Всё выполнено — на сегодня ничего не осталось.",
+  },
+  "today.review.title": { en: "Warm up", ru: "Разминка" },
+  "today.review.vocab": { en: "Vocab", ru: "Слова" },
+  "today.review.skills": { en: "Skills", ru: "Навыки" },
+  "today.learn.readLesson": { en: "Read the lesson", ru: "Прочитай урок" },
+  "today.learn.takeQuiz": { en: "Take the quiz", ru: "Пройди тест" },
+  "today.learn.items": { en: "Items", ru: "Вопросов" },
+  "today.produce.title": { en: "Produce", ru: "Продукция" },
+  "today.produce.prompt": { en: "Write a sentence with", ru: "Составь предложение со словом" },
+  "today.produce.go": { en: "Open practice →", ru: "К практике →" },
+  "today.focus.title": { en: "Focus", ru: "Фокус" },
+  "today.focus.leeches": { en: "weak spots", ru: "слабых мест" },
+  "today.focus.go": { en: "Drill skills →", ru: "Тренировать навыки →" },
+
   // Quiz
   "quiz.title": { en: "Quiz", ru: "Тест" },
   "quiz.hint": {

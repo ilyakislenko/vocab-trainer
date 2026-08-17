@@ -1,8 +1,10 @@
 from datetime import UTC, datetime, timedelta
 
+from vocab_api.application.ports.curriculum_repos import LearnerProfileRepository
 from vocab_api.domain.card.card import Card
 from vocab_api.domain.card.fsrs_state import FsrsState
 from vocab_api.domain.card.rating import Rating
+from vocab_api.domain.curriculum.progress import LearnerProfile
 from vocab_api.domain.curriculum.skill_item import SkillItem
 from vocab_api.domain.deck.deck import Deck
 from vocab_api.domain.practice.feedback import Feedback, Verdict
@@ -163,6 +165,23 @@ class FakeReviewLogRepository:
                 count += 1
         return [{"date": today, "count": count}] if count else []
 
+    async def most_recent(self, limit: int) -> list[int]:
+        newest = sorted(self.entries, key=lambda e: e.reviewed_at, reverse=True)
+        return [entry.card_id for entry in newest[:limit]]
+
+
+class FakeLearnerProfileRepository(LearnerProfileRepository):
+    def __init__(self) -> None:
+        self.profile = LearnerProfile()
+        self.saves = 0
+
+    async def get(self) -> LearnerProfile:
+        return self.profile
+
+    async def save(self, profile: LearnerProfile) -> None:
+        self.profile = profile
+        self.saves += 1
+
 
 class FakeSkillItemRepository:
     def __init__(self) -> None:
@@ -200,6 +219,9 @@ class FakeSkillItemRepository:
         due = [i for i in self._items.values() if i.fsrs.due <= now]
         due.sort(key=lambda i: i.fsrs.due)
         return due[:limit]
+
+    async def count_due(self, now: datetime) -> int:
+        return sum(1 for i in self._items.values() if i.fsrs.due <= now)
 
     async def leeches(self, limit: int) -> list[SkillItem]:
         leeches = [i for i in self._items.values() if i.is_leech]

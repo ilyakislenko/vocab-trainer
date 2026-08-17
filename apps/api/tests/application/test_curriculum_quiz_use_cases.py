@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 import pytest
 from tests.conftest import (
     FIXED_NOW,
+    FakeLearnerProfileRepository,
     FakeSkillItemRepository,
     FixedClock,
     StubScheduler,
@@ -154,7 +155,13 @@ async def test_grade_quiz_grades_all_answers_and_records_attempts():
     clock = FixedClock(datetime(2026, 8, 17, 9, 0, tzinfo=UTC))
 
     outcome = await GradeQuiz(
-        content, progress, attempts, clock, FakeSkillItemRepository(), StubScheduler()
+        content,
+        progress,
+        attempts,
+        clock,
+        FakeSkillItemRepository(),
+        StubScheduler(),
+        FakeLearnerProfileRepository(),
     ).execute(
         "b1.grammar.articles",
         [("q1", "1"), ("q2", "the")],
@@ -176,7 +183,8 @@ async def test_grade_quiz_upserts_skill_item_on_failure():
     skills = FakeSkillItemRepository()
 
     outcome = await GradeQuiz(
-        content, FakeProgress(), FakeAttempts(), FixedClock(), skills, StubScheduler()
+        content, FakeProgress(), FakeAttempts(), FixedClock(), skills, StubScheduler(),
+        FakeLearnerProfileRepository(),
     ).execute(
         "b1.grammar.articles",
         [("q1", "0"), ("q2", "wrong")],
@@ -199,7 +207,8 @@ async def test_grade_quiz_one_skill_item_per_skill_and_correct_answers_advance_i
     clock = FixedClock(datetime(2026, 8, 17, 9, 0, tzinfo=UTC))
     skills = FakeSkillItemRepository()
     use_case = GradeQuiz(
-        content, FakeProgress(), FakeAttempts(), clock, skills, StubScheduler()
+        content, FakeProgress(), FakeAttempts(), clock, skills, StubScheduler(),
+        FakeLearnerProfileRepository(),
     )
     await use_case.execute("b1.grammar.articles", [("q1", "0")])
     created = await skills.by_skill("art.indefinite")
@@ -229,7 +238,8 @@ async def test_grade_quiz_correct_answer_preserves_lapse_count():
         )
     )
     use_case = GradeQuiz(
-        content, FakeProgress(), FakeAttempts(), FixedClock(), skills, StubScheduler()
+        content, FakeProgress(), FakeAttempts(), FixedClock(), skills, StubScheduler(),
+        FakeLearnerProfileRepository(),
     )
 
     await use_case.execute("b1.grammar.articles", [("q1", "1")])
@@ -254,7 +264,8 @@ async def test_grade_quiz_completes_module_once_lesson_read():
     attempts = FakeAttempts()
 
     outcome = await GradeQuiz(
-        content, progress, attempts, FixedClock(), FakeSkillItemRepository(), StubScheduler()
+        content, progress, attempts, FixedClock(), FakeSkillItemRepository(), StubScheduler(),
+        FakeLearnerProfileRepository(),
     ).execute(
         "b1.grammar.articles",
         [("q1", "0"), ("q2", "the")],
@@ -269,7 +280,8 @@ async def test_grade_quiz_skips_unknown_item_ids():
     attempts = FakeAttempts()
 
     outcome = await GradeQuiz(
-        content, FakeProgress(), attempts, FixedClock(), FakeSkillItemRepository(), StubScheduler()
+        content, FakeProgress(), attempts, FixedClock(), FakeSkillItemRepository(), StubScheduler(),
+        FakeLearnerProfileRepository(),
     ).execute(
         "b1.grammar.articles",
         [("q1", "1"), ("missing", "x")],
@@ -282,8 +294,13 @@ async def test_grade_quiz_skips_unknown_item_ids():
 async def test_grade_quiz_missing_module_raises():
     with pytest.raises(CurriculumQuizNotFound):
         await GradeQuiz(
-            FakeContent(), FakeProgress(), FakeAttempts(), FixedClock(),
-            FakeSkillItemRepository(), StubScheduler(),
+            FakeContent(),
+            FakeProgress(),
+            FakeAttempts(),
+            FixedClock(),
+            FakeSkillItemRepository(),
+            StubScheduler(),
+            FakeLearnerProfileRepository(),
         ).execute(
             "x1.missing.slug", []
         )

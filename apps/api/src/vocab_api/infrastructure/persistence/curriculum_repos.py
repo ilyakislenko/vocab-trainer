@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy import func
 from sqlmodel import select
 
 from vocab_api.application.ports.curriculum_repos import (
@@ -192,6 +193,14 @@ class SqlSkillItemRepository(SkillItemRepository):
         async with self._db.session() as session:
             rows = (await session.execute(statement)).scalars().all()
         return [skill_item_from_row(row) for row in rows]
+
+    async def count_due(self, now: datetime) -> int:
+        statement = select(func.count()).select_from(SkillItemRow).where(
+            SkillItemRow.fsrs_due <= now
+        )
+        async with self._db.session() as session:
+            result = await session.execute(statement)
+            return result.scalar_one()
 
     async def leeches(self, limit: int) -> list[SkillItem]:
         # Leech detection orders the weakest skills first: highest lapse count,

@@ -1,6 +1,7 @@
 import {
   BarChart3,
   BookOpen,
+  CalendarCheck,
   Globe,
   GraduationCap,
   MessageSquare,
@@ -24,11 +25,13 @@ import { QuizPage } from "@/pages/quiz";
 import { ReviewPage } from "@/pages/review";
 import { ReviewSkillsPage } from "@/pages/review-skills";
 import { StatsPage } from "@/pages/stats";
+import { TodayPage } from "@/pages/today";
 import { useI18n } from "@/shared/lib/i18n";
 import { Providers } from "./providers";
 
 const NAV_ITEMS = [
-  { to: "/", icon: BookOpen, label: "nav.review" },
+  { to: "/", icon: CalendarCheck, label: "nav.today" },
+  { to: "/review", icon: BookOpen, label: "nav.review" },
   { to: "/learn", icon: GraduationCap, label: "nav.learn" },
   { to: "/practice", icon: Pencil, label: "nav.practice" },
   { to: "/interview", icon: MessageSquare, label: "nav.interview" },
@@ -156,7 +159,8 @@ function AppShell() {
         {/* Content */}
         <main className="flex-1 px-8 py-8">
           <Routes>
-            <Route path="/" element={<ReviewPage deckId={deckId} />} />
+            <Route path="/" element={<TodayPage />} />
+            <Route path="/review" element={<ReviewPage deckId={deckId} />} />
             <Route path="/learn" element={<LearnPage />} />
             <Route path="/placement" element={<PlacementPage />} />
             <Route path="/learn/:moduleId" element={<LessonPage />} />

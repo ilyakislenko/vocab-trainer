@@ -14,6 +14,7 @@ from datetime import datetime
 from vocab_api.application.ports.clock import Clock
 from vocab_api.application.ports.curriculum_content import CurriculumContent
 from vocab_api.application.ports.curriculum_repos import (
+    LearnerProfileRepository,
     ModuleProgressRepository,
     QuizAttemptRepository,
     SkillItemRepository,
@@ -71,6 +72,7 @@ class GradeQuiz:
         clock: Clock,
         skill_items: SkillItemRepository,
         scheduler: Scheduler,
+        profile: LearnerProfileRepository,
     ) -> None:
         self._content = content
         self._progress = progress
@@ -78,6 +80,7 @@ class GradeQuiz:
         self._clock = clock
         self._skill_items = skill_items
         self._scheduler = scheduler
+        self._profile = profile
 
     async def execute(
         self, module_id: str, answers: list[tuple[str, str]]
@@ -116,7 +119,9 @@ class GradeQuiz:
         graded = len(results)
         score = sum(1 for r in results if r.correct) / graded * 100.0 if graded else 0.0
         progress = await self._progress.mark_quiz_attempted(module_id, score, now)
-        next_module = await GetRecommendedModule(self._content, self._progress).execute()
+        next_module = await GetRecommendedModule(
+            self._content, self._progress, self._profile
+        ).execute()
         return QuizGradeOutcome(
             module_id=module_id,
             items=tuple(results),

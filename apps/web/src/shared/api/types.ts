@@ -33,3 +33,5 @@ export type Placement = components["schemas"]["PlacementOut"];
 export type PlacementItem = components["schemas"]["PlacementItemOut"];
 export type PlacementGrade = components["schemas"]["PlacementGradeOut"];
 export type PlacementAnswer = components["schemas"]["PlacementAnswerIn"];
+export type TodaySession = components["schemas"]["TodaySessionOut"];
+export type TodayStep = components["schemas"]["TodayStepOut"];

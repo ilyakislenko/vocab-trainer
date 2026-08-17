@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 
 import pytest
-from tests.conftest import FixedClock
+from tests.conftest import FakeLearnerProfileRepository, FixedClock
 
 from vocab_api.application.use_cases.curriculum import (
     GetCurriculumMap,
@@ -214,7 +214,9 @@ async def test_get_recommended_module_skips_completed_and_authoring():
         ModuleProgress(module_id="b1.grammar.articles", status=ModuleStatus.COMPLETED)
     )
 
-    recommended = await GetRecommendedModule(content, repo).execute()
+    recommended = await GetRecommendedModule(
+        content, repo, FakeLearnerProfileRepository()
+    ).execute()
 
     assert recommended == "b1.grammar.conditionals-wish"
 
@@ -224,7 +226,9 @@ async def test_get_recommended_module_returns_in_progress_first():
     repo = FakeModuleProgressRepository()
     await repo.mark_lesson_read("b1.grammar.articles", READ_AT)
 
-    recommended = await GetRecommendedModule(content, repo).execute()
+    recommended = await GetRecommendedModule(
+        content, repo, FakeLearnerProfileRepository()
+    ).execute()
 
     assert recommended == "b1.grammar.articles"
 
@@ -237,6 +241,8 @@ async def test_get_recommended_module_none_when_all_available_are_complete():
         ModuleProgress(module_id="b1.grammar.conditionals-wish", status=ModuleStatus.COMPLETED)
     )
 
-    recommended = await GetRecommendedModule(content, repo).execute()
+    recommended = await GetRecommendedModule(
+        content, repo, FakeLearnerProfileRepository()
+    ).execute()
 
     assert recommended is None

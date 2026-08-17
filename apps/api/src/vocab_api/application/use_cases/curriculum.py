@@ -1,6 +1,9 @@
 from vocab_api.application.ports.clock import Clock
 from vocab_api.application.ports.curriculum_content import CurriculumContent
-from vocab_api.application.ports.curriculum_repos import ModuleProgressRepository
+from vocab_api.application.ports.curriculum_repos import (
+    LearnerProfileRepository,
+    ModuleProgressRepository,
+)
 from vocab_api.domain.curriculum.lesson import Lesson
 from vocab_api.domain.curriculum.map import (
     CurriculumMap,
@@ -117,22 +120,35 @@ class MarkLessonRead:
 
 
 class GetRecommendedModule:
-    """The first not-completed available module in route order.
+    """The recommended next module: the placement pointer when still valid,
+    otherwise the first not-completed available module in route order.
 
-    Used to surface a "next up" suggestion on the map and Today page, and as
-    the placement starting pointer. Pure recommendation — navigation stays free.
+    The placement diagnostic (§9) seeds `current_module_id` — the learner's
+    starting point. While that module is not completed (and still authored) it
+    wins; once it is completed the recommendation resumes the route order.
+    Used to surface a "next up" suggestion on the map and Today page. Pure
+    recommendation — navigation stays free.
     """
 
     def __init__(
-        self, content: CurriculumContent, progress: ModuleProgressRepository
+        self,
+        content: CurriculumContent,
+        progress: ModuleProgressRepository,
+        profile: LearnerProfileRepository,
     ) -> None:
         self._content = content
         self._progress = progress
+        self._profile = profile
 
     async def execute(self) -> str | None:
         authored = self._content.map()
         rows = await self._progress.list()
         completed = {row.module_id for row in rows if row.status is ModuleStatus.COMPLETED}
+
+        pointer = (await self._profile.get()).current_module_id
+        if pointer is not None and pointer not in completed and self._content.is_available(pointer):
+            return pointer
+
         for section in authored.levels:
             for entry in section.entries:
                 if entry.id in completed:
