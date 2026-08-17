@@ -1,0 +1,65 @@
+{
+  "module_id": "b1.grammar.word-order",
+  "items": [
+    {
+      "id": "b1.grammar.word-order.q1",
+      "type": "mcq",
+      "skill": "wo.adverb-frequency",
+      "prompt": "Choose the sentence with the correct word order:",
+      "options": [
+        "He often reads books in the evening.",
+        "He reads often books in the evening.",
+        "He reads books often in the evening.",
+        "Often he reads books the evening in."
+      ],
+      "answer_index": 0,
+      "explanation": "Adverbs of frequency go before the main verb."
+    },
+    {
+      "id": "b1.grammar.word-order.q2",
+      "type": "mcq",
+      "skill": "wo.questions",
+      "prompt": "Choose the correct question:",
+      "options": [
+        "Where does she work?",
+        "Where she works?",
+        "Where does works she?",
+        "Where she does work?"
+      ],
+      "answer_index": 0,
+      "explanation": "Questions use aux + subject + main verb."
+    },
+    {
+      "id": "b1.grammar.word-order.q3",
+      "type": "cloze",
+      "skill": "wo.svo",
+      "prompt": "Write the sentence in the correct order: usually / she / coffee / drinks / in the morning",
+      "answers": ["She usually drinks coffee in the morning"],
+      "explanation": "SVO order with the frequency adverb before the main verb."
+    },
+    {
+      "id": "b1.grammar.word-order.q4",
+      "type": "transform",
+      "skill": "wo.adverb-frequency",
+      "prompt": "Rewrite the sentence adding 'usually' before the main verb: \"She drinks coffee in the morning.\"",
+      "answers": ["She usually drinks coffee in the morning"],
+      "explanation": "Adverbs of frequency sit before the main verb."
+    },
+    {
+      "id": "b1.grammar.word-order.q5",
+      "type": "transform",
+      "skill": "wo.questions",
+      "prompt": "Make a question from: \"She works in London.\"",
+      "answers": ["Does she work in London?", "Does she work in London"],
+      "explanation": "Yes/no questions in the present simple use 'do/does' + subject + base form."
+    },
+    {
+      "id": "b1.grammar.word-order.q6",
+      "type": "error_correction",
+      "skill": "wo.questions",
+      "prompt": "Find and correct the mistake: \"Why you are late again?\"",
+      "answers": ["Why are you late again?"],
+      "explanation": "Wh-questions invert the subject and the auxiliary verb."
+    }
+  ]
+}

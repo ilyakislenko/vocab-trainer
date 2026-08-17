@@ -29,6 +29,7 @@ function renderLesson() {
           path="/learn/:moduleId"
           element={<LessonReader moduleId="b1.grammar.dependent-prepositions" />}
         />
+        <Route path="/learn/:moduleId/quiz" element={<p>quiz page</p>} />
         <Route path="/learn" element={<p>map page</p>} />
       </Routes>
     </MemoryRouter>,
@@ -47,7 +48,7 @@ describe("LessonReader", () => {
     expect(screen.getByText(/English Grammar in Use/)).toBeInTheDocument();
   });
 
-  it("marks the lesson read and navigates back to the map", async () => {
+  it("marks the lesson read and navigates to the quiz", async () => {
     server.use(
       http.get("/api/curriculum/lessons/:moduleId", () => HttpResponse.json(LESSON)),
       http.post("/api/curriculum/lessons/:moduleId/read", () =>
@@ -67,6 +68,6 @@ describe("LessonReader", () => {
     );
     await userEvent.click(screen.getByRole("button", { name: /mark as read|отметить/i }));
 
-    await waitFor(() => expect(screen.getByText("map page")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("quiz page")).toBeInTheDocument());
   });
 });

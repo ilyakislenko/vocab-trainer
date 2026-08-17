@@ -1,0 +1,56 @@
+{
+  "module_id": "c1.idioms.advanced",
+  "items": [
+    {
+      "id": "c1.idioms.advanced.q1",
+      "type": "mcq",
+      "skill": "idiom.business",
+      "prompt": "To succeed, the startup needs to ___ the competition.",
+      "options": ["stay ahead of", "sit behind", "keep aside", "stay below"],
+      "answer_index": 0,
+      "explanation": "'Stay ahead of the competition' is the business idiom."
+    },
+    {
+      "id": "c1.idioms.advanced.q2",
+      "type": "mcq",
+      "skill": "idiom.negotiation",
+      "prompt": "During talks, both sides refused to ___.",
+      "options": ["give ground", "give sky", "give wall", "give door"],
+      "answer_index": 0,
+      "explanation": "'Give ground' means to concede in a negotiation."
+    },
+    {
+      "id": "c1.idioms.advanced.q3",
+      "type": "mcq",
+      "skill": "idiom.register",
+      "prompt": "The CEO told us to ___ the elephant in the room.",
+      "options": ["address", "feed", "hide", "ignore"],
+      "answer_index": 0,
+      "explanation": "'Address the elephant in the room' means to discuss an obvious issue."
+    },
+    {
+      "id": "c1.idioms.advanced.q4",
+      "type": "cloze",
+      "skill": "idiom.business",
+      "prompt": "Complete with one word: The project has been ___ the ground for months now.",
+      "answers": ["off"],
+      "explanation": "'Off the ground' means making real progress."
+    },
+    {
+      "id": "c1.idioms.advanced.q5",
+      "type": "transform",
+      "skill": "idiom.negotiation",
+      "prompt": "Rewrite using 'a win-win situation': \"The deal benefits both companies.\"",
+      "answers": ["The deal is a win-win situation for both companies"],
+      "explanation": "'Win-win' captures the mutual benefit idiomatically."
+    },
+    {
+      "id": "c1.idioms.advanced.q6",
+      "type": "transform",
+      "skill": "idiom.register",
+      "prompt": "Rewrite using 'think outside the box': \"We need more creative ideas.\"",
+      "answers": ["We need to think outside the box"],
+      "explanation": "'Think outside the box' is the idiom for unconventional creativity."
+    }
+  ]
+}

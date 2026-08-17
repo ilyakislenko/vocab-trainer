@@ -1,0 +1,56 @@
+{
+  "module_id": "b2.grammar.noun-clauses",
+  "items": [
+    {
+      "id": "b2.grammar.noun-clauses.q1",
+      "type": "mcq",
+      "skill": "nc.that-clause",
+      "prompt": "The fact ___ she arrived late surprised everyone.",
+      "options": ["that", "which", "what", "if"],
+      "answer_index": 0,
+      "explanation": "A noun clause after 'the fact' takes 'that'."
+    },
+    {
+      "id": "b2.grammar.noun-clauses.q2",
+      "type": "mcq",
+      "skill": "nc.embedded-question",
+      "prompt": "I don't know ___ he lives.",
+      "options": ["where", "what", "which", "why"],
+      "answer_index": 0,
+      "explanation": "An embedded wh-question keeps its question word but uses statement order."
+    },
+    {
+      "id": "b2.grammar.noun-clauses.q3",
+      "type": "mcq",
+      "skill": "nc.subject",
+      "prompt": "___ she said at the meeting was important.",
+      "options": ["What", "That", "Which", "Who"],
+      "answer_index": 0,
+      "explanation": "'What' acts as the subject of the clause and of the sentence."
+    },
+    {
+      "id": "b2.grammar.noun-clauses.q4",
+      "type": "cloze",
+      "skill": "nc.embedded-question",
+      "prompt": "Complete with one word: Could you tell me ___ the train leaves?",
+      "answers": ["when"],
+      "explanation": "'When' introduces the embedded question; the order stays affirmative."
+    },
+    {
+      "id": "b2.grammar.noun-clauses.q5",
+      "type": "transform",
+      "skill": "nc.embedded-question",
+      "prompt": "Rewrite as an embedded question: \"Where is the station?\"",
+      "answers": ["Do you know where the station is?", "Could you tell me where the station is?", "I don't know where the station is."],
+      "explanation": "The embedded question uses statement order: where + subject + verb."
+    },
+    {
+      "id": "b2.grammar.noun-clauses.q6",
+      "type": "error_correction",
+      "skill": "nc.that-clause",
+      "prompt": "Find and correct the mistake: \"I believe that is she honest.\"",
+      "answers": ["I believe that she is honest"],
+      "explanation": "A that-clause keeps subject + verb order — no inversion."
+    }
+  ]
+}

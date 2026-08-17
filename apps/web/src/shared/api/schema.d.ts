@@ -311,6 +311,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/curriculum/modules/{module_id}/quiz": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Module Quiz */
+        get: operations["module_quiz_curriculum_modules__module_id__quiz_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/curriculum/quiz/grade": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Grade Quiz */
+        post: operations["grade_quiz_curriculum_quiz_grade_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -431,6 +465,76 @@ export interface components {
             quiz_best_score?: number | null;
             /** Completed At */
             completed_at?: string | null;
+        };
+        /** CurriculumQuizAnswerIn */
+        CurriculumQuizAnswerIn: {
+            /** Item Id */
+            item_id: string;
+            /** Given */
+            given: string;
+        };
+        /** CurriculumQuizGradeIn */
+        CurriculumQuizGradeIn: {
+            /** Module Id */
+            module_id: string;
+            /** Answers */
+            answers: components["schemas"]["CurriculumQuizAnswerIn"][];
+        };
+        /** CurriculumQuizGradeOut */
+        CurriculumQuizGradeOut: {
+            /** Module Id */
+            module_id: string;
+            /** Score */
+            score: number;
+            /** Status */
+            status: string;
+            /** Completed */
+            completed: boolean;
+            /** Next Module Id */
+            next_module_id?: string | null;
+            /** Items */
+            items: components["schemas"]["CurriculumQuizItemResultOut"][];
+        };
+        /**
+         * CurriculumQuizItemOut
+         * @description A quiz item as served to the learner — answers are never sent.
+         */
+        CurriculumQuizItemOut: {
+            /** Id */
+            id: string;
+            /** Type */
+            type: string;
+            /** Skill */
+            skill: string;
+            /** Prompt */
+            prompt: string;
+            /** Options */
+            options?: string[] | null;
+        };
+        /** CurriculumQuizItemResultOut */
+        CurriculumQuizItemResultOut: {
+            /** Item Id */
+            item_id: string;
+            /** Skill */
+            skill: string;
+            /** Correct */
+            correct: boolean;
+            /** Explanation */
+            explanation: string;
+            /**
+             * Needs Llm
+             * @default false
+             */
+            needs_llm: boolean;
+        };
+        /** CurriculumQuizOut */
+        CurriculumQuizOut: {
+            /** Module Id */
+            module_id: string;
+            /** Status */
+            status: string;
+            /** Items */
+            items: components["schemas"]["CurriculumQuizItemOut"][];
         };
         /** CurriculumReferenceOut */
         CurriculumReferenceOut: {
@@ -1232,6 +1336,70 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CurriculumModuleProgressOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    module_quiz_curriculum_modules__module_id__quiz_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                module_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumQuizOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    grade_quiz_curriculum_quiz_grade_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CurriculumQuizGradeIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumQuizGradeOut"];
                 };
             };
             /** @description Validation Error */

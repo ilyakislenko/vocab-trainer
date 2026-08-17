@@ -17,6 +17,7 @@ from vocab_api.application.use_cases.practice import (
     SuggestExample,
     TranslateSentence,
 )
+from vocab_api.application.use_cases.quiz import GetModuleQuiz, GradeQuiz
 from vocab_api.application.use_cases.review import GetReviewQueue, RecordReview
 from vocab_api.application.use_cases.stats import GetStats
 from vocab_api.config.britlex_seed import (
@@ -34,6 +35,7 @@ from vocab_api.infrastructure.llm.openai_compatible_provider import OpenAiCompat
 from vocab_api.infrastructure.persistence.card_repo import SqlCardRepository
 from vocab_api.infrastructure.persistence.curriculum_repos import (
     SqlModuleProgressRepository,
+    SqlQuizAttemptRepository,
 )
 from vocab_api.infrastructure.persistence.deck_repo import SqlDeckRepository
 from vocab_api.infrastructure.persistence.engine import Database
@@ -86,11 +88,14 @@ class Container:
 
         curriculum: FileCurriculumRepository = load_curriculum_content()
         module_progress = SqlModuleProgressRepository(self._db)
+        quiz_attempts = SqlQuizAttemptRepository(self._db)
         self.get_curriculum_map = GetCurriculumMap(curriculum, module_progress)
         self.get_module = GetModule(curriculum, module_progress)
         self.get_lesson = GetLesson(curriculum, module_progress)
         self.mark_lesson_read = MarkLessonRead(curriculum, module_progress, clock)
         self.get_recommended_module = GetRecommendedModule(curriculum, module_progress)
+        self.get_module_quiz = GetModuleQuiz(curriculum, module_progress)
+        self.grade_quiz = GradeQuiz(curriculum, module_progress, quiz_attempts, clock)
 
         self._britlex_seed = BritlexSeeder(self.list_decks, self.create_deck, self.import_words)
         self._it_seed = ItInterviewSeeder(self.list_decks, self.create_deck, self.import_words)

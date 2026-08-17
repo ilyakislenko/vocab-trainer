@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.phrasal_verbs.work-business",
+  "items": [
+    {
+      "id": "b1.phrasal_verbs.work-business.q1",
+      "type": "mcq",
+      "skill": "phrasal.work-basic",
+      "prompt": "Let's ___ the meeting until next week.",
+      "options": ["put off", "put on", "put up", "put out"],
+      "answer_index": 0,
+      "explanation": "'Put off' means to postpone."
+    },
+    {
+      "id": "b1.phrasal_verbs.work-business.q2",
+      "type": "mcq",
+      "skill": "phrasal.separable",
+      "prompt": "He ___ the proposal ___ at the meeting.",
+      "options": ["talked ... through", "talked ... over", "talked ... at", "talked ... from"],
+      "answer_index": 0,
+      "explanation": "'Talk through' is separable — the object can go between verb and particle."
+    },
+    {
+      "id": "b1.phrasal_verbs.work-business.q3",
+      "type": "mcq",
+      "skill": "phrasal.inseparable",
+      "prompt": "I ran ___ an old colleague at the conference.",
+      "options": ["into", "out", "up", "down"],
+      "answer_index": 0,
+      "explanation": "'Run into' means meet by chance and is inseparable."
+    },
+    {
+      "id": "b1.phrasal_verbs.work-business.q4",
+      "type": "cloze",
+      "skill": "phrasal.separable",
+      "prompt": "Complete with one word: She turned the offer ___ because the salary was too low.",
+      "answers": ["down"],
+      "explanation": "'Turn down' means to reject."
+    },
+    {
+      "id": "b1.phrasal_verbs.work-business.q5",
+      "type": "transform",
+      "skill": "phrasal.work-basic",
+      "prompt": "Replace the verb with 'put off': \"We postponed the launch until March.\"",
+      "answers": ["We put off the launch until March", "We put the launch off until March"],
+      "explanation": "'Put off' is separable, so both positions are correct."
+    },
+    {
+      "id": "b1.phrasal_verbs.work-business.q6",
+      "type": "error_correction",
+      "skill": "phrasal.inseparable",
+      "prompt": "Find and correct the mistake: \"I look forward to meet you.\"",
+      "answers": ["I look forward to meeting you"],
+      "explanation": "'Look forward to' is inseparable and takes a gerund."
+    }
+  ]
+}

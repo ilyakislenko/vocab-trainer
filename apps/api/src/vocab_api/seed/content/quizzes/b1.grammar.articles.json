@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.grammar.articles",
+  "items": [
+    {
+      "id": "b1.grammar.articles.q1",
+      "type": "mcq",
+      "skill": "art.indefinite",
+      "prompt": "I need ___ new laptop before the conference.",
+      "options": ["a", "an", "the", "—"],
+      "answer_index": 0,
+      "explanation": "A singular countable noun mentioned for the first time takes the indefinite article 'a'."
+    },
+    {
+      "id": "b1.grammar.articles.q2",
+      "type": "mcq",
+      "skill": "art.definite",
+      "prompt": "Please close ___ door behind you.",
+      "options": ["a", "an", "the", "—"],
+      "answer_index": 2,
+      "explanation": "The listener knows which door — definite reference, so 'the'."
+    },
+    {
+      "id": "b1.grammar.articles.q3",
+      "type": "mcq",
+      "skill": "art.zero",
+      "prompt": "___ breakfast is the most important meal of the day for many people.",
+      "options": ["A", "An", "The", "—"],
+      "answer_index": 3,
+      "explanation": "General statements about meals use the zero article."
+    },
+    {
+      "id": "b1.grammar.articles.q4",
+      "type": "cloze",
+      "skill": "art.definite",
+      "prompt": "She plays ___ violin in the school orchestra. Write one word.",
+      "answers": ["the"],
+      "explanation": "Musical instruments take the definite article."
+    },
+    {
+      "id": "b1.grammar.articles.q5",
+      "type": "cloze",
+      "skill": "art.indefinite",
+      "prompt": "He's ___ honest man — you can trust him. Write one word.",
+      "answers": ["an"],
+      "explanation": "'Honest' starts with a vowel sound, so 'an'."
+    },
+    {
+      "id": "b1.grammar.articles.q6",
+      "type": "error_correction",
+      "skill": "art.zero",
+      "prompt": "Find and correct the mistake: \"I go to the work by train every day.\"",
+      "answers": ["I go to work by train every day"],
+      "explanation": "Here 'work' is a general activity, so it takes the zero article."
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 {
   "openapi": "3.1.0",
-  "info": { "title": "Vocab Trainer API", "version": "0.1.0" },
+  "info": {
+    "title": "Vocab Trainer API",
+    "version": "0.1.0"
+  },
   "paths": {
     "/healthz": {
       "get": {
@@ -12,7 +15,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": { "type": "string" },
+                  "additionalProperties": {
+                    "type": "string"
+                  },
                   "type": "object",
                   "title": "Response Healthz Healthz Get"
                 }
@@ -33,7 +38,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "items": { "$ref": "#/components/schemas/DeckOut" },
+                  "items": {
+                    "$ref": "#/components/schemas/DeckOut"
+                  },
                   "type": "array",
                   "title": "Response List Decks Decks Get"
                 }
@@ -48,7 +55,11 @@
         "operationId": "create_deck_decks_post",
         "requestBody": {
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/CreateDeckIn" } }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeckIn"
+              }
+            }
           },
           "required": true
         },
@@ -56,14 +67,20 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/DeckOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeckOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -80,25 +97,46 @@
             "name": "deck_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "title": "Deck Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Deck Id"
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "schema": { "type": "integer", "default": 100, "title": "Limit" }
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "title": "Limit"
+            }
           },
           {
             "name": "offset",
             "in": "query",
             "required": false,
-            "schema": { "type": "integer", "default": 0, "title": "Offset" }
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
           },
           {
             "name": "section",
             "in": "query",
             "required": false,
-            "schema": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Section" }
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Section"
+            }
           }
         ],
         "responses": {
@@ -108,7 +146,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/CardOut" },
+                  "items": {
+                    "$ref": "#/components/schemas/CardOut"
+                  },
                   "title": "Response List Deck Cards Decks  Deck Id  Cards Get"
                 }
               }
@@ -118,7 +158,9 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -135,27 +177,40 @@
             "name": "deck_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "title": "Deck Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Deck Id"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/ImportIn" } }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportIn"
+              }
+            }
           }
         },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/ImportOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -172,13 +227,20 @@
             "name": "deck_id",
             "in": "query",
             "required": true,
-            "schema": { "type": "integer", "title": "Deck Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Deck Id"
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "schema": { "type": "integer", "default": 20, "title": "Limit" }
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -188,7 +250,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/CardOut" },
+                  "items": {
+                    "$ref": "#/components/schemas/CardOut"
+                  },
                   "title": "Response Review Queue Review Queue Get"
                 }
               }
@@ -198,7 +262,9 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -212,7 +278,11 @@
         "operationId": "record_review_review_post",
         "requestBody": {
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/ReviewIn" } }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewIn"
+              }
+            }
           },
           "required": true
         },
@@ -220,14 +290,20 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/CardOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -244,21 +320,30 @@
             "name": "deck_id",
             "in": "query",
             "required": true,
-            "schema": { "type": "integer", "title": "Deck Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Deck Id"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/StatsOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatsOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -272,7 +357,11 @@
         "operationId": "check_sentence_practice_check_post",
         "requestBody": {
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/CheckSentenceIn" } }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckSentenceIn"
+              }
+            }
           },
           "required": true
         },
@@ -280,14 +369,20 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/FeedbackOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -304,21 +399,30 @@
             "name": "card_id",
             "in": "query",
             "required": true,
-            "schema": { "type": "integer", "title": "Card Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Card Id"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/ExampleOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExampleOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -335,19 +439,29 @@
             "name": "deck_id",
             "in": "query",
             "required": true,
-            "schema": { "type": "integer", "title": "Deck Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Deck Id"
+            }
           },
           {
             "name": "topic",
             "in": "query",
             "required": true,
-            "schema": { "type": "string", "title": "Topic" }
+            "schema": {
+              "type": "string",
+              "title": "Topic"
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
-            "schema": { "type": "integer", "default": 20, "title": "Limit" }
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "title": "Limit"
+            }
           }
         ],
         "responses": {
@@ -357,7 +471,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/CardOut" },
+                  "items": {
+                    "$ref": "#/components/schemas/CardOut"
+                  },
                   "title": "Response Practice Topic Practice Topic Get"
                 }
               }
@@ -367,7 +483,9 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -384,21 +502,30 @@
             "name": "card_id",
             "in": "query",
             "required": true,
-            "schema": { "type": "integer", "title": "Card Id" }
+            "schema": {
+              "type": "integer",
+              "title": "Card Id"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/WordHintOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WordHintOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -412,7 +539,11 @@
         "operationId": "practice_drill_practice_drill_post",
         "requestBody": {
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/DrillIn" } }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrillIn"
+              }
+            }
           },
           "required": true
         },
@@ -420,14 +551,20 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/DrillOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrillOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -444,7 +581,10 @@
             "name": "text",
             "in": "query",
             "required": true,
-            "schema": { "type": "string", "title": "Text" }
+            "schema": {
+              "type": "string",
+              "title": "Text"
+            }
           }
         ],
         "responses": {
@@ -452,7 +592,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/SentenceTranslation" }
+                "schema": {
+                  "$ref": "#/components/schemas/SentenceTranslation"
+                }
               }
             }
           },
@@ -460,7 +602,9 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -474,7 +618,11 @@
         "operationId": "practice_interview_practice_interview_post",
         "requestBody": {
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/InterviewIn" } }
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InterviewIn"
+              }
+            }
           },
           "required": true
         },
@@ -482,14 +630,20 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/InterviewOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterviewOut"
+                }
+              }
             }
           },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -505,7 +659,11 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/CurriculumMapOut" } }
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumMapOut"
+                }
+              }
             }
           }
         }
@@ -521,7 +679,10 @@
             "name": "module_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string", "title": "Module Id" }
+            "schema": {
+              "type": "string",
+              "title": "Module Id"
+            }
           }
         ],
         "responses": {
@@ -529,7 +690,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/CurriculumModuleDetailOut" }
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumModuleDetailOut"
+                }
               }
             }
           },
@@ -537,7 +700,9 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -554,7 +719,10 @@
             "name": "module_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string", "title": "Module Id" }
+            "schema": {
+              "type": "string",
+              "title": "Module Id"
+            }
           }
         ],
         "responses": {
@@ -562,7 +730,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/CurriculumLessonOut" }
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumLessonOut"
+                }
               }
             }
           },
@@ -570,7 +740,9 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -587,7 +759,10 @@
             "name": "module_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string", "title": "Module Id" }
+            "schema": {
+              "type": "string",
+              "title": "Module Id"
+            }
           }
         ],
         "responses": {
@@ -595,7 +770,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/CurriculumModuleProgressOut" }
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumModuleProgressOut"
+                }
               }
             }
           },
@@ -603,7 +780,88 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/curriculum/modules/{module_id}/quiz": {
+      "get": {
+        "tags": ["curriculum"],
+        "summary": "Module Quiz",
+        "operationId": "module_quiz_curriculum_modules__module_id__quiz_get",
+        "parameters": [
+          {
+            "name": "module_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Module Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumQuizOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/curriculum/quiz/grade": {
+      "post": {
+        "tags": ["curriculum"],
+        "summary": "Grade Quiz",
+        "operationId": "grade_quiz_curriculum_quiz_grade_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CurriculumQuizGradeIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurriculumQuizGradeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -615,14 +873,47 @@
     "schemas": {
       "CardOut": {
         "properties": {
-          "id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Id" },
-          "word": { "type": "string", "title": "Word" },
-          "translation": { "type": "string", "title": "Translation" },
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "word": {
+            "type": "string",
+            "title": "Word"
+          },
+          "translation": {
+            "type": "string",
+            "title": "Translation"
+          },
           "transcription": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Transcription"
           },
-          "section": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Section" }
+          "section": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Section"
+          }
         },
         "type": "object",
         "required": ["id", "word", "translation", "transcription"],
@@ -630,30 +921,70 @@
       },
       "CheckSentenceIn": {
         "properties": {
-          "card_id": { "type": "integer", "title": "Card Id" },
-          "sentence": { "type": "string", "title": "Sentence" }
+          "card_id": {
+            "type": "integer",
+            "title": "Card Id"
+          },
+          "sentence": {
+            "type": "string",
+            "title": "Sentence"
+          }
         },
         "type": "object",
         "required": ["card_id", "sentence"],
         "title": "CheckSentenceIn"
       },
       "CreateDeckIn": {
-        "properties": { "name": { "type": "string", "title": "Name" } },
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
         "type": "object",
         "required": ["name"],
         "title": "CreateDeckIn"
       },
       "CurriculumLessonMetaOut": {
         "properties": {
-          "id": { "type": "string", "title": "Id" },
-          "title": { "type": "string", "title": "Title" },
-          "level": { "type": "string", "title": "Level" },
-          "track": { "type": "string", "title": "Track" },
-          "estimated_minutes": { "type": "integer", "title": "Estimated Minutes" },
-          "objectives": { "items": { "type": "string" }, "type": "array", "title": "Objectives" },
-          "skills": { "items": { "type": "string" }, "type": "array", "title": "Skills" },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "track": {
+            "type": "string",
+            "title": "Track"
+          },
+          "estimated_minutes": {
+            "type": "integer",
+            "title": "Estimated Minutes"
+          },
+          "objectives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Objectives"
+          },
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
           "references": {
-            "items": { "$ref": "#/components/schemas/CurriculumReferenceOut" },
+            "items": {
+              "$ref": "#/components/schemas/CurriculumReferenceOut"
+            },
             "type": "array",
             "title": "References"
           }
@@ -673,8 +1004,13 @@
       },
       "CurriculumLessonOut": {
         "properties": {
-          "markdown": { "type": "string", "title": "Markdown" },
-          "meta": { "$ref": "#/components/schemas/CurriculumLessonMetaOut" }
+          "markdown": {
+            "type": "string",
+            "title": "Markdown"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/CurriculumLessonMetaOut"
+          }
         },
         "type": "object",
         "required": ["markdown", "meta"],
@@ -682,9 +1018,14 @@
       },
       "CurriculumLevelOut": {
         "properties": {
-          "level": { "type": "string", "title": "Level" },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
           "modules": {
-            "items": { "$ref": "#/components/schemas/CurriculumModuleOut" },
+            "items": {
+              "$ref": "#/components/schemas/CurriculumModuleOut"
+            },
             "type": "array",
             "title": "Modules"
           }
@@ -696,12 +1037,21 @@
       "CurriculumMapOut": {
         "properties": {
           "levels": {
-            "items": { "$ref": "#/components/schemas/CurriculumLevelOut" },
+            "items": {
+              "$ref": "#/components/schemas/CurriculumLevelOut"
+            },
             "type": "array",
             "title": "Levels"
           },
           "recommended_module_id": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Recommended Module Id"
           }
         },
@@ -711,21 +1061,57 @@
       },
       "CurriculumModuleDetailOut": {
         "properties": {
-          "id": { "type": "string", "title": "Id" },
-          "title": { "type": "string", "title": "Title" },
-          "level": { "type": "string", "title": "Level" },
-          "track": { "type": "string", "title": "Track" },
-          "status": { "type": "string", "title": "Status" },
-          "objectives": { "items": { "type": "string" }, "type": "array", "title": "Objectives" },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "track": {
+            "type": "string",
+            "title": "Track"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "objectives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Objectives"
+          },
           "references": {
-            "items": { "$ref": "#/components/schemas/CurriculumReferenceOut" },
+            "items": {
+              "$ref": "#/components/schemas/CurriculumReferenceOut"
+            },
             "type": "array",
             "title": "References"
           },
-          "has_quiz": { "type": "boolean", "title": "Has Quiz" },
-          "estimated_minutes": { "type": "integer", "title": "Estimated Minutes" },
+          "has_quiz": {
+            "type": "boolean",
+            "title": "Has Quiz"
+          },
+          "estimated_minutes": {
+            "type": "integer",
+            "title": "Estimated Minutes"
+          },
           "quiz_best_score": {
-            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Quiz Best Score"
           }
         },
@@ -745,14 +1131,39 @@
       },
       "CurriculumModuleOut": {
         "properties": {
-          "id": { "type": "string", "title": "Id" },
-          "title": { "type": "string", "title": "Title" },
-          "level": { "type": "string", "title": "Level" },
-          "track": { "type": "string", "title": "Track" },
-          "availability": { "type": "string", "title": "Availability" },
-          "status": { "type": "string", "title": "Status" },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "track": {
+            "type": "string",
+            "title": "Track"
+          },
+          "availability": {
+            "type": "string",
+            "title": "Availability"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
           "quiz_best_score": {
-            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Quiz Best Score"
           }
         },
@@ -762,18 +1173,47 @@
       },
       "CurriculumModuleProgressOut": {
         "properties": {
-          "module_id": { "type": "string", "title": "Module Id" },
-          "status": { "type": "string", "title": "Status" },
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
           "lesson_read_at": {
-            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Lesson Read At"
           },
           "quiz_best_score": {
-            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Quiz Best Score"
           },
           "completed_at": {
-            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Completed At"
           }
         },
@@ -781,10 +1221,178 @@
         "required": ["module_id", "status"],
         "title": "CurriculumModuleProgressOut"
       },
+      "CurriculumQuizAnswerIn": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "given": {
+            "type": "string",
+            "title": "Given"
+          }
+        },
+        "type": "object",
+        "required": ["item_id", "given"],
+        "title": "CurriculumQuizAnswerIn"
+      },
+      "CurriculumQuizGradeIn": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/CurriculumQuizAnswerIn"
+            },
+            "type": "array",
+            "title": "Answers"
+          }
+        },
+        "type": "object",
+        "required": ["module_id", "answers"],
+        "title": "CurriculumQuizGradeIn"
+      },
+      "CurriculumQuizGradeOut": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "completed": {
+            "type": "boolean",
+            "title": "Completed"
+          },
+          "next_module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Module Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CurriculumQuizItemResultOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": ["module_id", "score", "status", "completed", "items"],
+        "title": "CurriculumQuizGradeOut"
+      },
+      "CurriculumQuizItemOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": ["id", "type", "skill", "prompt"],
+        "title": "CurriculumQuizItemOut",
+        "description": "A quiz item as served to the learner \u2014 answers are never sent."
+      },
+      "CurriculumQuizItemResultOut": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "correct": {
+            "type": "boolean",
+            "title": "Correct"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "needs_llm": {
+            "type": "boolean",
+            "title": "Needs Llm",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": ["item_id", "skill", "correct", "explanation"],
+        "title": "CurriculumQuizItemResultOut"
+      },
+      "CurriculumQuizOut": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CurriculumQuizItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": ["module_id", "status", "items"],
+        "title": "CurriculumQuizOut"
+      },
       "CurriculumReferenceOut": {
         "properties": {
-          "book": { "type": "string", "title": "Book" },
-          "locator": { "type": "string", "title": "Locator" }
+          "book": {
+            "type": "string",
+            "title": "Book"
+          },
+          "locator": {
+            "type": "string",
+            "title": "Locator"
+          }
         },
         "type": "object",
         "required": ["book", "locator"],
@@ -792,8 +1400,14 @@
       },
       "DeckOut": {
         "properties": {
-          "id": { "type": "integer", "title": "Id" },
-          "name": { "type": "string", "title": "Name" }
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
         },
         "type": "object",
         "required": ["id", "name"],
@@ -801,8 +1415,14 @@
       },
       "DrillIn": {
         "properties": {
-          "card_id": { "type": "integer", "title": "Card Id" },
-          "message": { "type": "string", "title": "Message" }
+          "card_id": {
+            "type": "integer",
+            "title": "Card Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
         },
         "type": "object",
         "required": ["card_id", "message"],
@@ -810,28 +1430,68 @@
       },
       "DrillOut": {
         "properties": {
-          "response": { "type": "string", "title": "Response" },
-          "question": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Question" }
+          "response": {
+            "type": "string",
+            "title": "Response"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          }
         },
         "type": "object",
         "required": ["response"],
         "title": "DrillOut"
       },
       "ExampleOut": {
-        "properties": { "example": { "type": "string", "title": "Example" } },
+        "properties": {
+          "example": {
+            "type": "string",
+            "title": "Example"
+          }
+        },
         "type": "object",
         "required": ["example"],
         "title": "ExampleOut"
       },
       "FeedbackOut": {
         "properties": {
-          "verdict": { "$ref": "#/components/schemas/Verdict" },
-          "feedback": { "type": "string", "title": "Feedback" },
+          "verdict": {
+            "$ref": "#/components/schemas/Verdict"
+          },
+          "feedback": {
+            "type": "string",
+            "title": "Feedback"
+          },
           "corrected": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Corrected"
           },
-          "example": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Example" }
+          "example": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Example"
+          }
         },
         "type": "object",
         "required": ["verdict", "feedback", "corrected", "example"],
@@ -840,7 +1500,9 @@
       "HTTPValidationError": {
         "properties": {
           "detail": {
-            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
             "type": "array",
             "title": "Detail"
           }
@@ -850,9 +1512,20 @@
       },
       "ImportIn": {
         "properties": {
-          "raw": { "type": "string", "title": "Raw" },
-          "format": { "type": "string", "enum": ["csv", "markdown"], "title": "Format" },
-          "dry_run": { "type": "boolean", "title": "Dry Run", "default": true }
+          "raw": {
+            "type": "string",
+            "title": "Raw"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["csv", "markdown"],
+            "title": "Format"
+          },
+          "dry_run": {
+            "type": "boolean",
+            "title": "Dry Run",
+            "default": true
+          }
         },
         "type": "object",
         "required": ["raw", "format"],
@@ -860,14 +1533,21 @@
       },
       "ImportOut": {
         "properties": {
-          "committed": { "type": "boolean", "title": "Committed" },
+          "committed": {
+            "type": "boolean",
+            "title": "Committed"
+          },
           "imported": {
-            "items": { "$ref": "#/components/schemas/CardOut" },
+            "items": {
+              "$ref": "#/components/schemas/CardOut"
+            },
             "type": "array",
             "title": "Imported"
           },
           "errors": {
-            "items": { "$ref": "#/components/schemas/RowErrorOut" },
+            "items": {
+              "$ref": "#/components/schemas/RowErrorOut"
+            },
             "type": "array",
             "title": "Errors"
           }
@@ -878,8 +1558,16 @@
       },
       "InterviewIn": {
         "properties": {
-          "topic": { "type": "string", "title": "Topic" },
-          "lang": { "type": "string", "enum": ["ru", "en"], "title": "Lang", "default": "en" },
+          "topic": {
+            "type": "string",
+            "title": "Topic"
+          },
+          "lang": {
+            "type": "string",
+            "enum": ["ru", "en"],
+            "title": "Lang",
+            "default": "en"
+          },
           "difficulty": {
             "type": "string",
             "enum": ["junior", "middle", "senior"],
@@ -893,13 +1581,17 @@
             "default": "auto"
           },
           "used_question_ids": {
-            "items": { "type": "integer" },
+            "items": {
+              "type": "integer"
+            },
             "type": "array",
             "title": "Used Question Ids",
             "default": []
           },
           "messages": {
-            "items": { "$ref": "#/components/schemas/InterviewMessage" },
+            "items": {
+              "$ref": "#/components/schemas/InterviewMessage"
+            },
             "type": "array",
             "title": "Messages",
             "default": []
@@ -911,8 +1603,15 @@
       },
       "InterviewMessage": {
         "properties": {
-          "role": { "type": "string", "enum": ["user", "interviewer"], "title": "Role" },
-          "content": { "type": "string", "title": "Content" }
+          "role": {
+            "type": "string",
+            "enum": ["user", "interviewer"],
+            "title": "Role"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
         },
         "type": "object",
         "required": ["role", "content"],
@@ -920,15 +1619,51 @@
       },
       "InterviewOut": {
         "properties": {
-          "verdict": { "anyOf": [{ "$ref": "#/components/schemas/Verdict" }, { "type": "null" }] },
-          "feedback": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Feedback" },
+          "verdict": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Verdict"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "feedback": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback"
+          },
           "corrected": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Corrected"
           },
-          "question": { "type": "string", "title": "Question" },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
           "question_id": {
-            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Question Id"
           }
         },
@@ -938,8 +1673,15 @@
       },
       "ReviewIn": {
         "properties": {
-          "card_id": { "type": "integer", "title": "Card Id" },
-          "rating": { "type": "integer", "enum": [1, 2, 3, 4], "title": "Rating" }
+          "card_id": {
+            "type": "integer",
+            "title": "Card Id"
+          },
+          "rating": {
+            "type": "integer",
+            "enum": [1, 2, 3, 4],
+            "title": "Rating"
+          }
         },
         "type": "object",
         "required": ["card_id", "rating"],
@@ -947,8 +1689,14 @@
       },
       "RowErrorOut": {
         "properties": {
-          "line": { "type": "integer", "title": "Line" },
-          "reason": { "type": "string", "title": "Reason" }
+          "line": {
+            "type": "integer",
+            "title": "Line"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
         },
         "type": "object",
         "required": ["line", "reason"],
@@ -956,9 +1704,14 @@
       },
       "SentenceTranslation": {
         "properties": {
-          "full": { "type": "string", "title": "Full" },
+          "full": {
+            "type": "string",
+            "title": "Full"
+          },
           "words": {
-            "items": { "$ref": "#/components/schemas/WordTranslation" },
+            "items": {
+              "$ref": "#/components/schemas/WordTranslation"
+            },
             "type": "array",
             "title": "Words",
             "default": []
@@ -970,16 +1723,51 @@
       },
       "StatsOut": {
         "properties": {
-          "due_today": { "type": "integer", "title": "Due Today" },
-          "total_reviews": { "type": "integer", "title": "Total Reviews" },
-          "streak": { "type": "integer", "title": "Streak", "default": 0 },
-          "fsrs_new": { "type": "integer", "title": "Fsrs New", "default": 0 },
-          "fsrs_learning": { "type": "integer", "title": "Fsrs Learning", "default": 0 },
-          "fsrs_review": { "type": "integer", "title": "Fsrs Review", "default": 0 },
-          "fsrs_relearning": { "type": "integer", "title": "Fsrs Relearning", "default": 0 },
+          "due_today": {
+            "type": "integer",
+            "title": "Due Today"
+          },
+          "total_reviews": {
+            "type": "integer",
+            "title": "Total Reviews"
+          },
+          "streak": {
+            "type": "integer",
+            "title": "Streak",
+            "default": 0
+          },
+          "fsrs_new": {
+            "type": "integer",
+            "title": "Fsrs New",
+            "default": 0
+          },
+          "fsrs_learning": {
+            "type": "integer",
+            "title": "Fsrs Learning",
+            "default": 0
+          },
+          "fsrs_review": {
+            "type": "integer",
+            "title": "Fsrs Review",
+            "default": 0
+          },
+          "fsrs_relearning": {
+            "type": "integer",
+            "title": "Fsrs Relearning",
+            "default": 0
+          },
           "activity": {
             "items": {
-              "additionalProperties": { "anyOf": [{ "type": "integer" }, { "type": "string" }] },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
               "type": "object"
             },
             "type": "array",
@@ -994,24 +1782,61 @@
       "ValidationError": {
         "properties": {
           "loc": {
-            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
             "type": "array",
             "title": "Location"
           },
-          "msg": { "type": "string", "title": "Message" },
-          "type": { "type": "string", "title": "Error Type" },
-          "input": { "title": "Input" },
-          "ctx": { "type": "object", "title": "Context" }
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
         },
         "type": "object",
         "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       },
-      "Verdict": { "type": "string", "enum": ["ok", "needs_work"], "title": "Verdict" },
+      "Verdict": {
+        "type": "string",
+        "enum": ["ok", "needs_work"],
+        "title": "Verdict"
+      },
       "WordHintOut": {
         "properties": {
-          "meaning": { "type": "string", "title": "Meaning" },
-          "example": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Example" }
+          "meaning": {
+            "type": "string",
+            "title": "Meaning"
+          },
+          "example": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Example"
+          }
         },
         "type": "object",
         "required": ["meaning"],
@@ -1019,8 +1844,14 @@
       },
       "WordTranslation": {
         "properties": {
-          "word": { "type": "string", "title": "Word" },
-          "translation": { "type": "string", "title": "Translation" }
+          "word": {
+            "type": "string",
+            "title": "Word"
+          },
+          "translation": {
+            "type": "string",
+            "title": "Translation"
+          }
         },
         "type": "object",
         "required": ["word", "translation"],

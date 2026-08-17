@@ -1,0 +1,55 @@
+{
+  "module_id": "b1.grammar.dependent-prepositions",
+  "items": [
+    {
+      "id": "b1.grammar.dependent-prepositions.q1",
+      "type": "mcq",
+      "skill": "prep.depend-on",
+      "prompt": "Whether we go depends ___ the weather.",
+      "options": ["of", "on", "for", "with"],
+      "answer_index": 1,
+      "explanation": "'Depend' always takes the preposition 'on'."
+    },
+    {
+      "id": "b1.grammar.dependent-prepositions.q2",
+      "type": "mcq",
+      "skill": "prep.responsible-for",
+      "prompt": "She is responsible ___ training the new staff.",
+      "options": ["of", "to", "for", "about"],
+      "answer_index": 2,
+      "explanation": "'Responsible' takes 'for'."
+    },
+    {
+      "id": "b1.grammar.dependent-prepositions.q3",
+      "type": "cloze",
+      "skill": "prep.interested-in",
+      "prompt": "Complete with one word: I'm really interested ___ modern architecture.",
+      "answers": ["in"],
+      "explanation": "'Interested' takes 'in'."
+    },
+    {
+      "id": "b1.grammar.dependent-prepositions.q4",
+      "type": "cloze",
+      "skill": "prep.good-at",
+      "prompt": "Complete with one word: He's very good ___ remembering names.",
+      "answers": ["at"],
+      "explanation": "'Good' takes 'at' when describing ability."
+    },
+    {
+      "id": "b1.grammar.dependent-prepositions.q5",
+      "type": "transform",
+      "skill": "prep.depend-on",
+      "prompt": "Rewrite the sentence using 'depend on': \"The outcome is determined by your effort.\"",
+      "answers": ["The outcome depends on your effort"],
+      "explanation": "The verb 'depend on' replaces the passive phrase."
+    },
+    {
+      "id": "b1.grammar.dependent-prepositions.q6",
+      "type": "error_correction",
+      "skill": "prep.responsible-for",
+      "prompt": "Find and correct the mistake: \"Who is responsible of this report?\"",
+      "answers": ["Who is responsible for this report?"],
+      "explanation": "'Responsible' takes 'for', not 'of'."
+    }
+  ]
+}

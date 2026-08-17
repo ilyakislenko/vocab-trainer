@@ -1,0 +1,56 @@
+{
+  "module_id": "c1.grammar.inversion-advanced",
+  "items": [
+    {
+      "id": "c1.grammar.inversion-advanced.q1",
+      "type": "mcq",
+      "skill": "inv.so-neither",
+      "prompt": "I can't speak German, and ___ can my brother.",
+      "options": ["neither", "so", "too", "either"],
+      "answer_index": 0,
+      "explanation": "Negative agreement uses 'neither + aux + subject'."
+    },
+    {
+      "id": "c1.grammar.inversion-advanced.q2",
+      "type": "mcq",
+      "skill": "inv.hardly-scarcely",
+      "prompt": "___ had we left the office when the alarm went off.",
+      "options": ["Hardly", "Only", "Little", "Nowhere"],
+      "answer_index": 0,
+      "explanation": "'Hardly... when' triggers inversion after the fronted negative adverb."
+    },
+    {
+      "id": "c1.grammar.inversion-advanced.q3",
+      "type": "mcq",
+      "skill": "inv.conditional",
+      "prompt": "___ I known earlier, I would have prepared better.",
+      "options": ["Had", "Were", "Should", "Would"],
+      "answer_index": 0,
+      "explanation": "Formal conditionals invert 'had' without 'if'."
+    },
+    {
+      "id": "c1.grammar.inversion-advanced.q4",
+      "type": "cloze",
+      "skill": "inv.so-neither",
+      "prompt": "Complete with one word: She loves the project, and so ___ her team.",
+      "answers": ["does"],
+      "explanation": "Positive agreement: 'so + aux + subject'."
+    },
+    {
+      "id": "c1.grammar.inversion-advanced.q5",
+      "type": "transform",
+      "skill": "inv.conditional",
+      "prompt": "Rewrite without 'if': \"If I had known, I would have stayed.\"",
+      "answers": ["Had I known, I would have stayed"],
+      "explanation": "Formal inversion moves 'had' to the front."
+    },
+    {
+      "id": "c1.grammar.inversion-advanced.q6",
+      "type": "transform",
+      "skill": "inv.hardly-scarcely",
+      "prompt": "Rewrite starting with 'Scarcely': \"The plane had taken off when the engine failed.\"",
+      "answers": ["Scarcely had the plane taken off when the engine failed"],
+      "explanation": "'Scarcely' at the front inverts the subject and auxiliary."
+    }
+  ]
+}

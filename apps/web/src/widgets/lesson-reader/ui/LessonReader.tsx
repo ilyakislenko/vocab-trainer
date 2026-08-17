@@ -44,7 +44,11 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
 
   const handleMarkRead = async () => {
     await markRead.mutateAsync(moduleId);
-    navigate("/learn");
+    navigate(`/learn/${moduleId}/quiz`);
+  };
+
+  const handleStartQuiz = () => {
+    navigate(`/learn/${moduleId}/quiz`);
   };
 
   return (
@@ -62,13 +66,18 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
           </span>
         </div>
         <h1 className="text-2xl font-black tracking-tight text-foreground">{meta.title}</h1>
-        <Button
-          onClick={handleMarkRead}
-          disabled={markRead.isPending}
-          className="w-fit rounded-full"
-        >
-          {markRead.isPending ? t("practice.loading") : t("learn.markRead")}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            onClick={handleMarkRead}
+            disabled={markRead.isPending}
+            className="w-fit rounded-full"
+          >
+            {markRead.isPending ? t("practice.loading") : t("learn.markRead")}
+          </Button>
+          <Button onClick={handleStartQuiz} variant="outline" className="w-fit rounded-full">
+            {t("learn.startQuiz")}
+          </Button>
+        </div>
       </header>
 
       <article className="rounded-3xl border border-border bg-card p-6 sm:p-8">

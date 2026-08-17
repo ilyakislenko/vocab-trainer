@@ -1,0 +1,66 @@
+{
+  "module_id": "c1.grammar.hedging-register",
+  "items": [
+    {
+      "id": "c1.grammar.hedging-register.q1",
+      "type": "mcq",
+      "skill": "hedge.modal-soften",
+      "prompt": "Choose the sentence that sounds more tentative:",
+      "options": [
+        "This might suggest a different conclusion.",
+        "This proves the conclusion.",
+        "This is definitely the conclusion.",
+        "This is the conclusion."
+      ],
+      "answer_index": 0,
+      "explanation": "'Might' softens the claim — a hedge for cautious academic writing."
+    },
+    {
+      "id": "c1.grammar.hedging-register.q2",
+      "type": "mcq",
+      "skill": "hedge.vague",
+      "prompt": "Choose the vague expression:",
+      "options": ["to some extent", "exactly", "precisely", "absolutely"],
+      "answer_index": 0,
+      "explanation": "'To some extent' hedges by limiting the scope of the claim."
+    },
+    {
+      "id": "c1.grammar.hedging-register.q3",
+      "type": "mcq",
+      "skill": "register.formal-neutral",
+      "prompt": "Choose the most neutral/formal register for a report:",
+      "options": [
+        "The data suggest a moderate increase.",
+        "The data rock.",
+        "The data is super good.",
+        "The data is kinda up."
+      ],
+      "answer_index": 0,
+      "explanation": "A formal report uses neutral, hedged phrasing."
+    },
+    {
+      "id": "c1.grammar.hedging-register.q4",
+      "type": "cloze",
+      "skill": "hedge.modal-soften",
+      "prompt": "Complete with one word: The results ___ suggest a link, but more research is needed.",
+      "answers": ["may", "might", "could"],
+      "explanation": "'May/might/could' soften the claim."
+    },
+    {
+      "id": "c1.grammar.hedging-register.q5",
+      "type": "transform",
+      "skill": "hedge.vague",
+      "prompt": "Rewrite more cautiously using 'appears to': \"The policy is effective.\"",
+      "answers": ["The policy appears to be effective"],
+      "explanation": "'Appears to be' weakens an absolute claim."
+    },
+    {
+      "id": "c1.grammar.hedging-register.q6",
+      "type": "transform",
+      "skill": "register.formal-neutral",
+      "prompt": "Rewrite in a formal register: \"The boss got super angry about the delay.\"",
+      "answers": ["The manager was very displeased about the delay", "The manager was extremely unhappy about the delay"],
+      "explanation": "Informal vocabulary is replaced with neutral, professional wording."
+    }
+  ]
+}

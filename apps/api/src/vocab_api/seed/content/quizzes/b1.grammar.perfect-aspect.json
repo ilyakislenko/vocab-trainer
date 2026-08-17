@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.grammar.perfect-aspect",
+  "items": [
+    {
+      "id": "b1.grammar.perfect-aspect.q1",
+      "type": "mcq",
+      "skill": "perf.past-vs-perfect",
+      "prompt": "I ___ to London in 2019, so I remember the Tube well.",
+      "options": ["have been", "went", "have gone", "go"],
+      "answer_index": 1,
+      "explanation": "A fixed past time (2019) takes the past simple."
+    },
+    {
+      "id": "b1.grammar.perfect-aspect.q2",
+      "type": "mcq",
+      "skill": "perf.experience",
+      "prompt": "___ you ever ___ sushi?",
+      "options": ["Have ... tried", "Did ... try", "Do ... try", "Were ... trying"],
+      "answer_index": 0,
+      "explanation": "Experience up to now — 'ever' is a classic present perfect marker."
+    },
+    {
+      "id": "b1.grammar.perfect-aspect.q3",
+      "type": "mcq",
+      "skill": "perf.result-now",
+      "prompt": "Look — the taxi ___ arrived. Let's go.",
+      "options": ["has", "is", "did", "was"],
+      "answer_index": 0,
+      "explanation": "A past action with a result relevant now takes the present perfect."
+    },
+    {
+      "id": "b1.grammar.perfect-aspect.q4",
+      "type": "cloze",
+      "skill": "perf.experience",
+      "prompt": "Complete with the correct verb form: She ___ (work) here for five years and loves it.",
+      "answers": ["has worked"],
+      "explanation": "A duration that continues to the present takes the present perfect."
+    },
+    {
+      "id": "b1.grammar.perfect-aspect.q5",
+      "type": "transform",
+      "skill": "perf.experience",
+      "prompt": "Rewrite in the present perfect: \"I eat sushi.\" (meaning: at some point in my life)",
+      "answers": ["I have eaten sushi"],
+      "explanation": "Life experience — 'have + past participle'."
+    },
+    {
+      "id": "b1.grammar.perfect-aspect.q6",
+      "type": "error_correction",
+      "skill": "perf.result-now",
+      "prompt": "Find and correct the mistake: \"I have finished my homework yesterday.\"",
+      "answers": ["I finished my homework yesterday"],
+      "explanation": "'Yesterday' is a finished past time, so the past simple is required."
+    }
+  ]
+}

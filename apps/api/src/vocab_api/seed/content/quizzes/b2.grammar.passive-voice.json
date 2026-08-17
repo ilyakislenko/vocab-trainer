@@ -1,0 +1,61 @@
+{
+  "module_id": "b2.grammar.passive-voice",
+  "items": [
+    {
+      "id": "b2.grammar.passive-voice.q1",
+      "type": "mcq",
+      "skill": "pass.form",
+      "prompt": "The report ___ by the marketing team last Friday.",
+      "options": ["was finished", "is finished", "finished", "has finished"],
+      "answer_index": 0,
+      "explanation": "Passive past simple: was/were + past participle."
+    },
+    {
+      "id": "b2.grammar.passive-voice.q2",
+      "type": "mcq",
+      "skill": "pass.agent",
+      "prompt": "Choose the sentence that keeps the agent:",
+      "options": [
+        "The bridge was built by engineers in 1960.",
+        "The bridge was built in 1960.",
+        "The bridge built in 1960.",
+        "Engineers the bridge built."
+      ],
+      "answer_index": 0,
+      "explanation": "'By engineers' names the agent — the others omit or distort it."
+    },
+    {
+      "id": "b2.grammar.passive-voice.q3",
+      "type": "mcq",
+      "skill": "pass.impersonal",
+      "prompt": "It is believed ___ the company will grow next year.",
+      "options": ["that", "to", "of", "about"],
+      "answer_index": 0,
+      "explanation": "Impersonal passive with 'it is believed that...'."
+    },
+    {
+      "id": "b2.grammar.passive-voice.q4",
+      "type": "cloze",
+      "skill": "pass.form",
+      "prompt": "Complete with the passive form: Coffee ___ (grow) in many countries around the world.",
+      "answers": ["is grown"],
+      "explanation": "Present simple passive: is/are + past participle."
+    },
+    {
+      "id": "b2.grammar.passive-voice.q5",
+      "type": "transform",
+      "skill": "pass.agent",
+      "prompt": "Rewrite in the passive: \"The chef cooked the meal.\"",
+      "answers": ["The meal was cooked by the chef"],
+      "explanation": "The object becomes the subject; the agent follows 'by'."
+    },
+    {
+      "id": "b2.grammar.passive-voice.q6",
+      "type": "transform",
+      "skill": "pass.impersonal",
+      "prompt": "Rewrite using 'it is said': \"People say that the exam is hard.\"",
+      "answers": ["It is said that the exam is hard", "It is said that the exam is hard."],
+      "explanation": "The impersonal passive moves 'people' out and starts with 'it is said that...'."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.grammar.reported-speech",
+  "items": [
+    {
+      "id": "b1.grammar.reported-speech.q1",
+      "type": "mcq",
+      "skill": "rep.backshift",
+      "prompt": "She said, \"I am tired.\" → She said that she ___ tired.",
+      "options": ["is", "was", "will be", "were"],
+      "answer_index": 1,
+      "explanation": "Reporting a present-tense statement usually backshifts am → was."
+    },
+    {
+      "id": "b1.grammar.reported-speech.q2",
+      "type": "mcq",
+      "skill": "rep.questions",
+      "prompt": "He asked me where I ___.",
+      "options": ["live", "lived", "am living", "will live"],
+      "answer_index": 1,
+      "explanation": "Reported questions backshift and use statement word order."
+    },
+    {
+      "id": "b1.grammar.reported-speech.q3",
+      "type": "mcq",
+      "skill": "rep.requests",
+      "prompt": "She asked me ___ the window.",
+      "options": ["to open", "opening", "open", "that I open"],
+      "answer_index": 0,
+      "explanation": "Reported requests use ask + object + to-infinitive."
+    },
+    {
+      "id": "b1.grammar.reported-speech.q4",
+      "type": "cloze",
+      "skill": "rep.backshift",
+      "prompt": "Complete with one word: \"I'll call you,\" he said. → He said he ___ call me.",
+      "answers": ["would"],
+      "explanation": "'Will' backshifts to 'would' in reported speech."
+    },
+    {
+      "id": "b1.grammar.reported-speech.q5",
+      "type": "transform",
+      "skill": "rep.questions",
+      "prompt": "Report the question: \"Where do you work?\" he asked.",
+      "answers": ["He asked where I worked"],
+      "explanation": "Reported wh-questions keep the question word, then use statement order and backshift."
+    },
+    {
+      "id": "b1.grammar.reported-speech.q6",
+      "type": "transform",
+      "skill": "rep.requests",
+      "prompt": "Report the request: \"Please help me,\" she said.",
+      "answers": ["She asked me to help her"],
+      "explanation": "Reported requests take ask + object + to-infinitive."
+    }
+  ]
+}

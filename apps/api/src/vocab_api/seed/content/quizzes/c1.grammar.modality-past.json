@@ -1,0 +1,56 @@
+{
+  "module_id": "c1.grammar.modality-past",
+  "items": [
+    {
+      "id": "c1.grammar.modality-past.q1",
+      "type": "mcq",
+      "skill": "mod.past-should",
+      "prompt": "You ___ have called before you came — we were worried.",
+      "options": ["should", "must", "can't", "needn't"],
+      "answer_index": 0,
+      "explanation": "'Should have + past participle' criticises a missed obligation."
+    },
+    {
+      "id": "c1.grammar.modality-past.q2",
+      "type": "mcq",
+      "skill": "mod.past-could",
+      "prompt": "She ___ have won the race, but she tripped at the end.",
+      "options": ["could", "must", "shouldn't", "needn't"],
+      "answer_index": 0,
+      "explanation": "'Could have' expresses a lost possibility."
+    },
+    {
+      "id": "c1.grammar.modality-past.q3",
+      "type": "mcq",
+      "skill": "mod.neednt-have",
+      "prompt": "We ___ have booked a table — the restaurant was empty.",
+      "options": ["needn't", "mustn't", "couldn't", "shouldn't"],
+      "answer_index": 0,
+      "explanation": "'Needn't have' shows an action that was done but was unnecessary."
+    },
+    {
+      "id": "c1.grammar.modality-past.q4",
+      "type": "cloze",
+      "skill": "mod.past-could",
+      "prompt": "Complete: He ___ have caught the earlier train, but he missed it.",
+      "answers": ["could"],
+      "explanation": "'Could have' describes a possibility that did not happen."
+    },
+    {
+      "id": "c1.grammar.modality-past.q5",
+      "type": "transform",
+      "skill": "mod.past-should",
+      "prompt": "Rewrite using 'should have': \"It was wrong not to tell her.\"",
+      "answers": ["You should have told her", "I should have told her"],
+      "explanation": "'Should have + past participle' expresses the missed obligation."
+    },
+    {
+      "id": "c1.grammar.modality-past.q6",
+      "type": "error_correction",
+      "skill": "mod.neednt-have",
+      "prompt": "Find and correct the mistake: \"You needn't to have come so early.\"",
+      "answers": ["You needn't have come so early", "You didn't need to come so early"],
+      "explanation": "'Needn't have + past participle' has no 'to'."
+    }
+  ]
+}

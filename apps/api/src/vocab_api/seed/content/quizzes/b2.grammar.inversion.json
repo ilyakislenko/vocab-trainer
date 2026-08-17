@@ -1,0 +1,61 @@
+{
+  "module_id": "b2.grammar.inversion",
+  "items": [
+    {
+      "id": "b2.grammar.inversion.q1",
+      "type": "mcq",
+      "skill": "inv.negative-adverbial",
+      "prompt": "___ had she closed the door than the phone rang.",
+      "options": ["No sooner", "Not only", "Never", "Hardly"],
+      "answer_index": 0,
+      "explanation": "'No sooner... than' forces inversion: No sooner + aux + subject."
+    },
+    {
+      "id": "b2.grammar.inversion.q2",
+      "type": "mcq",
+      "skill": "inv.so-such",
+      "prompt": "So tired ___ that she fell asleep on the train.",
+      "options": ["was she", "she was", "she is", "is she"],
+      "answer_index": 0,
+      "explanation": "'So + adjective' at the front inverts the subject and verb."
+    },
+    {
+      "id": "b2.grammar.inversion.q3",
+      "type": "mcq",
+      "skill": "inv.formal",
+      "prompt": "Choose the formal sentence with inversion:",
+      "options": [
+        "Rarely have I seen such talent.",
+        "Rarely I have seen such talent.",
+        "I rarely have seen such talent.",
+        "Have rarely I seen such talent."
+      ],
+      "answer_index": 0,
+      "explanation": "Negative adverbials like 'rarely' at the front trigger inversion."
+    },
+    {
+      "id": "b2.grammar.inversion.q4",
+      "type": "cloze",
+      "skill": "inv.negative-adverbial",
+      "prompt": "Complete: Not only ___ she late, she also forgot the documents.",
+      "answers": ["was"],
+      "explanation": "'Not only' triggers inversion: aux + subject."
+    },
+    {
+      "id": "b2.grammar.inversion.q5",
+      "type": "transform",
+      "skill": "inv.negative-adverbial",
+      "prompt": "Rewrite starting with 'Never': \"I have never seen such a mess.\"",
+      "answers": ["Never have I seen such a mess"],
+      "explanation": "'Never' at the front inverts to 'have I'."
+    },
+    {
+      "id": "b2.grammar.inversion.q6",
+      "type": "transform",
+      "skill": "inv.so-such",
+      "prompt": "Rewrite starting with 'So': \"The film was so boring that I left early.\"",
+      "answers": ["So boring was the film that I left early"],
+      "explanation": "'So + adjective' at the front inverts the subject and verb."
+    }
+  ]
+}

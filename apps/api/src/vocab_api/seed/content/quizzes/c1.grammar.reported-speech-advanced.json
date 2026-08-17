@@ -1,0 +1,56 @@
+{
+  "module_id": "c1.grammar.reported-speech-advanced",
+  "items": [
+    {
+      "id": "c1.grammar.reported-speech-advanced.q1",
+      "type": "mcq",
+      "skill": "rep.advanced-shift",
+      "prompt": "\"I had finished by then,\" she said. → She said she ___ finished by then.",
+      "options": ["had", "has", "have", "would have"],
+      "answer_index": 0,
+      "explanation": "Past perfect stays past perfect — no further backshift is needed."
+    },
+    {
+      "id": "c1.grammar.reported-speech-advanced.q2",
+      "type": "mcq",
+      "skill": "rep.reporting-verbs",
+      "prompt": "She ___ taking full responsibility for the error.",
+      "options": ["admitted", "said", "told", "claimed to"],
+      "answer_index": 0,
+      "explanation": "'Admit + gerund' is the precise reporting verb for this meaning."
+    },
+    {
+      "id": "c1.grammar.reported-speech-advanced.q3",
+      "type": "mcq",
+      "skill": "rep.mixed-tense",
+      "prompt": "He said the sun ___ in the east.",
+      "options": ["rises", "rose", "would rise", "had risen"],
+      "answer_index": 0,
+      "explanation": "Universal truths stay in the present even in reported speech."
+    },
+    {
+      "id": "c1.grammar.reported-speech-advanced.q4",
+      "type": "cloze",
+      "skill": "rep.reporting-verbs",
+      "prompt": "Complete with one word: She ___ me to check the figures twice.",
+      "answers": ["reminded"],
+      "explanation": "'Remind + object + to-infinitive' reports the instruction precisely."
+    },
+    {
+      "id": "c1.grammar.reported-speech-advanced.q5",
+      "type": "transform",
+      "skill": "rep.mixed-tense",
+      "prompt": "Report the sentence keeping the universal truth: \"Water boils at 100°C,\" the teacher said.",
+      "answers": ["The teacher said that water boils at 100°C", "The teacher said water boils at 100°C"],
+      "explanation": "Scientific facts are not backshifted."
+    },
+    {
+      "id": "c1.grammar.reported-speech-advanced.q6",
+      "type": "transform",
+      "skill": "rep.advanced-shift",
+      "prompt": "Report using 'admit': \"I made a mistake,\" she said.",
+      "answers": ["She admitted making a mistake", "She admitted that she had made a mistake"],
+      "explanation": "'Admit + gerund' reports the admission compactly."
+    }
+  ]
+}

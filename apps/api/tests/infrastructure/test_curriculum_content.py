@@ -68,3 +68,33 @@ def test_bundle_lesson_frontmatter_titles_match_manifest_for_bare_ids():
         for entry in section.entries:
             if entry.availability is ModuleAvailability.AVAILABLE and entry.title:
                 assert entry.title == bundle.module(entry.id).title
+
+
+def test_bundle_available_modules_each_have_a_quiz_with_two_types_and_six_items():
+    bundle = ContentBundle.from_files()
+    for section in bundle.levels():
+        for entry in section.entries:
+            if entry.availability is not ModuleAvailability.AVAILABLE:
+                continue
+            quiz = bundle.quiz(entry.id)
+            assert quiz is not None
+            assert quiz.module_id == entry.id
+            assert len(quiz.items) >= 6
+            types = {item.type for item in quiz.items}
+            assert len(types) >= 2
+            item_ids = [item.id for item in quiz.items]
+            assert len(item_ids) == len(set(item_ids))
+
+
+def test_bundle_quiz_item_skills_are_subset_of_lesson_skills():
+    bundle = ContentBundle.from_files()
+    for section in bundle.levels():
+        for entry in section.entries:
+            if entry.availability is not ModuleAvailability.AVAILABLE:
+                continue
+            lesson_skills = set(bundle.lesson(entry.id).skills)
+            quiz = bundle.quiz(entry.id)
+            for item in quiz.items:
+                assert item.skill in lesson_skills, (
+                    f"{item.id}: skill {item.skill!r} not in lesson skills"
+                )

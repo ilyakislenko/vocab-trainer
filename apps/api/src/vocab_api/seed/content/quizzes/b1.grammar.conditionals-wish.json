@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.grammar.conditionals-wish",
+  "items": [
+    {
+      "id": "b1.grammar.conditionals-wish.q1",
+      "type": "mcq",
+      "skill": "cond.zero-one",
+      "prompt": "If you heat ice, it ___.",
+      "options": ["melts", "would melt", "will melt", "melted"],
+      "answer_index": 0,
+      "explanation": "A general truth takes the zero conditional: if + present, present."
+    },
+    {
+      "id": "b1.grammar.conditionals-wish.q2",
+      "type": "mcq",
+      "skill": "cond.second",
+      "prompt": "If I ___ rich, I would travel the world.",
+      "options": ["was", "am", "were", "have been"],
+      "answer_index": 2,
+      "explanation": "Hypothetical present — the second conditional uses 'were' for all persons."
+    },
+    {
+      "id": "b1.grammar.conditionals-wish.q3",
+      "type": "mcq",
+      "skill": "cond.third",
+      "prompt": "If she had studied harder, she ___ the exam.",
+      "options": ["would pass", "would have passed", "passed", "passes"],
+      "answer_index": 1,
+      "explanation": "A past hypothetical — the third conditional uses 'would have + past participle'."
+    },
+    {
+      "id": "b1.grammar.conditionals-wish.q4",
+      "type": "cloze",
+      "skill": "wish.regret",
+      "prompt": "Complete with the correct verb form: I wish I ___ (buy) that jacket — now it's sold out.",
+      "answers": ["had bought"],
+      "explanation": "A regret about the past takes 'wish + past perfect'."
+    },
+    {
+      "id": "b1.grammar.conditionals-wish.q5",
+      "type": "transform",
+      "skill": "cond.second",
+      "prompt": "Rewrite as a second conditional: \"I don't have a car, so I take the bus.\"",
+      "answers": ["If I had a car, I wouldn't take the bus", "If I had a car, I would not take the bus"],
+      "explanation": "Present unreal situation: if + past simple, would + base form."
+    },
+    {
+      "id": "b1.grammar.conditionals-wish.q6",
+      "type": "transform",
+      "skill": "cond.third",
+      "prompt": "Rewrite as a third conditional: \"He didn't call, so I didn't know.\"",
+      "answers": ["If he had called, I would have known", "If he had called, I would've known"],
+      "explanation": "Past unreal situation: if + past perfect, would have + past participle."
+    }
+  ]
+}

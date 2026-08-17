@@ -1,0 +1,56 @@
+{
+  "module_id": "b2.grammar.discourse-markers",
+  "items": [
+    {
+      "id": "b2.grammar.discourse-markers.q1",
+      "type": "mcq",
+      "skill": "disc.contrast",
+      "prompt": "The hotel was expensive; ___, the service was excellent.",
+      "options": ["however", "therefore", "furthermore", "meanwhile"],
+      "answer_index": 0,
+      "explanation": "'However' introduces a contrast."
+    },
+    {
+      "id": "b2.grammar.discourse-markers.q2",
+      "type": "mcq",
+      "skill": "disc.result",
+      "prompt": "Sales dropped sharply; ___, the company cut costs.",
+      "options": ["as a result", "on the contrary", "in addition", "for instance"],
+      "answer_index": 0,
+      "explanation": "'As a result' signals a consequence."
+    },
+    {
+      "id": "b2.grammar.discourse-markers.q3",
+      "type": "mcq",
+      "skill": "disc.addition",
+      "prompt": "The course is challenging. ___, it prepares you for real interviews.",
+      "options": ["Furthermore", "However", "Therefore", "Whereas"],
+      "answer_index": 0,
+      "explanation": "'Furthermore' adds a supporting point."
+    },
+    {
+      "id": "b2.grammar.discourse-markers.q4",
+      "type": "cloze",
+      "skill": "disc.contrast",
+      "prompt": "Complete with one word: The task looked simple; ___, it took us all day.",
+      "answers": ["however", "yet"],
+      "explanation": "'However' or 'yet' introduces the contrast."
+    },
+    {
+      "id": "b2.grammar.discourse-markers.q5",
+      "type": "transform",
+      "skill": "disc.result",
+      "prompt": "Rewrite joining the ideas with 'therefore': \"It rained all day. The match was cancelled.\"",
+      "answers": ["It rained all day; therefore, the match was cancelled", "It rained all day. Therefore, the match was cancelled"],
+      "explanation": "'Therefore' links the cause to its consequence."
+    },
+    {
+      "id": "b2.grammar.discourse-markers.q6",
+      "type": "error_correction",
+      "skill": "disc.addition",
+      "prompt": "Find and correct the mistake: \"The plan failed. Moreover, nobody knew the reason.\"",
+      "answers": ["The plan failed. However, nobody knew the reason", "The plan failed; however, nobody knew the reason"],
+      "explanation": "The second idea contrasts with the first, so 'however' fits better than 'moreover'."
+    }
+  ]
+}

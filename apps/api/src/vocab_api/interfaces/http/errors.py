@@ -6,6 +6,7 @@ from vocab_api.domain.shared.errors import (
     CardNotFound,
     CurriculumLessonNotFound,
     CurriculumModuleNotFound,
+    CurriculumQuizNotFound,
     DeckNotFound,
     DomainError,
 )
@@ -26,6 +27,10 @@ def install_error_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(CurriculumLessonNotFound)
     async def _lesson_not_found(_: Request, exc: CurriculumLessonNotFound) -> JSONResponse:
+        return JSONResponse(status_code=404, content={"detail": str(exc)})
+
+    @app.exception_handler(CurriculumQuizNotFound)
+    async def _quiz_not_found(_: Request, exc: CurriculumQuizNotFound) -> JSONResponse:
         return JSONResponse(status_code=404, content={"detail": str(exc)})
 
     @app.exception_handler(LlmUnavailable)

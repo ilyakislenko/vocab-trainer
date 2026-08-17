@@ -1,0 +1,56 @@
+{
+  "module_id": "b2.collocations.academic",
+  "items": [
+    {
+      "id": "b2.collocations.academic.q1",
+      "type": "mcq",
+      "skill": "coll.verb-noun",
+      "prompt": "The study ___ that sleep improves memory.",
+      "options": ["conducted", "made", "did", "performed"],
+      "answer_index": 0,
+      "explanation": "'Conduct a study' is the standard verb-noun collocation."
+    },
+    {
+      "id": "b2.collocations.academic.q2",
+      "type": "mcq",
+      "skill": "coll.adjective-noun",
+      "prompt": "The results show a ___ improvement in accuracy.",
+      "options": ["significant", "large", "big", "strong"],
+      "answer_index": 0,
+      "explanation": "'Significant improvement' is the academic collocation."
+    },
+    {
+      "id": "b2.collocations.academic.q3",
+      "type": "mcq",
+      "skill": "coll.common-academic",
+      "prompt": "The paper ___ to a number of important questions.",
+      "options": ["addresses", "solves", "fixes", "handles"],
+      "answer_index": 0,
+      "explanation": "'Address a question' is the common academic collocation."
+    },
+    {
+      "id": "b2.collocations.academic.q4",
+      "type": "cloze",
+      "skill": "coll.verb-noun",
+      "prompt": "Complete with one word: The team will ___ out the experiment next month.",
+      "answers": ["carry"],
+      "explanation": "'Carry out an experiment' is the fixed collocation."
+    },
+    {
+      "id": "b2.collocations.academic.q5",
+      "type": "transform",
+      "skill": "coll.adjective-noun",
+      "prompt": "Rewrite using 'significant': \"The change was important in a noticeable way.\"",
+      "answers": ["The change was significant"],
+      "explanation": "One adjective, 'significant', carries the meaning concisely."
+    },
+    {
+      "id": "b2.collocations.academic.q6",
+      "type": "transform",
+      "skill": "coll.common-academic",
+      "prompt": "Rewrite using 'draw a conclusion': \"After the data review, we concluded.\"",
+      "answers": ["After the data review, we drew a conclusion"],
+      "explanation": "'Draw a conclusion' is the standard academic collocation."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "module_id": "b2.phrasal_verbs.problem-solving",
+  "items": [
+    {
+      "id": "b2.phrasal_verbs.problem-solving.q1",
+      "type": "mcq",
+      "skill": "phrasal.analysis",
+      "prompt": "We need to ___ the cause of the server outage.",
+      "options": ["look into", "look out", "look up", "look over"],
+      "answer_index": 0,
+      "explanation": "'Look into' means to investigate."
+    },
+    {
+      "id": "b2.phrasal_verbs.problem-solving.q2",
+      "type": "mcq",
+      "skill": "phrasal.troubleshoot",
+      "prompt": "They spent hours trying to ___ the bug in the payment system.",
+      "options": ["sort out", "sort by", "sort over", "sort through"],
+      "answer_index": 0,
+      "explanation": "'Sort out' means to resolve a problem."
+    },
+    {
+      "id": "b2.phrasal_verbs.problem-solving.q3",
+      "type": "mcq",
+      "skill": "phrasal.solutions",
+      "prompt": "The team ___ a workaround until the fix ships.",
+      "options": ["came up with", "came up to", "came up against", "came up on"],
+      "answer_index": 0,
+      "explanation": "'Come up with' means to think of a solution."
+    },
+    {
+      "id": "b2.phrasal_verbs.problem-solving.q4",
+      "type": "cloze",
+      "skill": "phrasal.troubleshoot",
+      "prompt": "Complete with one word: The connection keeps dropping — can you ___ out why?",
+      "answers": ["figure"],
+      "explanation": "'Figure out' means to understand or solve."
+    },
+    {
+      "id": "b2.phrasal_verbs.problem-solving.q5",
+      "type": "transform",
+      "skill": "phrasal.solutions",
+      "prompt": "Rewrite using 'come up with': \"They devised a clever solution.\"",
+      "answers": ["They came up with a clever solution"],
+      "explanation": "'Come up with' replaces 'devised'."
+    },
+    {
+      "id": "b2.phrasal_verbs.problem-solving.q6",
+      "type": "transform",
+      "skill": "phrasal.analysis",
+      "prompt": "Rewrite using 'look into': \"We are investigating the complaint.\"",
+      "answers": ["We are looking into the complaint"],
+      "explanation": "'Look into' replaces 'investigate'."
+    }
+  ]
+}

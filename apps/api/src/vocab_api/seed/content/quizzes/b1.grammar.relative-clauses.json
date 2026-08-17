@@ -1,0 +1,55 @@
+{
+  "module_id": "b1.grammar.relative-clauses",
+  "items": [
+    {
+      "id": "b1.grammar.relative-clauses.q1",
+      "type": "mcq",
+      "skill": "rel.who-which-that",
+      "prompt": "The woman ___ lives next door is a doctor.",
+      "options": ["which", "who", "whose", "whom"],
+      "answer_index": 1,
+      "explanation": "A person as the subject of a relative clause takes 'who'."
+    },
+    {
+      "id": "b1.grammar.relative-clauses.q2",
+      "type": "mcq",
+      "skill": "rel.non-defining",
+      "prompt": "My brother, ___ lives in Paris, is visiting us.",
+      "options": ["that", "which", "who", "whose"],
+      "answer_index": 2,
+      "explanation": "Non-defining clauses about people use 'who' and are set off by commas."
+    },
+    {
+      "id": "b1.grammar.relative-clauses.q3",
+      "type": "cloze",
+      "skill": "rel.defining",
+      "prompt": "Complete with one word: This is the book ___ I told you about.",
+      "answers": ["that", "which"],
+      "explanation": "Both 'that' and 'which' work for things in a defining clause."
+    },
+    {
+      "id": "b1.grammar.relative-clauses.q4",
+      "type": "transform",
+      "skill": "rel.defining",
+      "prompt": "Join the sentences with a relative clause: \"I have a friend. She speaks five languages.\"",
+      "answers": ["I have a friend who speaks five languages"],
+      "explanation": "'She' becomes 'who', joining the two clauses into one sentence."
+    },
+    {
+      "id": "b1.grammar.relative-clauses.q5",
+      "type": "transform",
+      "skill": "rel.non-defining",
+      "prompt": "Add a non-defining clause to \"London is famous for its museums.\" (London has over 8 million people)",
+      "answers": ["London, which has over 8 million people, is famous for its museums"],
+      "explanation": "Extra information about London is set off with commas and 'which'."
+    },
+    {
+      "id": "b1.grammar.relative-clauses.q6",
+      "type": "error_correction",
+      "skill": "rel.who-which-that",
+      "prompt": "Find and correct the mistake: \"The people which live here are friendly.\"",
+      "answers": ["The people who live here are friendly"],
+      "explanation": "'Which' refers to things — people take 'who'."
+    }
+  ]
+}

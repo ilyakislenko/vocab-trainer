@@ -1,0 +1,56 @@
+{
+  "module_id": "b2.vocabulary.technology",
+  "items": [
+    {
+      "id": "b2.vocabulary.technology.q1",
+      "type": "mcq",
+      "skill": "vocab.software",
+      "prompt": "The app was ___ last month to fix security issues.",
+      "options": ["patched", "cabled", "wired", "boxed"],
+      "answer_index": 0,
+      "explanation": "'Patch' is the standard verb for fixing software vulnerabilities."
+    },
+    {
+      "id": "b2.vocabulary.technology.q2",
+      "type": "mcq",
+      "skill": "vocab.infrastructure",
+      "prompt": "The new server is part of a cloud-based ___.",
+      "options": ["infrastructure", "furniture", "apparatus", "machinery"],
+      "answer_index": 0,
+      "explanation": "'Cloud-based infrastructure' is the standard term."
+    },
+    {
+      "id": "b2.vocabulary.technology.q3",
+      "type": "mcq",
+      "skill": "vocab.data",
+      "prompt": "The system stores user data in a ___ of records.",
+      "options": ["database", "cupboard", "folder", "packet"],
+      "answer_index": 0,
+      "explanation": "'Database' is the standard term for structured data storage."
+    },
+    {
+      "id": "b2.vocabulary.technology.q4",
+      "type": "cloze",
+      "skill": "vocab.software",
+      "prompt": "Complete with one word: A ___ is a small program that automates a repetitive task.",
+      "answers": ["script"],
+      "explanation": "'Script' is the term for a small automation program."
+    },
+    {
+      "id": "b2.vocabulary.technology.q5",
+      "type": "transform",
+      "skill": "vocab.infrastructure",
+      "prompt": "Rewrite using 'scale': \"The platform can grow to handle more users.\"",
+      "answers": ["The platform can scale to handle more users"],
+      "explanation": "'Scale' captures the ability to grow in one word."
+    },
+    {
+      "id": "b2.vocabulary.technology.q6",
+      "type": "error_correction",
+      "skill": "vocab.data",
+      "prompt": "Find and correct the mistake: \"The server stores informations in a secure cloud.\"",
+      "answers": ["The server stores information in a secure cloud"],
+      "explanation": "'Information' is uncountable and takes no plural."
+    }
+  ]
+}

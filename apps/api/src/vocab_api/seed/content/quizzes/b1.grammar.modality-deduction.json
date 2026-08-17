@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.grammar.modality-deduction",
+  "items": [
+    {
+      "id": "b1.grammar.modality-deduction.q1",
+      "type": "mcq",
+      "skill": "mod.deduction-present",
+      "prompt": "The lights are on. She ___ be home.",
+      "options": ["must", "can't", "should", "would"],
+      "answer_index": 0,
+      "explanation": "A near-certain present deduction takes 'must'."
+    },
+    {
+      "id": "b1.grammar.modality-deduction.q2",
+      "type": "mcq",
+      "skill": "mod.deduction-past",
+      "prompt": "He looks exhausted. He ___ have worked all night.",
+      "options": ["must", "might", "can't", "needn't"],
+      "answer_index": 0,
+      "explanation": "A near-certain past deduction takes 'must have + past participle'."
+    },
+    {
+      "id": "b1.grammar.modality-deduction.q3",
+      "type": "mcq",
+      "skill": "mod.certainty",
+      "prompt": "That ___ be John — he's in Tokyo this week.",
+      "options": ["can't", "mustn't", "needn't", "won't"],
+      "answer_index": 0,
+      "explanation": "An impossible deduction takes 'can't'."
+    },
+    {
+      "id": "b1.grammar.modality-deduction.q4",
+      "type": "cloze",
+      "skill": "mod.deduction-past",
+      "prompt": "Complete: The ground is wet. It ___ (rain) last night.",
+      "answers": ["must have rained"],
+      "explanation": "A past deduction takes 'must have + past participle'."
+    },
+    {
+      "id": "b1.grammar.modality-deduction.q5",
+      "type": "transform",
+      "skill": "mod.certainty",
+      "prompt": "Rewrite with 'can't' to express impossibility: \"It is impossible that he is at home now.\"",
+      "answers": ["He can't be at home now", "He cannot be at home now"],
+      "explanation": "Impossibility in the present takes 'can't be'."
+    },
+    {
+      "id": "b1.grammar.modality-deduction.q6",
+      "type": "error_correction",
+      "skill": "mod.deduction-present",
+      "prompt": "Find and correct the mistake: \"He must to be at work by now.\"",
+      "answers": ["He must be at work by now"],
+      "explanation": "Modal verbs take the bare infinitive — no 'to'."
+    }
+  ]
+}

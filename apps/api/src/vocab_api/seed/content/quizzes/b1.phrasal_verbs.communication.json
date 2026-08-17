@@ -1,0 +1,56 @@
+{
+  "module_id": "b1.phrasal_verbs.communication",
+  "items": [
+    {
+      "id": "b1.phrasal_verbs.communication.q1",
+      "type": "mcq",
+      "skill": "phrasal.comm-basic",
+      "prompt": "I couldn't hear him, so I asked him to ___.",
+      "options": ["speak up", "speak out", "speak over", "speak off"],
+      "answer_index": 0,
+      "explanation": "'Speak up' means to talk more loudly."
+    },
+    {
+      "id": "b1.phrasal_verbs.communication.q2",
+      "type": "mcq",
+      "skill": "phrasal.call-meanings",
+      "prompt": "The meeting was ___ because the client had an emergency.",
+      "options": ["called off", "called up", "called for", "called on"],
+      "answer_index": 0,
+      "explanation": "'Call off' means to cancel."
+    },
+    {
+      "id": "b1.phrasal_verbs.communication.q3",
+      "type": "mcq",
+      "skill": "phrasal.turn-meanings",
+      "prompt": "She ___ the offer because the terms were unfair.",
+      "options": ["turned down", "turned up", "turned over", "turned around"],
+      "answer_index": 0,
+      "explanation": "'Turn down' means to reject an offer."
+    },
+    {
+      "id": "b1.phrasal_verbs.communication.q4",
+      "type": "cloze",
+      "skill": "phrasal.comm-basic",
+      "prompt": "Complete with one word: Let's ___ up the main points of the discussion.",
+      "answers": ["sum"],
+      "explanation": "'Sum up' means to summarise."
+    },
+    {
+      "id": "b1.phrasal_verbs.communication.q5",
+      "type": "transform",
+      "skill": "phrasal.call-meanings",
+      "prompt": "Rewrite using a phrasal verb with 'call': \"The event was cancelled at the last minute.\"",
+      "answers": ["The event was called off at the last minute"],
+      "explanation": "'Call off' replaces 'cancelled'."
+    },
+    {
+      "id": "b1.phrasal_verbs.communication.q6",
+      "type": "transform",
+      "skill": "phrasal.turn-meanings",
+      "prompt": "Rewrite using 'turn down': \"He rejected the invitation politely.\"",
+      "answers": ["He turned down the invitation politely", "He turned the invitation down politely"],
+      "explanation": "'Turn down' is separable, so both word orders work."
+    }
+  ]
+}

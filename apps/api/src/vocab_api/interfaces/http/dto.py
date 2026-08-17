@@ -179,3 +179,46 @@ class CurriculumModuleProgressOut(BaseModel):
     lesson_read_at: datetime | None = None
     quiz_best_score: float | None = None
     completed_at: datetime | None = None
+
+
+class CurriculumQuizItemOut(BaseModel):
+    """A quiz item as served to the learner — answers are never sent."""
+
+    id: str
+    type: str
+    skill: str
+    prompt: str
+    options: list[str] | None = None
+
+
+class CurriculumQuizOut(BaseModel):
+    module_id: str
+    status: str
+    items: list[CurriculumQuizItemOut]
+
+
+class CurriculumQuizAnswerIn(BaseModel):
+    item_id: str
+    given: str
+
+
+class CurriculumQuizGradeIn(BaseModel):
+    module_id: str
+    answers: list[CurriculumQuizAnswerIn]
+
+
+class CurriculumQuizItemResultOut(BaseModel):
+    item_id: str
+    skill: str
+    correct: bool
+    explanation: str
+    needs_llm: bool = False
+
+
+class CurriculumQuizGradeOut(BaseModel):
+    module_id: str
+    score: float
+    status: str
+    completed: bool
+    next_module_id: str | None = None
+    items: list[CurriculumQuizItemResultOut]

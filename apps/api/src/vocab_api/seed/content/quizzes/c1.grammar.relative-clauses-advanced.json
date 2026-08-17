@@ -1,0 +1,61 @@
+{
+  "module_id": "c1.grammar.relative-clauses-advanced",
+  "items": [
+    {
+      "id": "c1.grammar.relative-clauses-advanced.q1",
+      "type": "mcq",
+      "skill": "rel.whom-whose",
+      "prompt": "The manager ___ the report was addressed responded within a day.",
+      "options": ["to whom", "who", "which", "whose"],
+      "answer_index": 0,
+      "explanation": "With a fronted preposition, 'whom' is required."
+    },
+    {
+      "id": "c1.grammar.relative-clauses-advanced.q2",
+      "type": "mcq",
+      "skill": "rel.prep-fronting",
+      "prompt": "The contract ___ we signed has several clauses to review.",
+      "options": ["under which", "who", "whose", "whom"],
+      "answer_index": 0,
+      "explanation": "The preposition 'under' moves to the front with 'which'."
+    },
+    {
+      "id": "c1.grammar.relative-clauses-advanced.q3",
+      "type": "mcq",
+      "skill": "rel.complex",
+      "prompt": "Choose the correct sentence:",
+      "options": [
+        "The candidate whose application we received yesterday has experience.",
+        "The candidate which application we received yesterday has experience.",
+        "The candidate who application we received yesterday has experience.",
+        "The candidate whom application we received yesterday has experience."
+      ],
+      "answer_index": 0,
+      "explanation": "'Whose' shows possession of the application."
+    },
+    {
+      "id": "c1.grammar.relative-clauses-advanced.q4",
+      "type": "cloze",
+      "skill": "rel.whom-whose",
+      "prompt": "Complete with one word: The professor ___ lecture I attended is a famous linguist.",
+      "answers": ["whose"],
+      "explanation": "'Whose' expresses possession of the lecture."
+    },
+    {
+      "id": "c1.grammar.relative-clauses-advanced.q5",
+      "type": "transform",
+      "skill": "rel.prep-fronting",
+      "prompt": "Rewrite with a fronted preposition: \"The company which I work for is expanding.\"",
+      "answers": ["The company for which I work is expanding"],
+      "explanation": "Fronting the preposition gives a formal relative clause."
+    },
+    {
+      "id": "c1.grammar.relative-clauses-advanced.q6",
+      "type": "error_correction",
+      "skill": "rel.complex",
+      "prompt": "Find and correct the mistake: \"The report which the CEO praised it was praised by all.\"",
+      "answers": ["The report which the CEO praised was praised by all", "The report the CEO praised was praised by all"],
+      "explanation": "The relative pronoun replaces the object — no duplicate 'it'."
+    }
+  ]
+}

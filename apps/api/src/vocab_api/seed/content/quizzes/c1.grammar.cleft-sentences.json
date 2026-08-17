@@ -1,0 +1,61 @@
+{
+  "module_id": "c1.grammar.cleft-sentences",
+  "items": [
+    {
+      "id": "c1.grammar.cleft-sentences.q1",
+      "type": "mcq",
+      "skill": "cleft.it-cleft",
+      "prompt": "___ was Anna who suggested the new strategy.",
+      "options": ["It", "There", "That", "This"],
+      "answer_index": 0,
+      "explanation": "An it-cleft starts with 'It' + be + the focused element."
+    },
+    {
+      "id": "c1.grammar.cleft-sentences.q2",
+      "type": "mcq",
+      "skill": "cleft.wh-cleft",
+      "prompt": "What I need ___ a quiet office.",
+      "options": ["is", "are", "were", "be"],
+      "answer_index": 0,
+      "explanation": "A wh-cleft takes 'what + subject + verb + is/was'."
+    },
+    {
+      "id": "c1.grammar.cleft-sentences.q3",
+      "type": "mcq",
+      "skill": "cleft.focus",
+      "prompt": "Choose the sentence that focuses on the time:",
+      "options": [
+        "It was in 2021 that the company went global.",
+        "The company was global in 2021.",
+        "In 2021 the company.",
+        "The company went global."
+      ],
+      "answer_index": 0,
+      "explanation": "The it-cleft fronted the time phrase 'in 2021'."
+    },
+    {
+      "id": "c1.grammar.cleft-sentences.q4",
+      "type": "cloze",
+      "skill": "cleft.it-cleft",
+      "prompt": "Complete with one word: ___ was the deadline that worried the team.",
+      "answers": ["It"],
+      "explanation": "It-cleft: 'It' + was + focused element + that."
+    },
+    {
+      "id": "c1.grammar.cleft-sentences.q5",
+      "type": "transform",
+      "skill": "cleft.wh-cleft",
+      "prompt": "Rewrite as a wh-cleft: \"I need more time.\"",
+      "answers": ["What I need is more time"],
+      "explanation": "Wh-cleft: 'What I need is...' focuses the requirement."
+    },
+    {
+      "id": "c1.grammar.cleft-sentences.q6",
+      "type": "transform",
+      "skill": "cleft.focus",
+      "prompt": "Rewrite as an it-cleft focusing on the person: \"Maria designed the logo.\"",
+      "answers": ["It was Maria who designed the logo", "It was Maria that designed the logo"],
+      "explanation": "The person is moved after 'It was' and linked with 'who'."
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "module_id": "c1.business.register",
+  "items": [
+    {
+      "id": "c1.business.register.q1",
+      "type": "mcq",
+      "skill": "biz.formal-email",
+      "prompt": "Choose the most appropriate formal email opening:",
+      "options": [
+        "Dear Ms. Chen,",
+        "Hi there,",
+        "Hey Chen,",
+        "Yo!"
+      ],
+      "answer_index": 0,
+      "explanation": "A formal email addresses the recipient by title and surname."
+    },
+    {
+      "id": "c1.business.register.q2",
+      "type": "mcq",
+      "skill": "biz.report",
+      "prompt": "In a business report, you should say:",
+      "options": [
+        "The figures indicate a steady upward trend.",
+        "The numbers went way up, it's great.",
+        "The stats are super good.",
+        "The numbers rock, bro."
+      ],
+      "answer_index": 0,
+      "explanation": "Reports use neutral, measured language."
+    },
+    {
+      "id": "c1.business.register.q3",
+      "type": "mcq",
+      "skill": "biz.casual-formal-switch",
+      "prompt": "Which phrase is appropriate when writing to a client?",
+      "options": [
+        "We appreciate your continued business.",
+        "Thanks a bunch!",
+        "Catch you later!",
+        "Toodles!"
+      ],
+      "answer_index": 0,
+      "explanation": "Client communication stays polite and professional."
+    },
+    {
+      "id": "c1.business.register.q4",
+      "type": "cloze",
+      "skill": "biz.formal-email",
+      "prompt": "Complete with one word: Please find ___ the updated contract.",
+      "answers": ["attached"],
+      "explanation": "'Please find attached' is the standard formal email phrase."
+    },
+    {
+      "id": "c1.business.register.q5",
+      "type": "transform",
+      "skill": "biz.casual-formal-switch",
+      "prompt": "Rewrite in a formal register: \"Can you give me a quick update on the project?\"",
+      "answers": ["Could you provide an update on the project?", "Could you provide an update on the project please?"],
+      "explanation": "Formal phrasing replaces the casual request."
+    },
+    {
+      "id": "c1.business.register.q6",
+      "type": "transform",
+      "skill": "biz.report",
+      "prompt": "Rewrite in a neutral report style: \"Sales are going through the roof!\"",
+      "answers": ["Sales are increasing rapidly", "Sales show a significant increase"],
+      "explanation": "Exclamatory, informal language is replaced with measured prose."
+    }
+  ]
+}

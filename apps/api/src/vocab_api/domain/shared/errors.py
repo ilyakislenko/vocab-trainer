@@ -51,6 +51,12 @@ class CurriculumLessonNotFound(DomainError):
         self.module_id = module_id
 
 
+class CurriculumQuizNotFound(DomainError):
+    def __init__(self, module_id: str) -> None:
+        super().__init__(f"quiz for module {module_id!r} not found")
+        self.module_id = module_id
+
+
 class ContentValidationError(DomainError):
     """The content bundle failed validation; the app must not serve it."""
 

@@ -1,0 +1,56 @@
+{
+  "module_id": "c1.collocations.abstract",
+  "items": [
+    {
+      "id": "c1.collocations.abstract.q1",
+      "type": "mcq",
+      "skill": "coll.abstract-nouns",
+      "prompt": "The company takes ___ for the environmental damage.",
+      "options": ["responsibility", "effort", "concern", "liability"],
+      "answer_index": 0,
+      "explanation": "'Take responsibility for' is the fixed abstract collocation."
+    },
+    {
+      "id": "c1.collocations.abstract.q2",
+      "type": "mcq",
+      "skill": "coll.argumentation",
+      "prompt": "Her argument ___ the idea that remote work reduces productivity.",
+      "options": ["challenges", "holds", "carries", "runs"],
+      "answer_index": 0,
+      "explanation": "'Challenge an idea' is the argumentative collocation."
+    },
+    {
+      "id": "c1.collocations.abstract.q3",
+      "type": "mcq",
+      "skill": "coll.analysis",
+      "prompt": "The analyst drew a ___ conclusion from the data.",
+      "options": ["compelling", "loud", "thick", "round"],
+      "answer_index": 0,
+      "explanation": "'Compelling conclusion' is the analytical collocation."
+    },
+    {
+      "id": "c1.collocations.abstract.q4",
+      "type": "cloze",
+      "skill": "coll.abstract-nouns",
+      "prompt": "Complete with one word: The initiative gained ___ over several months.",
+      "answers": ["momentum", "traction"],
+      "explanation": "'Gain momentum/traction' describes a growing initiative."
+    },
+    {
+      "id": "c1.collocations.abstract.q5",
+      "type": "transform",
+      "skill": "coll.argumentation",
+      "prompt": "Rewrite using 'strengthen the case': \"Their evidence supports the argument well.\"",
+      "answers": ["Their evidence strengthens the case"],
+      "explanation": "'Strengthen the case' is the idiomatic argumentative phrase."
+    },
+    {
+      "id": "c1.collocations.abstract.q6",
+      "type": "transform",
+      "skill": "coll.analysis",
+      "prompt": "Rewrite using 'draw a comparison': \"The report compares the two approaches.\"",
+      "answers": ["The report draws a comparison between the two approaches"],
+      "explanation": "'Draw a comparison' is the standard analytical collocation."
+    }
+  ]
+}

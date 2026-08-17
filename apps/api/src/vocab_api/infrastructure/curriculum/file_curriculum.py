@@ -2,6 +2,7 @@ from vocab_api.application.ports.curriculum_content import CurriculumContent
 from vocab_api.domain.curriculum.lesson import Lesson
 from vocab_api.domain.curriculum.map import CurriculumMap, LadderEntry
 from vocab_api.domain.curriculum.module import Module
+from vocab_api.domain.curriculum.quiz import Quiz
 from vocab_api.domain.shared.errors import CurriculumModuleNotFound
 from vocab_api.infrastructure.curriculum.content_loader import ContentBundle
 
@@ -32,6 +33,12 @@ class FileCurriculumRepository(CurriculumContent):
             raise CurriculumModuleNotFound(module_id)
         return lesson
 
+    def quiz(self, module_id: str) -> Quiz:
+        quiz = self._bundle.quiz(module_id)
+        if quiz is None:
+            raise CurriculumModuleNotFound(module_id)
+        return quiz
+
     def has_lesson(self, module_id: str) -> bool:
         return self._bundle.has_lesson(module_id)
 
@@ -39,6 +46,5 @@ class FileCurriculumRepository(CurriculumContent):
         return self._bundle.has_quiz(module_id)
 
     def is_available(self, module_id: str) -> bool:
-        # Phase 0 ships lessons without quizzes: a module is openable once its
-        # lesson exists. Phase 1 tightens this to lesson AND quiz present.
-        return self.has_lesson(module_id)
+        # Phase 1: a module is openable once its lesson AND quiz are authored.
+        return self.has_lesson(module_id) and self.has_quiz(module_id)

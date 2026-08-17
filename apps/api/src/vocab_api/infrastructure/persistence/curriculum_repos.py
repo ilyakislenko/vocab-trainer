@@ -5,6 +5,7 @@ from sqlmodel import select
 from vocab_api.application.ports.curriculum_repos import (
     LearnerProfileRepository,
     ModuleProgressRepository,
+    QuizAttemptRepository,
 )
 from vocab_api.domain.curriculum.progress import (
     LearnerProfile,
@@ -20,6 +21,7 @@ from vocab_api.infrastructure.persistence.curriculum_mappers import (
 from vocab_api.infrastructure.persistence.curriculum_tables import (
     LearnerProfileRow,
     ModuleProgressRow,
+    QuizAttemptRow,
 )
 from vocab_api.infrastructure.persistence.engine import Database
 
@@ -89,3 +91,52 @@ class SqlModuleProgressRepository(ModuleProgressRepository):
             await session.merge(module_progress_to_row(updated))
             await session.commit()
         return updated
+
+    async def mark_quiz_attempted(
+        self, module_id: str, best_score: float, now: datetime
+    ) -> ModuleProgress:
+        # A module completes the moment its lesson is read AND its quiz is
+        # attempted at least once (any score, no threshold). Best score is
+        # kept monotonically. Idempotent for repeated attempts.
+        async with self._db.session() as session:
+            row = await session.get(ModuleProgressRow, module_id)
+            existing = (
+                module_progress_from_row(row)
+                if row is not None
+                else ModuleProgress(module_id=module_id)
+            )
+            score = max(existing.quiz_best_score or 0.0, best_score)
+            updated = ModuleProgress(
+                module_id=module_id,
+                status=existing.status,
+                lesson_read_at=existing.lesson_read_at,
+                quiz_best_score=score,
+                completed_at=existing.completed_at,
+            ).derive_status(lesson_read_at=existing.lesson_read_at, quiz_attempted=True, now=now)
+            await session.merge(module_progress_to_row(updated))
+            await session.commit()
+        return updated
+
+
+class SqlQuizAttemptRepository(QuizAttemptRepository):
+    def __init__(self, db: Database) -> None:
+        self._db = db
+
+    async def record(
+        self,
+        module_id: str,
+        item_id: str,
+        given: str,
+        correct: bool,
+        answered_at: datetime,
+    ) -> None:
+        row = QuizAttemptRow(
+            module_id=module_id,
+            item_id=item_id,
+            given=given,
+            correct=correct,
+            answered_at=answered_at,
+        )
+        async with self._db.session() as session:
+            session.add(row)
+            await session.commit()

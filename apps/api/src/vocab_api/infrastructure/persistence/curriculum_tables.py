@@ -19,3 +19,15 @@ class ModuleProgressRow(SQLModel, table=True):
     lesson_read_at: datetime | None = None
     quiz_best_score: float | None = None
     completed_at: datetime | None = None
+
+
+class QuizAttemptRow(SQLModel, table=True):
+    """Append-only log of graded quiz answers (feeding review in Phase 2)."""
+
+    __tablename__ = "quiz_attempts"
+    id: int | None = Field(default=None, primary_key=True)
+    module_id: str = Field(index=True)
+    item_id: str
+    given: str
+    correct: bool
+    answered_at: datetime

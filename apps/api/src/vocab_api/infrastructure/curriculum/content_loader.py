@@ -19,6 +19,7 @@ from vocab_api.domain.curriculum.lesson import Lesson
 from vocab_api.domain.curriculum.level import Level
 from vocab_api.domain.curriculum.map import LadderEntry, LevelOverview, ModuleAvailability
 from vocab_api.domain.curriculum.module import Module, Reference
+from vocab_api.domain.curriculum.quiz import Quiz, QuizItem, QuizItemType
 from vocab_api.domain.curriculum.track import Track
 from vocab_api.domain.shared.errors import ContentValidationError
 
@@ -28,6 +29,7 @@ class LoadedContent:
     levels: tuple[LevelOverview[LadderEntry], ...]
     modules: dict[str, Module]
     lessons: dict[str, Lesson]
+    quizzes: dict[str, Quiz]
     has_quiz: set[str]
 
 
@@ -107,6 +109,7 @@ class ContentBundle:
         self._levels: tuple[LevelOverview[LadderEntry], ...] = ()
         self._modules: dict[str, Module] = {}
         self._lessons: dict[str, Lesson] = {}
+        self._quizzes: dict[str, Quiz] = {}
         self._has_quiz: set[str] = set()
         self._validate()
 
@@ -123,11 +126,12 @@ class ContentBundle:
             if name.startswith(".") or not name.endswith(".md"):
                 continue
             lesson_texts[name[: -len(".md")]] = resource.read_text(encoding="utf-8")
-        for resource in files("vocab_api.seed").joinpath("content").iterdir():
-            name = resource.name
-            if name.startswith(".") or name in {"curriculum.json", "placement.json"}:
-                continue
-            if name.endswith(".json"):
+        quizzes_dir = files("vocab_api.seed").joinpath("content", "quizzes")
+        if quizzes_dir.is_dir():
+            for resource in quizzes_dir.iterdir():
+                name = resource.name
+                if name.startswith(".") or not name.endswith(".json"):
+                    continue
                 quiz_texts[name[: -len(".json")]] = resource.read_text(encoding="utf-8")
         return ContentBundle(manifest_raw, lesson_texts, quiz_texts)
 
@@ -286,17 +290,118 @@ class ContentBundle:
                 if entry.availability is ModuleAvailability.AUTHORING:
                     continue
                 quiz_raw = self._quiz_texts.get(entry.id)
-                if quiz_raw is not None:
-                    # Quiz structure is validated in Phase 1 (quiz.py); for now
-                    # we only register that a quiz file exists.
-                    self._has_quiz.add(entry.id)
+                if quiz_raw is None:
+                    raise ContentValidationError(
+                        f"available module {entry.id!r} has no quiz file"
+                    )
+                parsed = json.loads(quiz_raw)
+                if not isinstance(parsed, dict):
+                    raise ContentValidationError(f"quiz {entry.id}: must be a JSON object")
+                declared = parsed.get("module_id")
+                if declared != entry.id:
+                    raise ContentValidationError(
+                        f"quiz file {entry.id!r} declares module_id {declared!r}"
+                    )
+                items_raw = parsed.get("items")
+                if not isinstance(items_raw, list) or not items_raw:
+                    raise ContentValidationError(
+                        f"quiz {entry.id}: 'items' must be a non-empty list"
+                    )
+                lesson_skills = set(self._modules[entry.id].skills)
+                items: list[QuizItem] = []
+                seen_item_ids: set[str] = set()
+                for idx, item_raw in enumerate(items_raw):
+                    item = self._parse_quiz_item(item_raw, entry.id, idx, lesson_skills)
+                    if item.id in seen_item_ids:
+                        raise ContentValidationError(
+                            f"quiz {entry.id}: duplicate item id {item.id!r}"
+                        )
+                    seen_item_ids.add(item.id)
+                    items.append(item)
+                self._quizzes[entry.id] = Quiz(module_id=entry.id, items=tuple(items))
+                self._has_quiz.add(entry.id)
+
+    def _parse_quiz_item(
+        self,
+        raw: object,
+        module_id: str,
+        index: int,
+        lesson_skills: set[str],
+    ) -> QuizItem:
+        context = f"quiz {module_id} item #{index}"
+        if not isinstance(raw, dict):
+            raise ContentValidationError(f"{context}: item must be an object")
+        item_id = _require_str(raw, "id", context)
+        type_raw = _require_str(raw, "type", context)
+        try:
+            item_type = QuizItemType(type_raw)
+        except ValueError as exc:
+            raise ContentValidationError(
+                f"{context}: invalid type {type_raw!r}"
+            ) from exc
+        skill = _require_str(raw, "skill", context)
+        if skill not in lesson_skills:
+            raise ContentValidationError(
+                f"{context}: skill {skill!r} not declared in lesson skills"
+            )
+        prompt = _require_str(raw, "prompt", context)
+        explanation = _require_str(raw, "explanation", context)
+
+        if item_type is QuizItemType.MCQ:
+            options_raw = raw.get("options")
+            if not isinstance(options_raw, list) or not all(
+                isinstance(o, str) and o.strip() for o in options_raw
+            ):
+                raise ContentValidationError(f"{context}: mcq needs non-empty string 'options'")
+            answer_index = raw.get("answer_index")
+            if not isinstance(answer_index, int) or not 0 <= answer_index < len(options_raw):
+                raise ContentValidationError(f"{context}: mcq needs a valid 'answer_index'")
+            return QuizItem(
+                id=item_id,
+                module_id=module_id,
+                type=item_type,
+                skill=skill,
+                prompt=prompt,
+                explanation=explanation,
+                options=tuple(options_raw),
+                answer_index=answer_index,
+                answers=None,
+                llm_gradable=False,
+            )
+
+        answers_raw = raw.get("answers")
+        if not isinstance(answers_raw, list) or not answers_raw or not all(
+            isinstance(a, str) and a.strip() for a in answers_raw
+        ):
+            raise ContentValidationError(
+                f"{context}: {item_type.value} needs non-empty string 'answers'"
+            )
+        llm_gradable = raw.get("llm_gradable")
+        return QuizItem(
+            id=item_id,
+            module_id=module_id,
+            type=item_type,
+            skill=skill,
+            prompt=prompt,
+            explanation=explanation,
+            options=None,
+            answer_index=None,
+            answers=tuple(answers_raw),
+            llm_gradable=llm_gradable is True and item_type is QuizItemType.ERROR_CORRECTION,
+        )
 
     def _cross_validate(self) -> None:
         for section in self._levels:
             for entry in section.entries:
                 if entry.availability is ModuleAvailability.AVAILABLE:
                     if entry.id not in self._lessons:
-                        raise ContentValidationError(f"available module {entry.id!r} has no lesson")
+                        raise ContentValidationError(
+                            f"available module {entry.id!r} has no lesson"
+                        )
+                    if entry.id not in self._has_quiz:
+                        raise ContentValidationError(
+                            f"available module {entry.id!r} has no quiz"
+                        )
                 else:
                     if entry.id in self._lessons or entry.id in self._has_quiz:
                         raise ContentValidationError(
@@ -313,6 +418,9 @@ class ContentBundle:
 
     def lesson(self, module_id: str) -> Lesson | None:
         return self._lessons.get(module_id)
+
+    def quiz(self, module_id: str) -> Quiz | None:
+        return self._quizzes.get(module_id)
 
     def has_lesson(self, module_id: str) -> bool:
         return module_id in self._lessons
