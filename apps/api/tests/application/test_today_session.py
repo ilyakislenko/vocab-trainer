@@ -23,6 +23,7 @@ from vocab_api.domain.curriculum.map import (
     ModuleAvailability,
 )
 from vocab_api.domain.curriculum.module import Module, Reference
+from vocab_api.domain.curriculum.placement import Placement
 from vocab_api.domain.curriculum.progress import ModuleProgress, ModuleStatus
 from vocab_api.domain.curriculum.quiz import Quiz, QuizItem, QuizItemType
 from vocab_api.domain.curriculum.skill_item import LEECH_LAPSES, SkillItem
@@ -137,8 +138,10 @@ class FakeContent:
     def is_available(self, module_id: str) -> bool:
         return module_id in self._available
 
-    def placement(self) -> None:
-        raise NotImplementedError
+    def placement(self) -> Placement:
+        # The Today session never reads the placement bank; this fake only needs
+        # to satisfy the CurriculumContent protocol.
+        return Placement(items=())
 
 
 class FakeProgress:
