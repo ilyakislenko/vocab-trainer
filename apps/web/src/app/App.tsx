@@ -4,6 +4,7 @@ import {
   Globe,
   GraduationCap,
   MessageSquare,
+  Mic,
   Moon,
   Pencil,
   Sun,
@@ -17,6 +18,7 @@ import { useDecks } from "@/entities/deck";
 import { DeckPicker } from "@/features/select-deck";
 import { ImportPage } from "@/pages/import";
 import { InterviewPage } from "@/pages/interview";
+import { InterviewSpeakingPage } from "@/pages/interview-speaking";
 import { LearnPage } from "@/pages/learn";
 import { LessonPage } from "@/pages/lesson";
 import { PlacementPage } from "@/pages/placement";
@@ -39,6 +41,7 @@ const PRIMARY_NAV = [
 
 const TOOLS_NAV = [
   { to: "/interview", icon: MessageSquare, label: "nav.interview" },
+  { to: "/speaking", icon: Mic, label: "nav.speaking" },
   { to: "/import", icon: Upload, label: "nav.import" },
   { to: "/stats", icon: BarChart3, label: "nav.stats" },
 ] as const;
@@ -195,6 +198,7 @@ function AppShell() {
             <Route path="/learn/skills" element={<ReviewSkillsPage />} />
             <Route path="/practice" element={<PracticePage deckId={deckId} />} />
             <Route path="/interview" element={<InterviewPage />} />
+            <Route path="/speaking" element={<InterviewSpeakingPage />} />
             <Route path="/import" element={<ImportPage deckId={deckId} />} />
             <Route path="/stats" element={<StatsPage deckId={deckId} />} />
           </Routes>

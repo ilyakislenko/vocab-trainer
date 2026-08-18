@@ -13,6 +13,7 @@ const dict: Translations = {
   "nav.tools": { en: "Tools", ru: "Инструменты" },
   "nav.import": { en: "Import", ru: "Импорт" },
   "nav.stats": { en: "Stats", ru: "Статистика" },
+  "nav.speaking": { en: "Speaking", ru: "Говорение" },
   "nav.dark": { en: "Dark", ru: "Тёмная" },
   "nav.light": { en: "Light", ru: "Светлая" },
 
@@ -117,6 +118,24 @@ const dict: Translations = {
     en: "your /{phoneme}/ was weak — keep practising",
     ru: "звук /{phoneme}/ получился слабо — потренируйся ещё",
   },
+  "speaking.title": {
+    en: "Interview speaking",
+    ru: "Говорение для собеседования",
+  },
+  "speaking.subtitle": {
+    en: "Say real interview answers out loud and hear per-sound feedback.",
+    ru: "Произноси вслух реальные ответы на собеседовании и получай разбор по звукам.",
+  },
+  "speaking.pickPhrase": {
+    en: "Pick a phrase to start practising.",
+    ru: "Выбери фразу, чтобы начать тренировку.",
+  },
+  "speaking.category.react": { en: "React", ru: "React" },
+  "speaking.category.typescript": { en: "TypeScript", ru: "TypeScript" },
+  "speaking.category.frontend": { en: "Frontend", ru: "Frontend" },
+  "speaking.category.ai": { en: "AI", ru: "ИИ" },
+  "speaking.category.backend": { en: "Backend", ru: "Backend" },
+  "speaking.category.behavioral": { en: "Behavioral", ru: "Поведенческие" },
 
   // Feedback
   "feedback.ok": { en: "✓ Looks good!", ru: "✓ Отлично!" },
