@@ -116,16 +116,30 @@ class GopScorer:
     def _gop_for_word(
         self, phonemes: list[str], runs: list[tuple[int, float]]
     ) -> list[tuple[str, float]]:
-        scored = []
-        run_index = 0
-        for phoneme in phonemes:
-            token_id = self.tokenizer.convert_tokens_to_ids(phoneme)
-            score = 0.0
-            while run_index < len(runs):
-                if runs[run_index][0] == token_id:
-                    score = runs[run_index][1]
-                    run_index += 1
-                    break
-                run_index += 1
-            scored.append((phoneme, score))
-        return scored
+        # Align the expected phonemes to the emitted runs by longest common
+        # subsequence, so a single mismatch (e.g. the model hearing "o" where the
+        # target expects the diphthong "oʊ") does not swallow the runs that follow
+        # and zero out the rest of the word. A matched phoneme scores its run's
+        # posterior; an unmatched (missing/mispronounced) one scores 0.
+        exp = [self.tokenizer.convert_tokens_to_ids(p) for p in phonemes]
+        run_tokens = [token for token, _ in runs]
+        m, n = len(exp), len(run_tokens)
+        lcs = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                if exp[i] == run_tokens[j]:
+                    lcs[i][j] = 1 + lcs[i + 1][j + 1]
+                else:
+                    lcs[i][j] = max(lcs[i + 1][j], lcs[i][j + 1])
+        matched: dict[int, float] = {}
+        i = j = 0
+        while i < m and j < n:
+            if exp[i] == run_tokens[j]:
+                matched[i] = runs[j][1]
+                i += 1
+                j += 1
+            elif lcs[i + 1][j] >= lcs[i][j + 1]:
+                i += 1
+            else:
+                j += 1
+        return [(phoneme, matched.get(k, 0.0)) for k, phoneme in enumerate(phonemes)]
