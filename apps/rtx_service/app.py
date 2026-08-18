@@ -9,11 +9,14 @@ import os
 
 from fastapi import FastAPI, File, Form, HTTPException
 
-from gop import GopScorer
+from gop import DEFAULT_MODEL, GopScorer
 
 
 def create_app(scorer: GopScorer | None = None) -> FastAPI:
-    model = scorer or GopScorer(device=os.environ.get("RTX_GOP_DEVICE", "cuda"))
+    model = scorer or GopScorer(
+        model_name=os.environ.get("RTX_GOP_MODEL", DEFAULT_MODEL),
+        device=os.environ.get("RTX_GOP_DEVICE", "cuda"),
+    )
     app = FastAPI(title="rtx GOP inference service")
 
     @app.get("/healthz")

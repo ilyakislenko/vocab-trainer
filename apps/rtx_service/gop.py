@@ -14,6 +14,10 @@ import torch
 import torchaudio
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 
+# Public espeak-phoneme wav2vec2 model — its output vocabulary is espeak IPA, so
+# it lines up with the espeak G2P used below. Override with RTX_GOP_MODEL.
+DEFAULT_MODEL = "facebook/wav2vec2-lv-60-espeak-cv-ft"
+
 SAMPLE_RATE = 16000
 GOOD_THRESHOLD = 0.8
 WEAK_THRESHOLD = 0.5
@@ -32,7 +36,7 @@ def target_words(text: str) -> list[str]:
 
 
 class GopScorer:
-    def __init__(self, model_name: str = "bookbot/wav2vec2-libriphoneme", device: str = "cuda") -> None:
+    def __init__(self, model_name: str = DEFAULT_MODEL, device: str = "cuda") -> None:
         self.device = torch.device(device)
         self.processor = Wav2Vec2Processor.from_pretrained(model_name)
         self.model = Wav2Vec2ForCTC.from_pretrained(model_name).to(self.device).eval()
