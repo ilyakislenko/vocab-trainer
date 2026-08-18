@@ -3,5 +3,5 @@ uvicorn[standard]>=0.32
 python-multipart>=0.0.20
 torch>=2.3
 torchaudio>=2.3
-transformers>=4.46,<5
+transformers>=4.46,<4.49
 phonemizer>=3.2
