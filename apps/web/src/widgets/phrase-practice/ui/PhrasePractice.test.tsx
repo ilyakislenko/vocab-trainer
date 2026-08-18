@@ -78,7 +78,7 @@ describe("PhrasePractice", () => {
       screen.getByRole("button", { name: /I optimize re-renders with memoization/i }),
     );
     await userEvent.click(screen.getByRole("button", { name: /record & score|запись и оценка/i }));
-    await waitFor(() => expect(screen.getByText("90%")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("96%")).toBeInTheDocument());
     expect(screen.getByRole("button", { name: "optimize" })).toBeInTheDocument();
   });
 });

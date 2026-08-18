@@ -165,7 +165,7 @@ describe("PronounceControls", () => {
     );
     renderWithProviders(<PronounceControls word="run" />);
     await userEvent.click(screen.getByRole("button", { name: /record & score|запись и оценка/i }));
-    await waitFor(() => expect(screen.getByText("92%")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("97%")).toBeInTheDocument());
     await userEvent.click(screen.getByRole("button", { name: "hello" }));
     await waitFor(() => expect(screen.getByText(/слабо — 40%|40%/)).toBeInTheDocument());
     expect(screen.getByText(/получился слабо|keep practising/i)).toBeInTheDocument();

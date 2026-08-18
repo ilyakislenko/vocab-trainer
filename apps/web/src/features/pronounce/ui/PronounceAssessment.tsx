@@ -1,7 +1,12 @@
 import { useState } from "react";
 import type { PronunciationAssessment, WordScore } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
-import { overallPercent, type PronounceVerdict, verdictTone } from "../model/verdict";
+import {
+  overallPercent,
+  overallScorePercent,
+  type PronounceVerdict,
+  verdictTone,
+} from "../model/verdict";
 
 const toneClasses: Record<PronounceVerdict, string> = {
   good: "border-emerald-500/40 bg-emerald-500/15 text-emerald-700",
@@ -24,7 +29,7 @@ export function PronounceAssessment({ assessment }: { assessment: PronunciationA
           {t("pronounce.overall")}
         </p>
         <span className="rounded-full bg-primary/10 px-3 py-1 text-lg font-black text-primary">
-          {overallPercent(assessment.overall)}%
+          {overallScorePercent(assessment.overall)}%
         </span>
       </div>
       <ul className="flex flex-wrap gap-2">
