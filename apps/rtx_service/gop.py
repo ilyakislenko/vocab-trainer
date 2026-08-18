@@ -51,7 +51,7 @@ class GopScorer:
             backend="espeak",
             preserve_punctuation=True,
             with_stress=False,
-            separator=phonemizer.separator.Separator(word="|"),
+            separator=phonemizer.separator.Separator(phone=" ", word="|"),
         )
         return [word.split() for word in raw.split("|") if word.strip()]
 
